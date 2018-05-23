@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="roleMapper" >
+    <resultMap id="roleMap" type="role">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_code" property="roleCode"/>
+        <result column="note" property="note"/>
+        <result column="enabled" property="enabled"/>
+        <result column="role_type" property="roleType"/>
+    </resultMap>
+    <sql id="table">
+        sys_role
+    </sql>
+    <sql id="field">
+        id,
+        role_name,
+        role_code,
+        enabled,
+        note,
+        role_type
+    </sql>
+    <sql id="fieldValue">
+        #{id},
+        #{roleName},
+        #{roleCode},
+        #{enabled},
+        #{note},
+        #{roleType}
+    </sql>
+    <insert id="save" parameterType="role">
+        INSERT  INTO
+            <include refid="table"/>
+        (
+            <include refid="field"/>
+        ) VALUES (
+            <choose>
+                <when test="id == null || id == ''">
+                    (SELECT replace((SELECT  uuid()),"-","")),
+                </when>
+                <otherwise>
+                    #{id},
+                </otherwise>
+            </choose>
+            #{roleName},
+            #{roleCode},
+            #{enabled},
+            #{note},
+            #{roleType}
+        )
+    </insert>
+    <select id="query" parameterType="role" resultMap="roleMap">
+        SELECT
+          <include refid="field"/>
+        FROM
+          <include refid="table"/>
+        where 1 = 1
+        <if test="roleName != null and roleName != ''">
+            and role_name LIKE '%${roleName}%'
+        </if>
+    </select>
+    <select id="selectById" parameterType="String" resultMap="roleMap">
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        WHERE id = #{0}
+    </select>
+    <update id="update" parameterType="role" >
+        UPDATE
+        <include refid="table"/>
+        SET
+        id = #{id}
+        <if test="roleName != null and roleName !=''">
+            , role_name = #{roleName}
+        </if>
+        <if test="roleCode != null and roleCode !=''">
+            , role_code = #{roleCode}
+        </if>
+        <if test="note != null and note !=''">
+            , note = #{note}
+        </if>
+        <if test="enabled  != null and enabled !=''">
+            , enabled = #{enabled}
+        </if>
+        <if test="roleType != null and roleType != ''">
+            , role_type = #{roleType}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+    <delete id="deletedById" parameterType="String">
+        DELETE FROM
+        <include refid="table"/>
+        WHERE
+        id = #{0}
+    </delete>
+    <select id="getRoleByUserId" parameterType="string" resultMap="roleMap">
+        SELECT
+        r.*
+        FROM
+        <include refid="table"/> r
+        LEFT JOIN rl_user_role s ON r.id = s.role_id
+        WHERE s.user_id = #{0}
+    </select>
+
+    <insert id="addBatchRoleMenuButton" parameterType="list">
+        INSERT  INTO  rl_role_resource (id, role_id, resource_id, resource_type, note) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+              (SELECT replace((SELECT uuid()),"-","")),
+              #{item.roleId},
+              #{item.resId},
+              #{item.resType},
+              null
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteRoleMenuButtonByRid" parameterType="map">
+        DELETE  FROM  rl_role_resource WHERE role_id = #{roleId} AND resource_type = #{resourceType}
+    </delete>
+    <select id="getResIdByRoleIdAndType" parameterType="map" resultType="string">
+        SELECT resource_id FROM  rl_role_resource WHERE role_id  = #{roleId} AND resource_type = #{resType}
+    </select>
+    <select id="getRoleByType" parameterType="string" resultMap="roleMap" >
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        where role_type = #{0} AND enabled = '1'
+    </select>
+</mapper>

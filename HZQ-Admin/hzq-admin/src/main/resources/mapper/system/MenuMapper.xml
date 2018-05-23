@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="menuMapper" >
+    <resultMap id="menuMap" type="menu">
+        <id column="id" property="id"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="code" property="code"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="href" property="href"/>
+        <result column="component" property="component"/>
+        <result column="icon" property="icon"/>
+        <result column="menu_type" property="menuType"/>
+        <result column="note" property="note"/>
+        <result column="enabled" property="enabled"/>
+        <result column="parentName" property="parentName"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+    <resultMap id="menuMapvo" type="menuvo">
+        <id column="id" property="id"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="code" property="code"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="href" property="href"/>
+        <result column="component" property="component"/>
+        <result column="icon" property="icon"/>
+        <result column="menu_type" property="menuType"/>
+        <result column="note" property="note"/>
+        <result column="enabled" property="enabled"/>
+        <result column="parentName" property="parentName"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+    <sql id="table">
+        sys_menu
+    </sql>
+    <sql id="field">
+      id,
+      menu_name,
+      code,
+      parent_id,
+      href,
+      component,
+      icon,
+      menu_type,
+      note,
+      enabled,
+      sort
+    </sql>
+    <sql id="fieldValue">
+      #{id},
+      #{menuName},
+      #{code},
+      #{parentId},
+      #{href},
+      #{component},
+      #{icon},
+      #{menuType},
+      #{note},
+      #{enabled},
+      #{sort}
+    </sql>
+
+    <insert id="save" parameterType="menu">
+        INSERT  INTO
+          <include refid="table"/>
+        (
+          <include refid="field"/>
+        )
+        VALUES
+        (
+            <choose>
+                <when test="id == null || id == ''">
+                    (SELECT replace((SELECT  uuid()),"-","")),
+                </when>
+                <otherwise>
+                    #{id},
+                </otherwise>
+            </choose>
+            #{menuName},
+            #{code},
+            #{parentId},
+            #{href},
+            #{component},
+            #{icon},
+            #{menuType},
+            #{note},
+            #{enabled},
+            #{sort}
+        )
+    </insert>
+    <select id="query" parameterType="menu" resultMap="menuMap">
+        SELECT
+          <include refid="field"/>
+        FROM
+          <include refid="table"/>
+        where
+          1 = 1
+        <if test="id != null and id != ''">
+            AND id = ${id}
+        </if>
+        <if test="enabled != null">
+            AND enabled = #{enabled}
+        </if>
+        <if test="code != null and code != ''">
+            AND code = #{code}
+        </if>
+        ORDER BY sort ASC
+    </select>
+    <select id="getMenuByPId" parameterType="string" resultMap="menuMap">
+        SELECT
+          m.*,n.menu_name as parentName
+        FROM
+          <include refid="table"/> m
+        LEFT  JOIN
+          <include refid="table"/> n
+        ON  m.parent_id = n.id
+        WHERE
+          m.parent_id = #{0}
+        ORDER BY m.sort ASC
+    </select>
+    <update id="update" parameterType="menu" >
+        UPDATE
+        <include refid="table"/>
+        SET
+        id = #{id}
+        <if test="menuName != null and menuName !=''">
+            , menu_name = #{menuName}
+        </if>
+        <if test="code != null and code !=''">
+            , code = #{code}
+        </if>
+        <if test="href != null and href !=''">
+            , href = #{href}
+        </if>
+        <if test="component != null and component !=''">
+            , component = #{component}
+        </if>
+        <if test="icon != null and icon !=''">
+            , icon = #{icon}
+        </if>
+        <if test="menuType != null and menuType !=''">
+            , menu_type = #{menuType}
+        </if>
+        <if test="note != null and note !=''">
+            , note = #{note}
+        </if>
+        <if test="enabled != null and enabled !=''">
+            , enabled = #{enabled}
+        </if>
+        <if test="sort != null ">
+            , sort = #{sort}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="deletedById" parameterType="String">
+        DELETE FROM
+        <include refid="table"/>
+        WHERE
+        id = #{0}
+    </delete>
+
+    <select id="getMenusByRids" parameterType="map" resultMap="menuMapvo">
+        SELECT  m.* FROM sys_menu m
+        where  find_in_set(m.id,(SELECT  GROUP_CONCAT(resource_id) FROM  rl_role_resource where find_in_set (role_id,#{roleId})))
+          AND m.menu_type = #{menuType}
+        ORDER BY  sort ASC
+    </select>
+    <select id="queryMenuvo" parameterType="menuvo" resultMap="menuMapvo">
+        SELECT
+            s.*,
+            o.menu_name AS parentName
+        FROM sys_menu s
+          LEFT JOIN sys_menu o
+            ON s.parent_id = o.id
+        <if test="id != null and id != ''">
+            AND s.id = ${id}
+        </if>
+        <if test="menuType != null and menuType != ''">
+            AND s.menu_type = #{menuType}
+        </if>
+        <if test="enabled != null">
+            AND s.enabled = #{enabled}
+        </if>
+        ORDER BY sort ASC
+    </select>
+    <select id="getMenusByUid" parameterType="string" resultMap="menuMap">
+    SELECT m.* FROM  sys_menu m LEFT JOIN  rl_role_resource r ON  m.id = r.resource_id
+    LEFT JOIN rl_user_role u ON  r.role_id = u.role_id
+    where u.user_id = #{0}
+    </select>
+    <select id="checkCode" parameterType="map" resultMap="menuMap" >
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        where
+        code = #{code}
+        <if test="id != null and id != ''">
+            AND  id != #{id}
+        </if>
+    </select>
+</mapper>

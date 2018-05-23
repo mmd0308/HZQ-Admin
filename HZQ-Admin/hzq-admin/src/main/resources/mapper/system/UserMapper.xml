@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserMapper">
+    <resultMap id="userMap" type="user">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="note" property="note"/>
+        <result column="email" property="email"/>
+        <result column="full_name" property="fullName" />
+        <result column="avatar" property="avatar" />
+        <result column="phone" property="phone" />
+        <result column="nick_name" property="nickName" />
+    </resultMap>
+    <sql id="table">
+        sys_user
+    </sql>
+    <sql id="field">
+        id,
+        username,
+        password,
+        note,
+        email,
+        full_name,
+        avatar,
+        phone,
+        nick_name
+    </sql>
+    <sql id="fieldValue">
+        #{id},
+        #{username},
+        #{password},
+        #{note},
+        #{email},
+        #{fullName},
+        #{avatar},
+        #{phone},
+        #{nickName}
+    </sql>
+    <insert id="save" parameterType="user">
+        INSERT  INTO
+        <include refid="table"/>
+        (
+        <include refid="field"/>
+        )
+        VALUES
+        (
+        <choose>
+            <when test="id == null || id == ''">
+                (SELECT replace((SELECT  uuid()),"-","")),
+            </when>
+            <otherwise>
+                #{id},
+            </otherwise>
+        </choose>
+        #{username},
+        #{password},
+        #{note},
+        #{email},
+        #{fullName},
+        #{avatar},
+        #{phone},
+        #{nickName}
+        )
+    </insert>
+    <select id="query" parameterType="user" resultMap="userMap">
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        where 1 = 1
+        <if test="username != null and username != ''">
+            AND username LIKE '%${username}%'
+            <if test="email != null and email != ''">
+                OR email LIKE '%${email}%'
+            </if>
+        </if>
+
+    </select>
+    <select id="getLoginUser" parameterType="user" resultMap="userMap" >
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        where 1 = 1
+        <if test="email != null and email != ''">
+            AND email = #{email}
+        </if>
+        <if test="phone != null and phone != ''">
+            AND phone = #{phone}
+        </if>
+    </select>
+    <select id="selectById" parameterType="String" resultMap="userMap">
+        SELECT
+        <include refid="field"/>
+        FROM
+        <include refid="table"/>
+        WHERE id = #{0}
+    </select>
+    <update id="update" parameterType="user" >
+        UPDATE
+        <include refid="table"/>
+        SET
+        id = #{id}
+        <if test="username != null and username !=''">
+            , username = #{username}
+        </if>
+        <if test="email != null and email !=''">
+            , email = #{email}
+        </if>
+        <if test="note != null and note !=''">
+            , note = #{note}
+        </if>
+        <if test="fullName != null and fullName != ''">
+            , full_name = #{fullName}
+        </if>
+        <if test="avatar != null and avatar != ''">
+            , avatar = #{avatar}
+        </if>
+        <if test="phone != null and phone != ''">
+            , phone = #{phone}
+        </if>
+        <if test="nickName != null and nickName != '' ">
+            , nick_name = #{nickName}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+    <delete id="deletedById" parameterType="String">
+        DELETE FROM
+        <include refid="table"/>
+        WHERE
+        id = #{0}
+    </delete>
+
+    <insert id="batchSave" parameterType="list">
+        INSERT INTO rl_user_role(id,user_id,role_id,note)
+        VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+            (SELECT replace((SELECT uuid()),"-","")),
+            #{item.user_id},
+            #{item.role_id},
+            null
+            )
+        </foreach>
+
+    </insert>
+    <!--根据用户id删除用户权限-->
+    <delete id="deleteUserRoleByUserId" parameterType="String">
+        DELETE  FROM  rl_user_role
+        WHERE
+          user_id = #{0}
+    </delete>
+
+
+    <select id="getUserByUName" resultMap="userMap" parameterType="string">
+        SELECT
+          <include refid="field"/>
+        FROM
+          <include refid="table"/>
+        WHERE
+          username = #{0}
+    </select>
+
+    <select id="getResCodeByRoleIds" resultType="string" parameterType="string">
+        SELECT b.code
+        FROM sys_button b
+          LEFT JOIN rl_role_resource r ON b.id = r.resource_id
+        WHERE r.resource_type = 'button'
+              AND b.enabled = '1'
+              AND find_in_set(r.role_id ,#{ids})
+    </select>
+</mapper>

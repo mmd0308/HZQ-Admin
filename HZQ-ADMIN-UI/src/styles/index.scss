@@ -1,0 +1,127 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './markdown.scss';
+@import './system-index.scss';
+@import './layout.scss';
+@import './color.scss';
+body {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-size: 14px;
+  height: 100%;
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #333;
+  // font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  //font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif
+  font-family:-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+div:focus{
+  outline: none;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+.see-font {
+  color: #787878;
+  font-size: var(--hzq-see-font-size);
+}
+ul {
+  padding: 0px;
+  margin: 0px;
+}
+li {
+  line-height: 20px;
+}
+// img {
+//   width: 100%;
+//   height: 100%;
+// }
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+//main-container全局样式
+.app-main{
+  min-height: 100%
+}
+
+.app-container {
+  padding: 20px;
+}
+
+.el-header {
+  padding: 0px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.el-menu--horizontal .el-menu-item {
+  height: 45px;
+}
+.el-menu--horizontal .el-submenu .el-submenu__icon-arrow {
+  display: none;
+}
+
+.el-main{
+  padding: 20px 0px;
+}
+
+.author{
+  color: #0593d3;
+}
+.bb-dash{
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.el-card{
+  border-radius: 10px;
+}
+
+.el-card__header{
+  padding: 12px 20px;
+  background: #fff;
+}
+.mp{
+  cursor: pointer;
+}
+.fl{
+  float: left;
+}
+
+.fr{
+  float: right;
+}
