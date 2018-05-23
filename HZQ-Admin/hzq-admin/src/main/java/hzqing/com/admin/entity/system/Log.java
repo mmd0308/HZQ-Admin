@@ -1,17 +1,17 @@
 package hzqing.com.admin.entity.system;
 
-import org.apache.ibatis.type.Alias;
-
 import javax.persistence.Table;
 import java.util.Date;
-
-@Alias("log")
 @Table(name = "sys_log")
 public class Log {
     private String id;
+
     private String optPath;
+
     private String optType;
+
     private Date optTime;
+
     private String note;
 
     public String getId() {
@@ -19,7 +19,7 @@ public class Log {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public String getOptPath() {
@@ -27,7 +27,7 @@ public class Log {
     }
 
     public void setOptPath(String optPath) {
-        this.optPath = optPath;
+        this.optPath = optPath == null ? null : optPath.trim();
     }
 
     public String getOptType() {
@@ -35,7 +35,7 @@ public class Log {
     }
 
     public void setOptType(String optType) {
-        this.optType = optType;
+        this.optType = optType == null ? null : optType.trim();
     }
 
     public Date getOptTime() {
@@ -51,6 +51,6 @@ public class Log {
     }
 
     public void setNote(String note) {
-        this.note = note;
+        this.note = note == null ? null : note.trim();
     }
 }

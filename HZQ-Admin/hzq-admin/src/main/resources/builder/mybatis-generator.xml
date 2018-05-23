@@ -3,18 +3,11 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="MySql" targetRuntime="MyBatis3">
-        <!-- 格式化java代码 -->
-        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
-        <!-- 格式化XML代码 -->
-        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
-
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+    <context id="MySql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
         <!-- 注释 -->
         <commentGenerator >
-            <property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
             <property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->
         </commentGenerator>
 
@@ -23,19 +16,21 @@
                         userId="root"
                         password="root">
         </jdbcConnection>
-
-        <javaModelGenerator targetPackage="hzqing.com.admin.entity.system" targetProject="\HZQ-Admin\src\main\java">
-            <property name="enableSubPackages" value="false"/>
+        <!--生成实体-->
+        <javaModelGenerator targetPackage="hzqing.com.admin.entity.system" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-
-        <sqlMapGenerator targetPackage="mapper.system"  targetProject="\HZQ-Admin\src\main\resources">
-            <property name="enableSubPackages" value="false" />
+        <!--生成mapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper.system"  targetProject="src/main/resources">
         </sqlMapGenerator>
-
-        <javaClientGenerator type="XMLMAPPER"  targetPackage="hzqing.com.admin.mapper.system"  targetProject="\HZQ-Admin\src\main\java">
-            <property name="enableSubPackages" value="false" />
+        <!--生成mapper java类-->
+        <javaClientGenerator type="XMLMAPPER"  targetPackage="hzqing.com.admin.mapper.system"  targetProject="src/main/java">
+            <!--<property name="enableSubPackages" value="true"/>-->
+            <property name="rootInterface" value="hzqing.com.common.base.mapper.BaseMapper"/>
         </javaClientGenerator>
+
+
 
         <table tableName="sys_log" domainObjectName="Log">
            <generatedKey column="id" identity="true" sqlStatement="MySql"/>
