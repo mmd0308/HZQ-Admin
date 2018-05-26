@@ -1,9 +1,9 @@
 package hzqing.com.admin.service.system;
 
 
-import hzqing.com.admin.base.service.IBaseService;
 import hzqing.com.admin.entity.system.User;
 import hzqing.com.admin.vo.system.UserVo;
+import hzqing.com.common.base.service.IBaseService;
 
 import java.util.HashMap;
 

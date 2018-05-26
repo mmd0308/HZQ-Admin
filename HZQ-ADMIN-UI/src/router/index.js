@@ -4,7 +4,6 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 import Layout from '../views/manager/layout/Layout'
-import ShowIndexLayout from '../views/show/indexLayout/Layout'
 
 export const constantRouterMap = [
   {

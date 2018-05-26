@@ -30,10 +30,10 @@ public class TokenFilter implements Filter{
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(Pattern.compile("/images.*")); // 图片资源不拦截
-        patterns.add(Pattern.compile("/api.*"));
-//        patterns.add(Pattern.compile("/api.*/show.*"));
-//        patterns.add(Pattern.compile("/api/user/login"));
-//        patterns.add(Pattern.compile("/api.*/dispatcher.*"));
+//        patterns.add(Pattern.compile("/api.*"));
+        patterns.add(Pattern.compile("/api.*/show.*"));
+        patterns.add(Pattern.compile("/api/user/login"));
+        patterns.add(Pattern.compile("/api.*/dispatcher.*"));
 
     }
 
@@ -43,8 +43,7 @@ public class TokenFilter implements Filter{
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
         System.out.println("------url ------ " + url);
-        if (true) { // 不需要过滤
-            // if (isInclude(url)) { // 不需要过滤
+        if (isInclude(url)) { // 不需要过滤
             System.out.println("放行的url：   " + url);
             chain.doFilter(request,response);
             return;

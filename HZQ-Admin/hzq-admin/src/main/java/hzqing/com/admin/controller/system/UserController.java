@@ -1,11 +1,11 @@
 package hzqing.com.admin.controller.system;
 
-import hzqing.com.admin.base.controller.BaseController;
 import hzqing.com.admin.constant.Constant;
 import hzqing.com.admin.entity.system.User;
 import hzqing.com.admin.service.system.IUserService;
 import hzqing.com.admin.utils.ResponseMessage;
 import hzqing.com.admin.vo.system.UserVo;
+import hzqing.com.common.base.controller.BaseController;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController extends BaseController<User,IUserService> {
+public class UserController extends BaseController<IUserService,User> {
 
     @PostMapping("/show/register")
     public ResponseMessage<Integer> register(@RequestBody User t){

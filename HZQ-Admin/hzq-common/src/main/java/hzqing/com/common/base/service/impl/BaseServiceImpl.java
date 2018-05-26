@@ -12,9 +12,10 @@ import java.util.List;
 
 public class BaseServiceImpl<M extends BaseMapper<T>,T> implements IBaseService<T> {
     @Autowired
-    private M mapper;
+    protected M mapper;
     @Override
     public Integer save(T t) {
+        System.out.println("-----save" + t);
         return mapper.insert(t);
     }
 

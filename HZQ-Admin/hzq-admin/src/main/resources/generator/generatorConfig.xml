@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <context id="MySql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
-
-        <!-- 注释 -->
-        <commentGenerator >
-            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
-            <property name="suppressDate" value="true" /> <!-- 是否生成注释代时间戳-->
-        </commentGenerator>
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+        <property name="mergeable" value="false"></property>
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="hzqing.com.common.base.mapper.BaseMapper"/>
+        </plugin>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/hzq-admin?useUnicode=true&amp;characterEncoding=utf-8"
@@ -19,21 +19,17 @@
         <!--生成实体-->
         <javaModelGenerator targetPackage="hzqing.com.admin.entity.system" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
-            <property name="trimStrings" value="true"/>
+            <property name="trimStrings" value="false"/>
         </javaModelGenerator>
         <!--生成mapper.xml文件 -->
         <sqlMapGenerator targetPackage="mapper.system"  targetProject="src/main/resources">
         </sqlMapGenerator>
         <!--生成mapper java类-->
         <javaClientGenerator type="XMLMAPPER"  targetPackage="hzqing.com.admin.mapper.system"  targetProject="src/main/java">
-            <!--<property name="enableSubPackages" value="true"/>-->
-            <property name="rootInterface" value="hzqing.com.common.base.mapper.BaseMapper"/>
         </javaClientGenerator>
 
-
-
-        <table tableName="sys_log" domainObjectName="Log">
-           <generatedKey column="id" identity="true" sqlStatement="MySql"/>
+        <table tableName="sys_button" domainObjectName="Button">
+            <!--<generatedKey column="id" identity="true" sqlStatement="MySql"/>-->
         </table>
 
     </context>

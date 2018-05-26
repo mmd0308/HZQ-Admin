@@ -106,18 +106,13 @@
 		<!--<dependency>-->
 			<!--<groupId>org.mybatis.generator</groupId>-->
 			<!--<artifactId>mybatis-generator-core</artifactId>-->
-			<!--<version>1.3.6</version>-->
+			<!--<version>1.3.2</version>-->
 		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>tk.mybatis</groupId>-->
-			<!--<artifactId>mapper</artifactId>-->
-			<!--<version>3.4.0</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>tk.mybatis</groupId>-->
-			<!--<artifactId>mapper-generator</artifactId>-->
-			<!--<version>1.0.0</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>tk.mybatis</groupId>
+			<artifactId>mapper</artifactId>
+			<version>${mapper.version}</version>
+		</dependency>
     </dependencies>
 
 	<build>
@@ -143,29 +138,29 @@
 					</resources>
 				</configuration>
 			</plugin>
-			<!--<plugin>-->
-				<!--<groupId>org.mybatis.generator</groupId>-->
-				<!--<artifactId>mybatis-generator-maven-plugin</artifactId>-->
-				<!--<version>1.3.2</version>-->
-				<!--<configuration>-->
-					<!--<configurationFile>${basedir}/src/main/resources/builder/mybatis-generator.xml</configurationFile>-->
-					<!--<overwrite>true</overwrite>-->
-					<!--<verbose>true</verbose>-->
-				<!--</configuration>-->
-				<!--<dependencies>-->
-					<!--<dependency>-->
-						<!--<groupId>mysql</groupId>-->
-						<!--<artifactId>mysql-connector-java</artifactId>-->
-						<!--<version>5.1.44</version>-->
-					<!--</dependency>-->
-					<!--<dependency>-->
-						<!--<groupId>org.mybatis.generator</groupId>-->
-						<!--<artifactId>mybatis-generator-core</artifactId>-->
-						<!--<version>1.3.2</version>-->
-					<!--</dependency>-->
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.2</version>
+				<configuration>
+					<configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
+					<overwrite>true</overwrite>
+					<verbose>true</verbose>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.44</version>
+					</dependency>
+					<dependency>
+						<groupId>tk.mybatis</groupId>
+						<artifactId>mapper</artifactId>
+						<version>${mapper.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 
-				<!--</dependencies>-->
-			<!--</plugin>-->
 		</plugins>
 	</build>
 

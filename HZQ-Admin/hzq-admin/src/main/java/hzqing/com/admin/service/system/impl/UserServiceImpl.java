@@ -1,14 +1,15 @@
 package hzqing.com.admin.service.system.impl;
 
-import hzqing.com.admin.base.service.impl.BaseServiceImpl;
 import hzqing.com.admin.constant.Constant;
 import hzqing.com.admin.entity.system.Role;
 import hzqing.com.admin.entity.system.User;
+import hzqing.com.admin.mapper.system.UserMapper;
 import hzqing.com.admin.service.system.IDictService;
 import hzqing.com.admin.service.system.IMenuService;
 import hzqing.com.admin.service.system.IRoleService;
 import hzqing.com.admin.service.system.IUserService;
 import hzqing.com.admin.vo.system.UserVo;
+import hzqing.com.common.base.service.impl.BaseServiceImpl;
 import hzqing.com.common.jwt.JwtTokenUtil;
 import hzqing.com.common.util.AESUtil;
 import org.springframework.beans.BeanUtils;
@@ -20,7 +21,7 @@ import org.springframework.util.DigestUtils;
 import java.util.*;
 
 @Service("userService")
-public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
+public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements IUserService {
     @Autowired
     private IMenuService menuService;
     @Autowired
@@ -28,13 +29,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     @Autowired
     private IDictService dictService;
 
-    public UserServiceImpl() {
-        super.mapper="UserMapper";
-    }
-
-
     public String login(String username,String password){
-        User user = this.getUserByUName(username);
+        User param = new User();
+        param.setUsername(username);
+        User user = this.mapper.selectOne(param);
+        System.out.println(user);
         if (user.getId() == null || user.getId() == "") {
             return null;
         }
@@ -43,9 +42,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         if (user.getPassword().equals(password)) {
             //生成jwt
             Map<String, Object> claims = new HashMap<String, Object>();  // Claims包含您想要签署的任何信息
-            String iss = AESUtil.AESEncode(Constant.AES_SECRET,user.getId()+","+user.getNickName()+","+user.getPassword());
+            String iss = AESUtil.AESEncode(Constant.AES_SECRET,user.getId()+","+user.getUsername()+","+user.getPassword());
             claims.put("iss",iss); //jwt的签发者 保存用户的帐号和密码以及id 使用AES对称加密
-            claims.put("sub",user.getNickName()); // JWT所面向的用户 用户的昵称
+            claims.put("sub",user.getUsername()); // JWT所面向的用户 用户的昵称
             claims.put("iat", new Date());
             claims.put("jti",UUID.randomUUID()); //jwt的唯一身份表示
             //获取token
@@ -60,7 +59,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      * @return
      */
     private User getLoginUser(User user) {
-        return (User) baseDao.findForObject(mapper + ".getLoginUser", user);
+//        return (User) baseDao.findForObject(mapper + ".getLoginUser", user);
+        return null;
     }
 
     /**
@@ -108,21 +108,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
      * @param ids
      * @return
      */
-    private List<String> getResCodeByRoleIds(String ids){
-        return (List<String>) baseDao.findForList(mapper+".getResCodeByRoleIds",ids);
-    }
+//    private List<String> getResCodeByRoleIds(String ids){
+//        return (List<String>) baseDao.findForList(mapper+".getResCodeByRoleIds",ids);
+//    }
 
     /**
      * 根据用户名获取用户信息
-     * @param username
+     * @param
      * @return
      */
     @Override
     public User getUserByUName(String username){
-        return (User) baseDao.findForObject(mapper+".getUserByUName",username);
+        User user = new User();
+        user.setUsername(username);
+        User one = this.mapper.selectOne(user);
+        return one;
     }
 
-    @Override
+    //@Override
     @Transactional
     public void saveUserRole(HashMap<String, Object> map) {
         String userId  = map.get("userId").toString();
@@ -135,11 +138,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
             lists.add(m);
         }
         //删除原先的
-        baseDao.delete(mapper+".deleteUserRoleByUserId",userId);
-        if (lists.size()>0){
-            //批量新增新的权限
-            baseDao.batchSave(mapper+".batchSave",lists);
-        }
+//        baseDao.delete(mapper+".deleteUserRoleByUserId",userId);
+//        if (lists.size()>0){
+//            //批量新增新的权限
+//            baseDao.batchSave(mapper+".batchSave",lists);
+//        }
 
     }
 
@@ -148,11 +151,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
         String username = JwtTokenUtil.getUsernameFromToken(token,Constant.JWT_SECRET);
     }
 
-    @Override
-    public int save(User user) {
-        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-        return super.save(user);
-    }
+
+
+//    @Override
+//    public int save(User user) {
+//        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+//        return super.save(user);
+//    }
 
 
 }
