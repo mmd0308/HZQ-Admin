@@ -17,4 +17,7 @@ public interface IBaseService<T> {
     int deletedById(String id);
 
     List<T> findAll(T t);
+
+    boolean checkCode(String code, String id);
+
 }

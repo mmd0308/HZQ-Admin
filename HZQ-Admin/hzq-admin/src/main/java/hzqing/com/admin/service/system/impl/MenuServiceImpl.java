@@ -1,13 +1,14 @@
 package hzqing.com.admin.service.system.impl;
 
 
-import hzqing.com.admin.base.service.impl.BaseServiceImpl;
 import hzqing.com.admin.entity.system.Dict;
 import hzqing.com.admin.entity.system.Menu;
+import hzqing.com.admin.mapper.system.MenuMapper;
 import hzqing.com.admin.service.system.IDictService;
 import hzqing.com.admin.service.system.IMenuService;
 import hzqing.com.admin.service.system.IRoleService;
 import hzqing.com.admin.vo.system.MenuVO;
+import hzqing.com.common.base.service.impl.BaseServiceImpl;
 import hzqing.com.common.util.LevelCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuService {
+public class MenuServiceImpl extends BaseServiceImpl<MenuMapper,Menu> implements IMenuService {
 
-    public MenuServiceImpl() {
-        super.mapper = "menuMapper";
-    }
+
     @Autowired
     private IRoleService roleService;
     @Autowired
@@ -32,9 +31,10 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
         MenuVO menu = new MenuVO();
 //        展示所有的菜单
 //        menu.setEnabled("1");
-        List<MenuVO> vos = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menu);
-        List<MenuVO> menuVOS = this.listByPId(vos, id);
-        return listToTree(vos,menuVOS);
+//        List<MenuVO> vos = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menu);
+//        List<MenuVO> menuVOS = this.listByPId(vos, id);
+//        return listToTree(vos,menuVOS);
+        return null;
     }
 
 
@@ -90,7 +90,8 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
 
     @Override
     public List<Menu> getMenusByUid(String id) {
-        return (List<Menu>) baseDao.findForList(mapper+".getMenusByUid",id);
+      //  return (List<Menu>) baseDao.findForList(mapper+".getMenusByUid",id);
+        return null;
     }
 
     @Override
@@ -102,9 +103,9 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
 
     @Override
     public List<MenuVO> getMenusVoTree(MenuVO menuVO) {
-        List<MenuVO> res = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menuVO);
-        res = listToTree(res);
-        return res;
+       // List<MenuVO> res = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menuVO);
+       // res = listToTree(res);
+        return null;
     }
 
     @Override
@@ -115,22 +116,25 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
         Menu menu = new Menu();
         menu.setEnabled("1");
         menu.setMenuType(dict.getId());
-        List<MenuVO> vos = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menu);
-        List<MenuVO> menuVOS = this.listByPId(vos, this.getMenuByCode(code).getId());
-        return listToTree(vos,menuVOS);
+       // List<MenuVO> vos = (List<MenuVO>) baseDao.findForList(mapper+".queryMenuvo",menu);
+      ///  List<MenuVO> menuVOS = this.listByPId(vos, this.getMenuByCode(code).getId());
+      //  return listToTree(vos,menuVOS);
+        return null;
     }
     @Override
     public Menu getMenuByCode(String code) {
         Menu menu = new Menu();
         menu.setCode(code);
-        List<Menu> menus = this.findAll(menu);
-        return menus.size() > 0 ? menus.get(0) : null;
+     //   List<Menu> menus = this.findAll(menu);
+       // return menus.size() > 0 ? menus.get(0) : null;
+        return null;
     }
 
     @Override
     public List<MenuVO> getListMenusByRids(Map<String, String> maps) {
-        List<MenuVO> res = (List<MenuVO>) baseDao.findForList(mapper+".getMenusByRids",maps);
-        return res;
+        //List<MenuVO> res = (List<MenuVO>) baseDao.findForList(mapper+".getMenusByRids",maps);
+
+        return null;
     }
 
     /**
@@ -141,7 +145,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
     private List<Menu> trees(List<Menu> menus){
         for (Menu m : menus){
             List<Menu> menuList = getMenuByPId(m.getId());
-            m.setMenus(menuList);
+            //m.setMenus(menuList);
             trees(menuList);
         }
         return  menus;
@@ -153,7 +157,8 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
      * @return
      */
     private List<Menu> getMenuByPId(String id){
-        return (List<Menu>)baseDao.findForList(mapper+".getMenuByPId",id);
+       // return (List<Menu>)baseDao.findForList(mapper+".getMenuByPId",id);
+        return null;
     }
 
     /**
@@ -162,7 +167,8 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
      * @return
      */
     private String getMaxLCodeByPid(String pId){
-        return (String) baseDao.findForObject(mapper+".getMaxLCodeByPid",pId);
+    //    return (String) baseDao.findForObject(mapper+".getMaxLCodeByPid",pId);
+        return null;
     }
 
     /**
@@ -176,7 +182,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements IMenuServi
         if (menus.size()>0){
             return 0;
         }else {
-            super.deletedById(id);
+         //   super.deletedById(id);
             return  1;
         }
     }

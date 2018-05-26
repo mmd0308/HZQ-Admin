@@ -72,3 +72,9 @@ export function getResIdByRoleId(roleId) {
   })
 }
 
+export function checkCode(code, id) {
+  return request({
+    url: '/api/role/check/' + code + '/code' + '?id=' + id,
+    method: 'get'
+  })
+}

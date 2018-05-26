@@ -13,8 +13,7 @@ public class Role {
     @KeySql(genId = UUIdGenId.class)
     private String id;
 
-    @Column(name = "role_code")
-    private String roleCode;
+    private String code;
 
     @Column(name = "role_name")
     private String roleName;
@@ -65,18 +64,13 @@ public class Role {
         this.id = id;
     }
 
-    /**
-     * @return role_code
-     */
-    public String getRoleCode() {
-        return roleCode;
+
+    public String getCode() {
+        return code;
     }
 
-    /**
-     * @param roleCode
-     */
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     /**

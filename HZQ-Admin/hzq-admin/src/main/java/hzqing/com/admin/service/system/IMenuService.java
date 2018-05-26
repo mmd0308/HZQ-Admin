@@ -1,8 +1,8 @@
 package hzqing.com.admin.service.system;
 
-import hzqing.com.admin.base.service.IBaseService;
 import hzqing.com.admin.entity.system.Menu;
 import hzqing.com.admin.vo.system.MenuVO;
+import hzqing.com.common.base.service.IBaseService;
 
 import java.util.List;
 import java.util.Map;

@@ -1,9 +1,9 @@
 package hzqing.com.admin.service.system;
 
 
-import hzqing.com.admin.base.service.IBaseService;
 import hzqing.com.admin.entity.system.Dict;
 import hzqing.com.admin.vo.system.DictVO;
+import hzqing.com.common.base.service.IBaseService;
 
 import java.util.List;
 

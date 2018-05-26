@@ -1,7 +1,7 @@
 logging:
   level:
     tk.mybatis: info
-    hzqing.com.blogadmin: info
+    hzqing.com.admin: info
 spring:
   datasource:
     name: test

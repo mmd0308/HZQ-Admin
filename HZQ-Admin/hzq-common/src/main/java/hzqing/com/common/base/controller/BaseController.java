@@ -40,8 +40,8 @@ public class BaseController<M extends IBaseService<T>,T> {
      */
     @GetMapping("/check/{code}/code")
     public ResponseMessage checkCode(@PathVariable String code, String id){
-        //boolean res = baseService.checkCode(code,id);
-        return new ResponseMessage<Boolean>().success(true);
+        boolean res = baseService.checkCode(code,id);
+        return new ResponseMessage<Boolean>().success(res);
     }
 
     /**
@@ -85,6 +85,4 @@ public class BaseController<M extends IBaseService<T>,T> {
         }
         return new ResponseMessage<Boolean>().success(bool);
     }
-
-
 }

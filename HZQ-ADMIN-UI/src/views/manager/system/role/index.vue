@@ -31,7 +31,7 @@
                     <el-table-column
                     label="编码">
                         <template scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.roleCode }}</span>
+                            <span style="margin-left: 10px">{{ scope.row.code }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -86,8 +86,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="角色编码" prop="roleCode">
-                        <el-input  v-model="form.roleCode" placeholder="请输入账户"></el-input>
+                        <el-form-item label="角色编码" prop="code">
+                        <el-input  v-model="form.code" placeholder="请输入账户"></el-input>
                         </el-form-item>
                     </el-col>
                     </el-row>
@@ -126,13 +126,26 @@
 </template>
 
 <script>
-  import { page, getObj, putObj, delObj, addObj } from '@/api/manager/system/role/index'
+  import { page, getObj, putObj, checkCode, delObj, addObj } from '@/api/manager/system/role/index'
   import roleMenu from '@/views/manager/system/role/roleMenu'
   export default {
     components: {
       roleMenu: roleMenu
     },
     data() {
+      const validateCode = (rule, value, callback) => {
+        if (this.form.code === '') {
+          callback(new Error('请输入编码'))
+        } else {
+          checkCode(this.form.code, this.form.id).then(response => {
+            if (response.data) {
+              callback()
+            } else {
+              callback(new Error('编码重复，请重新输入'))
+            }
+          })
+        }
+      }
       return {
         list: null,
         query: '',
@@ -153,9 +166,7 @@
             { required: true, message: '请输入用户名', trigger: 'blur' },
             { min: 3, max: 20, message: '长度在3到20个字符', trigger: 'blur' }
           ],
-          roleCode: [
-            { required: true, message: '请输入编码', trigger: 'blur' }
-          ]
+          code: { required: true, trigger: 'blur', validator: validateCode }
         }
       }
     },
@@ -167,7 +178,7 @@
         return {
           id: '',
           roleName: '',
-          roleCode: '',
+          code: '',
           enabled: '0',
           note: ''
         }

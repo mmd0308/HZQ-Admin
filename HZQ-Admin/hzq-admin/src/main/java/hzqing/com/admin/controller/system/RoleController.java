@@ -1,10 +1,10 @@
 package hzqing.com.admin.controller.system;
 
 
-import hzqing.com.admin.base.controller.BaseController;
 import hzqing.com.admin.entity.system.Role;
 import hzqing.com.admin.service.system.IRoleService;
 import hzqing.com.admin.utils.ResponseMessage;
+import hzqing.com.common.base.controller.BaseController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/role")
-public class RoleController extends BaseController<Role,IRoleService> {
+public class RoleController extends BaseController<IRoleService,Role> {
     /**
      * 获取所有的启用角色
      * @return
      */
     @GetMapping("/enabled")
     public ResponseMessage<List<Role>> getAllEnabledRole(){
-        List<Role> enabledRole = baseService.getAllEnabledRole();
-        return new ResponseMessage<List<Role>>().success(enabledRole);
+       /// List<Role> enabledRole = baseService.getAllEnabledRole();
+        return new ResponseMessage<List<Role>>().success(null);
     }
 
     /**
@@ -31,8 +31,8 @@ public class RoleController extends BaseController<Role,IRoleService> {
      */
     @GetMapping("/getRoleByUserId/{id}")
     public ResponseMessage<List<Role>> getRoleByUserId(@PathVariable String id){
-        List<Role> roles = baseService.getRoleByUserId(id);
-        return new ResponseMessage<>().success(roles);
+      //  List<Role> roles = baseService.getRoleByUserId(id);
+        return new ResponseMessage<>().success();
     }
 
     /**
@@ -42,7 +42,7 @@ public class RoleController extends BaseController<Role,IRoleService> {
      */
     @PostMapping("/addRoleRes/{roleId}")
     public ResponseMessage<String> addRoleMenu(@RequestBody HashMap<String,Object> resouce){
-        baseService.addRoleRes(resouce);
+      //  baseService.addRoleRes(resouce);
         return  new ResponseMessage<>().success("success");
     }
 
@@ -53,7 +53,7 @@ public class RoleController extends BaseController<Role,IRoleService> {
      */
     @GetMapping("/getResIdByRoleId/{roleId}")
     public ResponseMessage<Map<String,List<String>>> getResIdByRoleId(@PathVariable String roleId){
-        Map<String,List<String>> mIds = baseService.getResIdByRoleId(roleId);
-        return  new ResponseMessage<>().success(mIds);
+     //   Map<String,List<String>> mIds = baseService.getResIdByRoleId(roleId);
+        return  new ResponseMessage<>().success();
     }
 }

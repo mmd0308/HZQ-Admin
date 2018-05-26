@@ -74,12 +74,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements
         UserVo uservo = new UserVo();
         BeanUtils.copyProperties(user,uservo);
         // 根据用户的id获取角色
-        List<Role> rols = roleService.getRoleByUserId(userId);
-        // 获取系统默认角色
-        List<Role> defaults = roleService.getDefautsRole("G");
-        rols.addAll(defaults);
+//        List<Role> rols = roleService.getRoleByUserId(userId);
+//        // 获取系统默认角色
+//        List<Role> defaults = roleService.getDefautsRole("G");
+//        rols.addAll(defaults);
         //设置用户的角色
-        uservo.setRoles(rols);
+        uservo.setRoles(new ArrayList<Role>());
 //        StringBuffer buffer = new StringBuffer();
 //        rols.forEach(role -> {
 //            buffer.append(role.getId());

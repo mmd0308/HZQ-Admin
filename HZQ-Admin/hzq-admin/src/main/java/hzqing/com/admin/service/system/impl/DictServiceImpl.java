@@ -1,9 +1,10 @@
 package hzqing.com.admin.service.system.impl;
 
-import hzqing.com.admin.base.service.impl.BaseServiceImpl;
 import hzqing.com.admin.entity.system.Dict;
+import hzqing.com.admin.mapper.system.DictMapper;
 import hzqing.com.admin.service.system.IDictService;
 import hzqing.com.admin.vo.system.DictVO;
+import hzqing.com.common.base.service.impl.BaseServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictService {
+public class DictServiceImpl extends BaseServiceImpl<DictMapper,Dict> implements IDictService {
 
-    public DictServiceImpl() {
-        super.mapper= "DictMapper";
-    }
+
 
     @Override
     public int deletedById(String id) {
@@ -29,6 +28,11 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
     }
 
     @Override
+    public List<Dict> findAll(Dict dict) {
+        return null;
+    }
+
+    @Override
     public List<DictVO> getTree(String id) {
         Dict dict = new Dict();
         dict.setEnabled("1");
@@ -39,7 +43,8 @@ public class DictServiceImpl extends BaseServiceImpl<Dict> implements IDictServi
 
     @Override
     public List<Dict> getDictByPCode(String code) {
-        return (List<Dict>) baseDao.findForList(mapper + ".getDictByPCode",code);
+       //  return (List<Dict>) baseDao.findForList(mapper + ".getDictByPCode",code);
+        return null;
     }
 
     @Override
