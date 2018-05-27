@@ -27,10 +27,6 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper,Dict> implements
         return 0;
     }
 
-    @Override
-    public List<Dict> findAll(Dict dict) {
-        return null;
-    }
 
     @Override
     public List<DictVO> getTree(String id) {
@@ -80,14 +76,12 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper,Dict> implements
      */
     private List<DictVO> listByPId(List<Dict> dicts,String parentId) {
         List<DictVO> dictVOS = new ArrayList<>();
-        for (Dict dict :
-                dicts) {
+        for (Dict dict : dicts) {
             if (dict.getParentId().equals(parentId)) {
                 DictVO dictVO = new DictVO();
                 BeanUtils.copyProperties(dict,dictVO);
                 dictVOS.add(dictVO);
             }
-
         }
         return dictVOS;
     }
