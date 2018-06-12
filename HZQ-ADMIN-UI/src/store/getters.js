@@ -5,6 +5,7 @@ const getters = {
   // 这里采用的ES6的写法，你可以替换成
   // name : function(state){return state.user.name}
   name: state => state.user.name,
+  userId:state => state.user.userId,
   roles: state => state.user.roles,
   resCode: state => state.user.resCode,
   permission_routers: state => state.permission.routers,

@@ -25,45 +25,8 @@ export const constantRouterMap = [
       meta: { title: 'Welcome', icon: 'welcome' },
       component: () => import('@/views/manager/dashboard/index')
     }]
-  },
+  }
 
-  {
-    path: '',
-    component: Layout,
-    name: 'System',
-    meta: { title: '系统管理', icon: 'system' },
-    children: [
-      {
-        path: 'sysUser',
-        name: 'User',
-        component: () => import('@/views/manager/system/user/index'),
-        meta: { title: '用户管理', icon: 'user' },
-        // code: 'MENU_ADMIN_AUTH_USER'
-      },
-      {
-        path: 'sysRole',
-        name: 'Role',
-        component: () => import('@/views/manager/system/role/index'),
-        meta: { title: '角色管理', icon: 'role' },
-        // code: 'MENU_ADMIN_AUTH_ROLE'
-      },
-      {
-        path: 'sysMenu',
-        name: 'Menu',
-        component: () => import('@/views/manager/system/menu/index'),
-        meta: { title: '资源管理', icon: 'class' },
-        // code: 'MENU_ADMIN_AUTH_MENU'
-      },
-      {
-        path: 'sysDict',
-        name: 'Dict',
-        component: () => import('@/views/manager/system/dict/index'),
-        meta: { title: '数据字典管理', icon: 'dict' },
-        // code: 'MENU_ADMIN_AUTH_DICT'
-      }
-    ]
-  },
-  { path: '*', redirect: '/index', hidden: true }
 ]
 
 export default new Router({
@@ -89,35 +52,35 @@ export const asyncRouterMap = [
     path: '',
     component: Layout,
     name: 'System',
-    meta: { title: '系统管理', icon: 'admin-system' },
+    meta: { title: '系统管理', icon: 'system' },
     children: [
       {
         path: 'sysUser',
         name: 'User',
         component: () => import('@/views/manager/system/user/index'),
-        meta: { title: '用户管理', icon: 'admin-blog-tag' },
-        // code: 'MENU_ADMIN_AUTH_USER'
+        meta: { title: '用户管理', icon: 'user' },
+        code: 'MENU_SYSTEM_USER'
       },
       {
         path: 'sysRole',
         name: 'Role',
         component: () => import('@/views/manager/system/role/index'),
-        meta: { title: '角色管理', icon: 'tree' },
-        // code: 'MENU_ADMIN_AUTH_ROLE'
+        meta: { title: '角色管理', icon: 'role' },
+        code: 'MENU_SYSTEM_ROLE'
       },
       {
         path: 'sysMenu',
         name: 'Menu',
         component: () => import('@/views/manager/system/menu/index'),
-        meta: { title: '资源管理', icon: 'eye' },
-        // code: 'MENU_ADMIN_AUTH_MENU'
+        meta: { title: '资源管理', icon: 'class' },
+        code: 'MENU_SYSTEM_MENU'
       },
       {
         path: 'sysDict',
         name: 'Dict',
         component: () => import('@/views/manager/system/dict/index'),
-        meta: { title: '数据字典管理', icon: 'tree' },
-        // code: 'MENU_ADMIN_AUTH_DICT'
+        meta: { title: '数据字典管理', icon: 'dict' },
+        code: 'MENU_SYSTEM_DICT'
       }
     ]
   },

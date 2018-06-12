@@ -11,4 +11,6 @@ public interface RoleMapper extends BaseMapper<Role> {
     void deleteRoleMenuButtonByRid(HashMap<String, String> params);
 
     int addBatchRoleMenuButton(List<Map<String,String>> lists);
+
+    List<Role> getRoleByUserId(String id);
 }

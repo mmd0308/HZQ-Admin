@@ -104,7 +104,7 @@
         </div>
       </el-dialog>
       <!-- 角色分配 -->
-      <el-dialog  :visible.sync="dialogRoleFormVisible">
+      <el-dialog  :visible.sync="dialogRoleFormVisible" width="40%">
         <el-table
           ref="roleTable"
           :data="dialogRolelist"
@@ -121,7 +121,7 @@
           </el-table-column>
           <el-table-column
             label="角色编码">
-            <template scope="scope">{{ scope.row.roleCode }}</template>
+            <template scope="scope">{{ scope.row.code }}</template>
           </el-table-column>
           <el-table-column
             label="备注">
@@ -282,9 +282,11 @@
           this.dialogRoleFormVisible = true
           this.dialogRolelist = response.data
           getRoleByUserId(row.id).then(response => {
-            response.data.forEach(row => {
-              this.$refs.roleTable.toggleRowSelection(this.dialogRolelist.find(r => r.id === row.id))
-            })
+            if (response.data != null) {
+              response.data.forEach(row => {
+                this.$refs.roleTable.toggleRowSelection(this.dialogRolelist.find(r => r.id === row.id))
+              })
+            }
             this.userRole.userId = row.id
           })
         })

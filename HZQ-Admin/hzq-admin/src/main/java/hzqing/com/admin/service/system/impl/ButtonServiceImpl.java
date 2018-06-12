@@ -21,4 +21,9 @@ public class ButtonServiceImpl extends BaseServiceImpl<ButtonMapper,Button> impl
         List<Button> buttons = this.findAll(button);
         return buttons;
     }
+
+    @Override
+    public List<String> getResPathByRoleIds(String roleIds) {
+        return mapper.getResPathByRoleIds(roleIds);
+    }
 }

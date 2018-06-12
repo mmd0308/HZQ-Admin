@@ -16,4 +16,22 @@
     <result column="attr4" property="attr4" jdbcType="VARCHAR" />
     <result column="attr5" property="attr5" jdbcType="VARCHAR" />
   </resultMap>
+  <!--根据用户id删除用户权限-->
+  <delete id="deleteUserRoleByUserId" parameterType="String">
+    DELETE  FROM  rl_user_role
+    WHERE
+    user_id = #{0}
+  </delete>
+  <insert id="batchSave" parameterType="list">
+    INSERT INTO rl_user_role(id,user_id,role_id,note)
+    VALUES
+    <foreach collection="list"  item="item" separator=",">
+      (
+      (SELECT replace((SELECT uuid()),"-","")),
+      #{item.user_id},
+      #{item.role_id},
+      null
+      )
+    </foreach>
+  </insert>
 </mapper>

@@ -23,6 +23,19 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper,Role> implements
         String buttons = (String) resouce.get("buttons");
         return addBatchRoleResource(menuId,roleId,"menu") + addBatchRoleResource(buttons,roleId,"button");
     }
+
+    @Override
+    public List<Role> getAllEnabledRole() {
+        Role role = new Role();
+        role.setEnabled("1");
+        return this.findAll(role);
+    }
+
+    @Override
+    public List<Role> getRoleByUserId(String id) {
+        return mapper.getRoleByUserId(id);
+    }
+
     /**
      * 根据角色id，资源类型，更新资源
      * @param resource

@@ -19,8 +19,8 @@ public class RoleController extends BaseController<IRoleService,Role> {
      */
     @GetMapping("/enabled")
     public ResponseMessage<List<Role>> getAllEnabledRole(){
-       /// List<Role> enabledRole = baseService.getAllEnabledRole();
-        return new ResponseMessage<List<Role>>().success(null);
+        List<Role> enabledRole = baseService.getAllEnabledRole();
+        return new ResponseMessage<List<Role>>().success(enabledRole);
     }
 
     /**
@@ -30,8 +30,8 @@ public class RoleController extends BaseController<IRoleService,Role> {
      */
     @GetMapping("/getRoleByUserId/{id}")
     public ResponseMessage<List<Role>> getRoleByUserId(@PathVariable String id){
-      //  List<Role> roles = baseService.getRoleByUserId(id);
-        return new ResponseMessage<>().success();
+        List<Role> roles = baseService.getRoleByUserId(id);
+        return new ResponseMessage<>().success(roles);
     }
 
     /**
@@ -44,6 +44,4 @@ public class RoleController extends BaseController<IRoleService,Role> {
         baseService.addRoleRes(resouce);
         return  new ResponseMessage<>().success("success");
     }
-
-
 }

@@ -8,4 +8,8 @@ import java.util.Map;
 
 public interface MenuMapper extends BaseMapper<Menu> {
     List<String> getResIdByRoleIdAndType(Map<String, String> params);
+
+    List<Menu> getMenusByRids(String rids);
+
+    List<String> getResCodeByRoleIds(String roleIds);
 }

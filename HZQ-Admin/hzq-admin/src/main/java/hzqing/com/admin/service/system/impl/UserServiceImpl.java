@@ -1,15 +1,17 @@
 package hzqing.com.admin.service.system.impl;
 
-import hzqing.com.admin.constant.Constant;
+import hzqing.com.admin.entity.system.Button;
+import hzqing.com.admin.entity.system.Menu;
 import hzqing.com.admin.entity.system.Role;
 import hzqing.com.admin.entity.system.User;
 import hzqing.com.admin.mapper.system.UserMapper;
-import hzqing.com.admin.service.system.IDictService;
+import hzqing.com.admin.service.system.IButtonService;
 import hzqing.com.admin.service.system.IMenuService;
 import hzqing.com.admin.service.system.IRoleService;
 import hzqing.com.admin.service.system.IUserService;
 import hzqing.com.admin.vo.system.UserVo;
 import hzqing.com.common.base.service.impl.BaseServiceImpl;
+import hzqing.com.common.constant.Constant;
 import hzqing.com.common.jwt.JwtTokenUtil;
 import hzqing.com.common.util.AESUtil;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +29,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements
     @Autowired
     private IRoleService roleService;
     @Autowired
-    private IDictService dictService;
+    private IButtonService buttonService;
 
     public String login(String username,String password){
         User param = new User();
@@ -73,44 +75,38 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements
         User user = this.getById(userId);
         UserVo uservo = new UserVo();
         BeanUtils.copyProperties(user,uservo);
-        // 根据用户的id获取角色
-//        List<Role> rols = roleService.getRoleByUserId(userId);
-//        // 获取系统默认角色
-//        List<Role> defaults = roleService.getDefautsRole("G");
-//        rols.addAll(defaults);
-        //设置用户的角色
-        uservo.setRoles(new ArrayList<Role>());
-//        StringBuffer buffer = new StringBuffer();
-//        rols.forEach(role -> {
-//            buffer.append(role.getId());
-//            buffer.append(",");
-//        });
-//        String roleIds = buffer.toString().substring(0,buffer.toString().length()-1);
-//        Map<String,String> maps = new HashMap<>();
-//        maps.put("roleId",roleIds);
-//        Dict dict = dictService.getIdByCode(Constant.MENU_INDEX_TYPE);
-//        maps.put("menuType",dict.getId());
-//        List<MenuVO> indexMenus = menuService.getListMenusByRids(maps);
-//        uservo.setIndexMenus(indexMenus);
-//
-//        Dict adminDict = dictService.getIdByCode(Constant.MENU_ADMIN_TYPE);
-//        maps.put("menuType",adminDict.getId());
-//        List<MenuVO> adminMenus = menuService.getListMenusByRids(maps);
-//        uservo.setAdminMenus(adminMenus);
-
-        // 设置所有的按钮资源编码根据角色id
-//        uservo.setResCode(this.getResCodeByRoleIds(roleIds));
+        if (uservo.getUsername().equals("admin")) { // 账号为admin的拥有所有的菜单和资源权限
+            uservo.setMenus(menuService.findAll(new Menu()));
+            List<Button> buttons = buttonService.findAll(new Button());
+            List<String> codes = new ArrayList<>();
+            buttons.forEach(button -> {
+                codes.add(button.getCode());
+            });
+            uservo.setResCode(codes);
+        }else { // 非admin用户
+            // 根据用户的id获取角色
+            List<Role> rols = roleService.getRoleByUserId(userId);
+            if (rols.size() > 0) {
+                //设置用户的角色
+                uservo.setRoles(rols);
+                // 获取菜单
+                StringBuffer buffer = new StringBuffer();
+                rols.forEach(role -> {
+                    buffer.append(role.getId());
+                    buffer.append(",");
+                });
+                String roleIds = buffer.toString().substring(0,buffer.toString().length()-1);
+                List<Menu> menus = menuService.getListMenusByRids(roleIds);
+                uservo.setMenus(menus);
+                //  索取所有的按钮资源编码根据角色id
+                List<String> buttons = menuService.getResCodeByRoleIds(roleIds);
+                uservo.setResCode(buttons);
+            }
+        }
         return uservo;
     }
 
-    /**
-     * 根据角色id，获取按钮资源编码
-     * @param ids
-     * @return
-     */
-//    private List<String> getResCodeByRoleIds(String ids){
-//        return (List<String>) baseDao.findForList(mapper+".getResCodeByRoleIds",ids);
-//    }
+
 
     /**
      * 根据用户名获取用户信息
@@ -125,7 +121,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements
         return one;
     }
 
-    //@Override
+    @Override
     @Transactional
     public void saveUserRole(HashMap<String, Object> map) {
         String userId  = map.get("userId").toString();
@@ -138,17 +134,17 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper,User> implements
             lists.add(m);
         }
         //删除原先的
-//        baseDao.delete(mapper+".deleteUserRoleByUserId",userId);
-//        if (lists.size()>0){
-//            //批量新增新的权限
-//            baseDao.batchSave(mapper+".batchSave",lists);
-//        }
+        mapper.deleteUserRoleByUserId(userId);
+        if (lists.size()>0){
+            //批量新增新的权限
+            mapper.batchSave(lists);
+        }
 
     }
 
     @Override
     public void logout(String token) {
-        String username = JwtTokenUtil.getUsernameFromToken(token,Constant.JWT_SECRET);
+        String username = JwtTokenUtil.getUsernameFromToken(token, Constant.JWT_SECRET);
     }
 
 

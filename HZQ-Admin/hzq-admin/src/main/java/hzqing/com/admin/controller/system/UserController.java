@@ -1,11 +1,11 @@
 package hzqing.com.admin.controller.system;
 
-import hzqing.com.admin.constant.Constant;
 import hzqing.com.admin.entity.system.User;
 import hzqing.com.admin.service.system.IUserService;
 import hzqing.com.admin.utils.ResponseMessage;
 import hzqing.com.admin.vo.system.UserVo;
 import hzqing.com.common.base.controller.BaseController;
+import hzqing.com.common.constant.Constant;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +19,12 @@ public class UserController extends BaseController<IUserService,User> {
     public ResponseMessage<Integer> register(@RequestBody User t){
         return  new ResponseMessage<Integer>().success(baseService.save(t));
     }
-
     @GetMapping("/getUserById")
     public ResponseMessage<User> get(HttpServletRequest request){
         String id = (String) request.getAttribute(Constant.USER_ID);
         User user = baseService.getById(id);
         return new ResponseMessage<User>().success(user);
     }
-
     /**
      * 登陆
      * @param username
@@ -43,9 +41,6 @@ public class UserController extends BaseController<IUserService,User> {
             return message;
         }
     }
-
-
-
     /**
      * 获取用户的信心，根据用户id
      * @param request

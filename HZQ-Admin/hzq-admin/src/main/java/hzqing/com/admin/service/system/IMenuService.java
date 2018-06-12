@@ -15,29 +15,9 @@ public interface IMenuService extends IBaseService<Menu> {
      */
     List<MenuVO> getTree(String id);
 
-    /**
-     * 根据角色id,获取菜单信息
-     * @param role
-     * @return
-     */
-    List<MenuVO> getMenusByRids(Map<String, String> role, String id);
-
-    /**
-     * 根据用户id，获取菜单
-     * @param id
-     * @return
-     */
-    List<Menu> getMenusByUid(String id);
-
-    List<MenuVO> getDefaultMenus();
-
-    List<MenuVO> getMenusVoTree(MenuVO menuVO);
-
-    List<MenuVO> getMenusByAuthAndCode(String auth, String code);
-
-    public Menu getMenuByCode(String code);
-
-    List<MenuVO> getListMenusByRids(Map<String, String> maps);
+    List<Menu> getListMenusByRids(String rids);
 
     Map<String,List<String>> getResIdByRoleId(String roleId);
+
+    List<String> getResCodeByRoleIds(String roleIds);
 }

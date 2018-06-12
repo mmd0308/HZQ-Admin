@@ -47,7 +47,7 @@ export function putObj(id, obj) {
 
 export function saveUserRole(obj) {
   return request({
-    url: '/api/user/saveUserRole',
+    url: '/api/user/saveUserRole/auth',
     method: 'post',
     data: obj
   })

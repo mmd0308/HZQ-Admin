@@ -23,5 +23,20 @@
   <select id="getResIdByRoleIdAndType" parameterType="map" resultType="string">
     SELECT resource_id FROM  rl_role_resource WHERE role_id  = #{roleId} AND resource_type = #{resType}
   </select>
-
+  <!--根据角色id，获取菜单-->
+  <select id="getMenusByRids" parameterType="string" resultMap="BaseResultMap">
+    SELECT  m.* FROM sys_menu m
+    where  find_in_set(m.id,(SELECT  GROUP_CONCAT(resource_id) FROM  rl_role_resource where find_in_set (role_id,#{roleId})))
+    AND m.enabled = '1'
+    ORDER BY  sort ASC
+  </select>
+  <!--根绝角色id，获取所有按钮的编码-->
+  <select id="getResCodeByRoleIds" resultType="string" parameterType="string">
+    SELECT b.code
+    FROM sys_button b
+    LEFT JOIN rl_role_resource r ON b.id = r.resource_id
+    WHERE r.resource_type = 'button'
+    AND b.enabled = '1'
+    AND find_in_set(r.role_id ,#{ids})
+  </select>
 </mapper>

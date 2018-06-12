@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface IButtonService extends IBaseService<Button> {
     List<Button> getButtonByMenuIdOrRoleId(ButtonVO buttonVO);
+
+    List<String> getResPathByRoleIds(String roleIds);
 }

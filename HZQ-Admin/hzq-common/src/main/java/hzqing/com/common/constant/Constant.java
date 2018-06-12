@@ -40,6 +40,10 @@ public class Constant {
      */
     public static final int WEB_RESPONSE_STATUES_SUCCESS = 200;
     /**
+     * 没有权限
+     */
+    public static final int WEB_RESPONSE_STATUES_NO_AUTH = 308400;
+    /**
      * TOKEN 失效
      */
     public static final int WEB_RESPONSE_STATUES_LOSE_TOKNE = 308300;

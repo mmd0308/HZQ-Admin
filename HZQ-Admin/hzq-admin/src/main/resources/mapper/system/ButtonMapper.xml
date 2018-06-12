@@ -14,4 +14,13 @@
     <result column="attr4" jdbcType="VARCHAR" property="attr4" />
     <result column="attr5" jdbcType="VARCHAR" property="attr5" />
   </resultMap>
+  <!--根据角色id，获取资源的路径-->
+  <select id="getResPathByRoleIds" resultType="string" parameterType="string">
+    SELECT b.path
+    FROM sys_button b
+    LEFT JOIN rl_role_resource r ON b.id = r.resource_id
+    WHERE r.resource_type = 'button'
+    AND b.enabled = '1'
+    AND find_in_set(r.role_id ,#{ids})
+  </select>
 </mapper>

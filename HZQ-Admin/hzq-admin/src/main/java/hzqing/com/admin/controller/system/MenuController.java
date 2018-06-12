@@ -22,17 +22,6 @@ public class MenuController extends BaseController<IMenuService,Menu> {
         List<MenuVO> menus = baseService.getTree(id);
         return new ResponseMessage<>().success(menus);
     }
-    /**
-     * 根据权限，父级别编码，拉去菜单
-     * @param auth  权限编码
-     * @param code  父级编码
-     * @return
-     */
-    @GetMapping("/show/getDefaultMenus/{auth}/{code}")
-    public ResponseMessage<List<MenuVO>> getDefaultMenus(@PathVariable String auth, @PathVariable String code){
-     //   return new ResponseMessage<>().success(baseService.getMenusByAuthAndCode(auth,code));
-        return null;
-    }
 
     /**
      * 根据角色获取所有资源id,菜单id和按钮id

@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'// Progress 进度条样式
 // import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth' // 验权
 
-const whiteList = ['/index', '/login', '/'] // 不重定向白名单
+const whiteList = ['/login', '/'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) { // 如果token存在
@@ -14,13 +14,16 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/index' })
     } else {
-      if (store.getters.roles.length === 0) { // 如果没有角色，获取用户信息
+      if (store.getters.userId === '' || store.getters.userId === null) { // 如果没有角色，获取用户信息
         store.dispatch('GetUserInfo').then(res => { // 拉取用户信息
-          // store.dispatch('GenerateRoutes', res.data.adminMenus).then(() => { // 生成可访问的路由表
-          //   router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-          //   next({ ...to }) // hack方法 确保addRoutes已完成
-          // })
+          if (res.data.menus != null) {
+            store.dispatch('GenerateRoutes', res.data.menus).then(() => { // 生成可访问的路由表
+              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+              next({ ...to }) // hack方法 确保addRoutes已完成
+            })
+          } else {
             next()
+          }
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
             // Message.error('验证失败,请重新登录')

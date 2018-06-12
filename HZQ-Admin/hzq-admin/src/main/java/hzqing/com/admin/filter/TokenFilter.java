@@ -1,8 +1,11 @@
 package hzqing.com.admin.filter;
 
-import hzqing.com.admin.constant.Constant;
+import hzqing.com.admin.entity.system.Role;
 import hzqing.com.admin.entity.system.User;
+import hzqing.com.admin.service.system.IButtonService;
+import hzqing.com.admin.service.system.IRoleService;
 import hzqing.com.admin.service.system.IUserService;
+import hzqing.com.common.constant.Constant;
 import hzqing.com.common.jwt.JwtTokenUtil;
 import hzqing.com.common.util.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +24,18 @@ import java.util.regex.Pattern;
 public class TokenFilter implements Filter{
     @Autowired
     private IUserService userService;
-
+    @Autowired
+    private IRoleService roleService;
+    @Autowired
+    private IButtonService buttonService;
     /**
      * 不需要过滤的请求
      */
     protected static List<Pattern> patterns = new ArrayList<Pattern>();
+    /**
+     * 需要授权的资源
+     */
+    protected static List<Pattern> auths = new ArrayList<Pattern>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,6 +43,8 @@ public class TokenFilter implements Filter{
         patterns.add(Pattern.compile("/api.*/show.*"));
         patterns.add(Pattern.compile("/api/user/login"));
         patterns.add(Pattern.compile("/api.*/dispatcher.*"));
+
+        auths.add(Pattern.compile("/api.*/auth.*"));
     }
 
     @Override
@@ -69,8 +81,34 @@ public class TokenFilter implements Filter{
             String password = split[2];
             User user = userService.getById(split[0]);
             if (null != user && user.getPassword().equals(password)){ //用户名和密码正确，校验通过
-                chain.doFilter(request,response);
-                return;
+                if (user.getUsername().equals("admin")) { // admin用户不需要授权过滤
+                    chain.doFilter(request,response);
+                    return;
+                }
+                // 判断资源是否为授权资源
+                if (isAuth(url)){ //需要授权才可以访问的资源
+                    System.out.println("需要授权资源------" + url);
+                    List<Role> rols = roleService.getRoleByUserId(user.getId());
+                    StringBuffer buffer = new StringBuffer();
+                    rols.forEach(role -> {
+                        buffer.append(role.getId());
+                        buffer.append(",");
+                    });
+                    String roleIds = buffer.toString().substring(0,buffer.toString().length()-1);
+                    List<String> ress = buttonService.getResPathByRoleIds(roleIds);
+                    for (String item : ress) {
+                        if (url.indexOf(item) != -1){ // 判断是否有访问资源的权限
+                            chain.doFilter(request,response);
+                            return;
+                        }
+                    }
+                    // 没有操作权限，返回
+                    request.getRequestDispatcher("/api/dispatcher/noAuth").forward(request,response);
+                    return;
+                } else {
+                    chain.doFilter(request,response);
+                    return;
+                }
             }
         }
     }
@@ -82,7 +120,7 @@ public class TokenFilter implements Filter{
     /**
      * 是否需要过滤
      * @param url
-     * @return
+     * @return true 不过滤的资源
      */
     private boolean isInclude(String url) {
         for (Pattern pattern : patterns) {
@@ -92,5 +130,27 @@ public class TokenFilter implements Filter{
             }
         }
         return false;
+    }
+
+    /**
+     * 是否需要授权可以使用
+     * @param url
+     * @return true 需要授权
+     */
+    private boolean isAuth(String url){
+        for (Pattern pattern : auths) {
+            Matcher matcher = pattern.matcher(url);
+            if (matcher.matches()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        String str = "/api/user/delete/ebc5a09b3a0a487380aee8b34d6dcb35/auth";
+        Pattern compile = Pattern.compile("/api.*/auth.*");
+        System.out.println(compile.matcher(str).matches());
+
     }
 }

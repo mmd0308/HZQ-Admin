@@ -39,19 +39,14 @@ service.interceptors.response.use(
             location.href = '/login'
           })
         })
-        // return Promise.reject('error')
-      } else if (res.status === 308001) { // 登录失败  登录名或者密码错误
-        // router.push({path: '/error/401'})
+      } else if (res.status != 200) { // 数据状态不是200 表示没有权限，或者数据问题等错误
         Message({
           message: res.data,
           type: 'error',
           duration: 5 * 1000
         })
-      } else if (res.status === 308100) { // 更新token
-        setToken(res.token)
-        console.log('更新token' + res.token)
-        return res
-      }
+        return Promise.reject(error)
+      } 
     }
     // 请求状态不是200 操作错误信息
     if (response.status !== 200 || res.status !== 200) {
@@ -61,7 +56,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
     } else {
-      return response.data
+     return response.data
     }
   },
   error => {
