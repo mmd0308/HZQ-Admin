@@ -3,7 +3,7 @@
         <div id="query">
             <el-row>
                 <el-col :span="8">
-                    <el-input v-model="query" style="width:96%" placeholder="请输入角色名称"></el-input>
+                    <el-input v-model="query" style="width:96%" placeholder="请输入按钮名称"></el-input>
                 </el-col>
                 <el-col :span="16">
                     <el-button-group>
@@ -74,6 +74,9 @@
                 <el-form-item label="编码" prop="code">
                     <el-input  v-model="form.code" placeholder="请输入编码" style="width:80%"></el-input>
                 </el-form-item>
+                <el-form-item label="路径" prop="path">
+                    <el-input  v-model="form.path" placeholder="请输入路径" style="width:80%"></el-input>
+                </el-form-item>
                 <el-form-item label="是否可用" prop="enabled">
                     <el-switch  active-value='1'  inactive-value='0' v-model="form.enabled"></el-switch>
                 </el-form-item>
@@ -143,7 +146,8 @@
           code: '',
           name: '',
           menuId: '',
-          enabled: '0'
+          enabled: '0',
+          path: ''
         }
       },
       resetTemp() {

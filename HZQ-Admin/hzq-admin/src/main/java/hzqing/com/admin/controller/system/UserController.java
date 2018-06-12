@@ -61,7 +61,7 @@ public class UserController extends BaseController<IUserService,User> {
      * 给用户赋角色
      * @return
      */
-    @PostMapping("/saveUserRole")
+    @PostMapping("/saveUserRole/auth")
     public ResponseMessage<String> saveUserRole(@RequestBody HashMap<String,Object> map){
         baseService.saveUserRole(map);
         return new ResponseMessage().success("success");

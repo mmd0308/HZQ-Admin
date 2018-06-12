@@ -121,7 +121,6 @@
   import { tree, addObj, putObj, delObj, checkCode } from '@/api/manager/system/menu/index'
   import { getDictByCode } from '@/api/manager/system/dict/index'
   import ButtonView from '@/views/manager/system/button/index'
-  import { guid } from '@/utils/uuid'
   export default {
     components: {
       ButtonView
@@ -173,7 +172,7 @@
     methods: {
       initObj() {
         return {
-          id: guid(),
+          id: '',
           menuName: '',
           code: '',
           parentId: '',

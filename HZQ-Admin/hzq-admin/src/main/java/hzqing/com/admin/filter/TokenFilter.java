@@ -30,11 +30,9 @@ public class TokenFilter implements Filter{
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         patterns.add(Pattern.compile("/images.*")); // 图片资源不拦截
-//        patterns.add(Pattern.compile("/api.*"));
         patterns.add(Pattern.compile("/api.*/show.*"));
         patterns.add(Pattern.compile("/api/user/login"));
         patterns.add(Pattern.compile("/api.*/dispatcher.*"));
-
     }
 
     @Override
@@ -42,9 +40,7 @@ public class TokenFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
-        System.out.println("------url ------ " + url);
         if (isInclude(url)) { // 不需要过滤
-            System.out.println("放行的url：   " + url);
             chain.doFilter(request,response);
             return;
         }
@@ -55,7 +51,6 @@ public class TokenFilter implements Filter{
             request.getRequestDispatcher("/api/dispatcher/noToken").forward(request,response);
             return;
         }
-
         long res = JwtTokenUtil.checkJwtExpired(tokens,Constant.JWT_SECRET);
         // 校验token是否正确
         if (res == -1) { // jwt过期,提示重新登录 token 失效

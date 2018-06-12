@@ -39,8 +39,7 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper,Dict> implements
 
     @Override
     public List<Dict> getDictByPCode(String code) {
-       //  return (List<Dict>) baseDao.findForList(mapper + ".getDictByPCode",code);
-        return null;
+         return mapper.getDictByPCode(code);
     }
 
     @Override

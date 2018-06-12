@@ -17,7 +17,7 @@ public class BaseController<M extends IBaseService<T>,T> {
      * @param t
      * @return 返回状态码和影响行数目
      */
-    @PostMapping("/add")
+    @PostMapping("/add/auth")
     public ResponseMessage<Integer> add(@RequestBody T t){
         return  new ResponseMessage<Integer>().success(baseService.save(t));
     }
@@ -49,7 +49,7 @@ public class BaseController<M extends IBaseService<T>,T> {
      * @param t
      * @return
      */
-    @PutMapping("/put/{id}")
+    @PutMapping("/put/{id}/auth")
     public ResponseMessage<Integer> update(@RequestBody T t){
         int res = baseService.update(t);
         return  new ResponseMessage<>().success(res);
@@ -76,7 +76,7 @@ public class BaseController<M extends IBaseService<T>,T> {
         return new ResponseMessage<List<T>>().success(baseService.findAll(t));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}/auth")
     public ResponseMessage<Boolean> delete(@PathVariable String id){
         int res = baseService.deletedById(id);
         Boolean bool = false;

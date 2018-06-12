@@ -13,4 +13,19 @@
     <result column="attr4" property="attr4" jdbcType="VARCHAR" />
     <result column="attr5" property="attr5" jdbcType="VARCHAR" />
   </resultMap>
+  <delete id="deleteRoleMenuButtonByRid" parameterType="map">
+    DELETE  FROM  rl_role_resource WHERE role_id = #{roleId} AND resource_type = #{resourceType}
+  </delete>
+  <insert id="addBatchRoleMenuButton" parameterType="list">
+    INSERT  INTO  rl_role_resource (id, role_id, resource_id, resource_type, note) VALUES
+    <foreach collection="list" item="item" separator=",">
+      (
+      (SELECT replace((SELECT uuid()),"-","")),
+      #{item.roleId},
+      #{item.resId},
+      #{item.resType},
+      null
+      )
+    </foreach>
+  </insert>
 </mapper>

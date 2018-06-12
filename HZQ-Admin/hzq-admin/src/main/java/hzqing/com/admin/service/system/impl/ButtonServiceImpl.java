@@ -16,7 +16,9 @@ public class ButtonServiceImpl extends BaseServiceImpl<ButtonMapper,Button> impl
 
     @Override
     public List<Button> getButtonByMenuIdOrRoleId(ButtonVO buttonVO) {
-      //  return (List<Button>) baseDao.findForList(mapper+".getButtonByMenuIdOrRoleId",buttonVO);
-        return null;
+        Button button = new Button();
+        button.setMenuId(buttonVO.getMenuId());
+        List<Button> buttons = this.findAll(button);
+        return buttons;
     }
 }

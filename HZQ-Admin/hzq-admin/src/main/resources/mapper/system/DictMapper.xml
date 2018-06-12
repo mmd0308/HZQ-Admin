@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hzqing.com.admin.mapper.system.DictMapper">
   <resultMap id="BaseResultMap" type="hzqing.com.admin.entity.system.Dict">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="dict_name" jdbcType="VARCHAR" property="dictName" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
@@ -18,16 +15,6 @@
     <result column="attr4" jdbcType="VARCHAR" property="attr4" />
     <result column="attr5" jdbcType="VARCHAR" property="attr5" />
   </resultMap>
-    <resultMap id="dictMap" type="dict">
-        <id column="id" property="id" />
-        <result column="dict_name" property="dictName" />
-        <result column="parent_id" property="parentId" />
-        <result column="dict_type" property="dictType" />
-        <result column="code" property="code" />
-        <result column="enabled" property="enabled" />
-        <result column="description" property="description" />
-    </resultMap>
-
     <sql id="table">
         sys_dict
     </sql>
@@ -38,7 +25,12 @@
         dict_type,
         code,
         enabled,
-        description
+        note,
+        attr1,
+        attr2,
+        attr3,
+        attr4,
+        attr5
     </sql>
     <sql id="fieldValue">
         #{id},
@@ -47,99 +39,14 @@
         #{dictType},
         #{code},
         #{enabled},
-        #{description}
+        #{note},
+        #{attr1},
+        #{attr2},
+        #{attr3},
+        #{attr4},
+        #{attr5}
     </sql>
-    <insert id="save" parameterType="dict">
-        INSERT  INTO
-        <include refid="table" />
-        (
-        <include refid="field" />
-        )
-        VALUES
-        (
-        <choose>
-            <when test="id == null || id == ''">
-                (SELECT replace((SELECT  uuid()),"-","")),
-            </when>
-            <otherwise>
-                #{id},
-            </otherwise>
-        </choose>
-        #{dictName},
-        #{parentId},
-        #{dictType},
-        #{code},
-        #{enabled},
-        #{description}
-        )
-    </insert>
-    <select id="query" parameterType="dict" resultMap="dictMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        where  1 = 1
-        <if test="code != null and code != ''">
-            AND  code = #{code}
-        </if>
-        <if test="enabled != null">
-            AND enabled = #{enabled}
-        </if>
-        <if test="parentId != null and parentId != ''">
-            AND parent_id = #{parentId}
-        </if>
-    </select>
-    <select id="selectById" parameterType="String" resultMap="dictMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        WHERE id = #{0}
-    </select>
-    <update id="update" parameterType="dict">
-        UPDATE
-        <include refid="table" />
-        SET
-        id = #{id}
-        <if test="dictName != null and dictName !=''">
-            , dict_name = #{dictName}
-        </if>
-        <if test="parentId != null and parentId !=''">
-            , parent_id = #{parentId}
-        </if>
-        <if test="dictType != null and dictType !=''">
-            , dict_type = #{dictType}
-        </if>
-        <if test="code != null and code !=''">
-            , code = #{code}
-        </if>
-        <if test="enabled != null">
-            , enabled = #{enabled}
-        </if>
-        <if test="description != null and description != ''">
-            , description = #{description}
-        </if>
-        WHERE
-        id = #{id}
-    </update>
-    <delete id="deletedById" parameterType="String">
-        DELETE FROM
-        <include refid="table" />
-        WHERE
-        id = #{0}
-    </delete>
-    <select id="checkCode" parameterType="map" resultMap="dictMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        where
-          code = #{code}
-        <if test="id != null and id != ''">
-            AND  id != #{id}
-        </if>
-    </select>
-    <select id="getDictByPCode" parameterType="string" resultMap="dictMap">
+    <select id="getDictByPCode" parameterType="string" resultMap="BaseResultMap">
         SELECT
         <include refid="field" />
         FROM

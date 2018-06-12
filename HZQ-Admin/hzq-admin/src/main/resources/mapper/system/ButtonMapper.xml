@@ -2,119 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hzqing.com.admin.mapper.system.ButtonMapper">
   <resultMap id="BaseResultMap" type="hzqing.com.admin.entity.system.Button">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="menu_id" jdbcType="VARCHAR" property="menuId" />
     <result column="enabled" jdbcType="CHAR" property="enabled" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="attr1" jdbcType="VARCHAR" property="attr1" />
     <result column="attr2" jdbcType="VARCHAR" property="attr2" />
     <result column="attr3" jdbcType="VARCHAR" property="attr3" />
     <result column="attr4" jdbcType="VARCHAR" property="attr4" />
     <result column="attr5" jdbcType="VARCHAR" property="attr5" />
   </resultMap>
-    <resultMap id="buttonMap" type="button">
-        <id column="id" property="id" />
-        <result column="code" property="code" />
-        <result column="name" property="name" />
-        <result column="menu_id" property="menuId" />
-        <result column="enabled" property="enabled" />
-    </resultMap>
-    <sql id="table">
-        sys_button
-    </sql>
-    <sql id="field">
-        id,
-        code,
-        name,
-        menu_id,
-        enabled
-    </sql>
-    <sql id="fieldValue">
-        #{id},
-        #{code},
-        #{name},
-        #{menuId},
-        #{enabled}
-    </sql>
-    <insert id="save" parameterType="user">
-        INSERT  INTO
-        <include refid="table" />
-        (
-        <include refid="field" />
-        )
-        VALUES
-        (
-        <choose>
-            <when test="id == null || id == ''">
-                (SELECT replace((SELECT  uuid()),"-","")),
-            </when>
-            <otherwise>
-                #{id},
-            </otherwise>
-        </choose>
-        #{code},
-        #{name},
-        #{menuId},
-        #{enabled}
-        )
-    </insert>
-    <select id="getButtonByMenuIdOrRoleId" parameterType="buttonvo" resultMap="buttonMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        where menu_id = #{menuId}
-    </select>
-    <select id="query" parameterType="button" resultMap="buttonMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        where menu_id = #{menuId}
-    </select>
-    <select id="selectById" parameterType="String" resultMap="buttonMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        WHERE id = #{0}
-    </select>
-    <update id="update" parameterType="button">
-        UPDATE
-        <include refid="table" />
-        SET
-        id = #{id}
-        <if test="code != null and code !=''">
-            , code = #{code}
-        </if>
-        <if test="name != null and name !=''">
-            , name = #{name}
-        </if>
-        <if test="enabled != null">
-            , enabled = #{enabled}
-        </if>
-        WHERE
-        id = #{id}
-    </update>
-    <delete id="deletedById" parameterType="String">
-        DELETE FROM
-        <include refid="table" />
-        WHERE
-        id = #{0}
-    </delete>
-    <select id="checkCode" parameterType="map" resultMap="buttonMap">
-        SELECT
-        <include refid="field" />
-        FROM
-        <include refid="table" />
-        where
-        code = #{code}
-        <if test="id != null and id != ''">
-            AND  id != #{id}
-        </if>
-    </select>
 </mapper>

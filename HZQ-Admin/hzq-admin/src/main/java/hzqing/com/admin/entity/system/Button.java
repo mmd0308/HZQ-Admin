@@ -30,6 +30,11 @@ public class Button {
     private String enabled;
 
     /**
+     * 请求路径
+     */
+    private String path;
+
+    /**
      * 保留字段
      */
     private String attr1;
@@ -134,6 +139,24 @@ public class Button {
      */
     public void setEnabled(String enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * 获取请求路径
+     *
+     * @return path - 请求路径
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * 设置请求路径
+     *
+     * @param path 请求路径
+     */
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**

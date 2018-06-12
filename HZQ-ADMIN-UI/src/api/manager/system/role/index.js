@@ -10,7 +10,7 @@ export function page(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/api/role/add',
+    url: '/api/role/add/auth',
     method: 'post',
     data: obj
   })
@@ -25,14 +25,14 @@ export function getObj(id) {
 
 export function delObj(id) {
   return request({
-    url: '/api/role/delete/' + id,
+    url: '/api/role/delete/' + id + '/auth',
     method: 'delete'
   })
 }
 
 export function putObj(id, obj) {
   return request({
-    url: '/api/role/put/' + id,
+    url: '/api/role/put/' + id + '/auth',
     method: 'put',
     data: obj
   })
@@ -59,7 +59,7 @@ export function getRoleByUserId(id) {
 
 export function addRoleRes(roleId, menu) {
   return request({
-    url: '/api/role/addRoleRes/' + roleId,
+    url: '/api/role/addRoleRes/' + roleId + '/auth',
     data: menu,
     method: 'post'
   })
@@ -67,7 +67,7 @@ export function addRoleRes(roleId, menu) {
 
 export function getResIdByRoleId(roleId) {
   return request({
-    url: '/api/role/getResIdByRoleId/' + roleId,
+    url: '/api/menu/getResIdByRoleId/' + roleId,
     method: 'get'
   })
 }

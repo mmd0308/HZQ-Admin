@@ -38,7 +38,7 @@ export function page(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/api/menu/add',
+    url: '/api/menu/add/auth',
     method: 'post',
     data: obj
   })
@@ -53,14 +53,14 @@ export function getObj(id) {
 
 export function delObj(id) {
   return request({
-    url: '/api/menu/delete/' + id,
+    url: '/api/menu/delete/' + id + '/auth',
     method: 'delete'
   })
 }
 
 export function putObj(id, obj) {
   return request({
-    url: '/api/menu/put/' + id,
+    url: '/api/menu/put/' + id + '/auth',
     method: 'put',
     data: obj
   })
@@ -68,7 +68,7 @@ export function putObj(id, obj) {
 
 export function saveUserRole(obj) {
   return request({
-    url: '/api/user/saveUserRole',
+    url: '/api/user/saveUserRole/auth',
     method: 'post',
     data: obj
   })

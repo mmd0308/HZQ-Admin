@@ -12,18 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/menu")
 public class MenuController extends BaseController<IMenuService,Menu> {
     @GetMapping("/tree/{id}")
     public ResponseMessage<List<MenuVO>> getTree(@PathVariable String id){
-    //    List<MenuVO> menus = baseService.getTree(id);
-        return new ResponseMessage<>().success(null);
+        List<MenuVO> menus = baseService.getTree(id);
+        return new ResponseMessage<>().success(menus);
     }
-
-
-
     /**
      * 根据权限，父级别编码，拉去菜单
      * @param auth  权限编码
@@ -34,5 +32,16 @@ public class MenuController extends BaseController<IMenuService,Menu> {
     public ResponseMessage<List<MenuVO>> getDefaultMenus(@PathVariable String auth, @PathVariable String code){
      //   return new ResponseMessage<>().success(baseService.getMenusByAuthAndCode(auth,code));
         return null;
+    }
+
+    /**
+     * 根据角色获取所有资源id,菜单id和按钮id
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/getResIdByRoleId/{roleId}")
+    public ResponseMessage<Map<String,List<String>>> getResIdByRoleId(@PathVariable String roleId){
+        Map<String,List<String>> res = baseService.getResIdByRoleId(roleId);
+        return  new ResponseMessage<>().success(res);
     }
 }

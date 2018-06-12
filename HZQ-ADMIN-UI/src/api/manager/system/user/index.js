@@ -10,7 +10,7 @@ export function page(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/api/user/add',
+    url: '/api/user/add/auth',
     method: 'post',
     data: obj
   })
@@ -32,14 +32,14 @@ export function getUserById(id) {
 
 export function delObj(id) {
   return request({
-    url: '/api/user/delete/' + id,
+    url: '/api/user/delete/' + id + '/auth',
     method: 'delete'
   })
 }
 
 export function putObj(id, obj) {
   return request({
-    url: '/api/user/put/' + id,
+    url: '/api/user/put/' + id + '/auth',
     method: 'put',
     data: obj
   })

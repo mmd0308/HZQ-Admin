@@ -22,27 +22,16 @@ export const constantRouterMap = [
     name: 'index',
     children: [{
       path: 'index',
-      meta: { title: 'Weclome', icon: 'example' },
+      meta: { title: 'Welcome', icon: 'welcome' },
       component: () => import('@/views/manager/dashboard/index')
     }]
   },
-  {
-    path: '',
-    component: Layout,
-    children: [
-      {
-        path: 'icon',
-        name: 'Icon',
-        component: () => import('@/views/manager/svg-icons/index'),
-        meta: { title: '图标管理', icon: 'admin-comment' }
-      }
-    ]
-  },
+
   {
     path: '',
     component: Layout,
     name: 'System',
-    meta: { title: '系统管理', icon: 'admin-system' },
+    meta: { title: '系统管理', icon: 'system' },
     children: [
       {
         path: 'sysUser',
@@ -55,21 +44,21 @@ export const constantRouterMap = [
         path: 'sysRole',
         name: 'Role',
         component: () => import('@/views/manager/system/role/index'),
-        meta: { title: '角色管理', icon: 'tree' },
+        meta: { title: '角色管理', icon: 'role' },
         // code: 'MENU_ADMIN_AUTH_ROLE'
       },
       {
         path: 'sysMenu',
         name: 'Menu',
         component: () => import('@/views/manager/system/menu/index'),
-        meta: { title: '资源管理', icon: 'tree' },
+        meta: { title: '资源管理', icon: 'class' },
         // code: 'MENU_ADMIN_AUTH_MENU'
       },
       {
         path: 'sysDict',
         name: 'Dict',
         component: () => import('@/views/manager/system/dict/index'),
-        meta: { title: '数据字典管理', icon: 'tree' },
+        meta: { title: '数据字典管理', icon: 'dict' },
         // code: 'MENU_ADMIN_AUTH_DICT'
       }
     ]
@@ -87,6 +76,18 @@ export const asyncRouterMap = [
   {
     path: '',
     component: Layout,
+    children: [
+      {
+        path: 'icon',
+        name: 'Icon',
+        component: () => import('@/views/manager/svg-icons/index'),
+        meta: { title: '图标管理', icon: 'example' }
+      }
+    ]
+  },
+  {
+    path: '',
+    component: Layout,
     name: 'System',
     meta: { title: '系统管理', icon: 'admin-system' },
     children: [
@@ -94,7 +95,7 @@ export const asyncRouterMap = [
         path: 'sysUser',
         name: 'User',
         component: () => import('@/views/manager/system/user/index'),
-        meta: { title: '用户管理', icon: 'user' },
+        meta: { title: '用户管理', icon: 'admin-blog-tag' },
         // code: 'MENU_ADMIN_AUTH_USER'
       },
       {
@@ -108,7 +109,7 @@ export const asyncRouterMap = [
         path: 'sysMenu',
         name: 'Menu',
         component: () => import('@/views/manager/system/menu/index'),
-        meta: { title: '资源管理', icon: 'tree' },
+        meta: { title: '资源管理', icon: 'eye' },
         // code: 'MENU_ADMIN_AUTH_MENU'
       },
       {

@@ -17,7 +17,7 @@ export function page(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/api/dict/add',
+    url: '/api/dict/add/auth',
     method: 'post',
     data: obj
   })
@@ -46,14 +46,14 @@ export function checkCode(code, id) {
 
 export function delObj(id) {
   return request({
-    url: '/api/dict/delete/' + id,
+    url: '/api/dict/delete/' + id + '/auth',
     method: 'delete'
   })
 }
 
 export function putObj(id, obj) {
   return request({
-    url: '/api/dict/put/' + id,
+    url: '/api/dict/put/' + id + '/auth',
     method: 'put',
     data: obj
   })

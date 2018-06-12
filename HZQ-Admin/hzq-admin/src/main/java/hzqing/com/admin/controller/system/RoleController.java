@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/role")
@@ -40,20 +39,11 @@ public class RoleController extends BaseController<IRoleService,Role> {
      * @param resouce
      * @return
      */
-    @PostMapping("/addRoleRes/{roleId}")
+    @PostMapping("/addRoleRes/{roleId}/auth")
     public ResponseMessage<String> addRoleMenu(@RequestBody HashMap<String,Object> resouce){
-      //  baseService.addRoleRes(resouce);
+        baseService.addRoleRes(resouce);
         return  new ResponseMessage<>().success("success");
     }
 
-    /**
-     * 根据角色获取所有资源id
-     * @param roleId
-     * @return
-     */
-    @GetMapping("/getResIdByRoleId/{roleId}")
-    public ResponseMessage<Map<String,List<String>>> getResIdByRoleId(@PathVariable String roleId){
-     //   Map<String,List<String>> mIds = baseService.getResIdByRoleId(roleId);
-        return  new ResponseMessage<>().success();
-    }
+
 }

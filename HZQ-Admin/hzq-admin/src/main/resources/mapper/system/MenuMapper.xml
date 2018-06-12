@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hzqing.com.admin.mapper.system.MenuMapper">
   <resultMap id="BaseResultMap" type="hzqing.com.admin.entity.system.Menu">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
     <result column="code" jdbcType="VARCHAR" property="code" />
@@ -22,5 +19,9 @@
     <result column="attr4" jdbcType="VARCHAR" property="attr4" />
     <result column="attr5" jdbcType="VARCHAR" property="attr5" />
   </resultMap>
+  <!--根绝角色id和资源类型，获取资源-->
+  <select id="getResIdByRoleIdAndType" parameterType="map" resultType="string">
+    SELECT resource_id FROM  rl_role_resource WHERE role_id  = #{roleId} AND resource_type = #{resType}
+  </select>
 
 </mapper>

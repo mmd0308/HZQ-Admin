@@ -4,7 +4,7 @@
       <div id="query">
         <el-row>
           <el-col :span="8">
-            <el-input v-model="query" style="width:96%" placeholder="请输入姓名或账户"></el-input>
+            <el-input v-model="query" style="width:96%" placeholder="请输入账户"></el-input>
           </el-col>
           <el-col :span="16">
             <el-button-group>
@@ -23,9 +23,17 @@
         <el-table-column align="center" label="序号" type="index" width="90"></el-table-column>
         <el-table-column
         label="账户"
+        width="150"
         sortable>
             <template scope="scope">
                 <span style="margin-left: 10px">{{ scope.row.username }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column
+        label="名称"
+        sortable>
+            <template scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.fullName }}</span>
             </template>
         </el-table-column>
         <el-table-column
@@ -68,22 +76,25 @@
         </el-pagination>
       </div>
       <!--编辑框-->
-      <el-dialog  :visible.sync="dialogFormVisible" :before-close="handleClose" width="40%" :title="title">
-        <el-form :model="form" :inline="true" :rules="rules" ref="form" label-width="100px">
+      <el-dialog  :visible.sync="dialogFormVisible" :before-close="handleClose" width="30%" :title="title">
+        <el-form :model="form" :inline="false" :rules="rules" ref="form" label-width="100px">
           <el-form-item label="帐户" prop="username" >
-            <el-input v-model="form.username" placeholder="请输入姓名" ></el-input>
+            <el-input v-model="form.username" placeholder="请输入账号" style="width:80%" ></el-input>
+          </el-form-item>
+          <el-form-item label="名称" prop="fullName" >
+            <el-input v-model="form.fullName" placeholder="请输入姓名" style="width:80%" ></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input  v-model="form.email" placeholder="请输入账户"  ></el-input>
+            <el-input  v-model="form.email" placeholder="请输入账户" style="width:80%" ></el-input>
           </el-form-item>
           <el-form-item  label="密码" placeholder="请输入密码" prop="password" v-if="dialogStatus=='create'">
-            <el-input type="password" v-model="form.password"  ></el-input>
+            <el-input type="password" v-model="form.password"  style="width:80%"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" placeholder="请输入密码" prop="password" v-if="dialogStatus=='create'">
-            <el-input type="password" v-model="form.password"  ></el-input>
+            <el-input type="password" v-model="form.password" style="width:80%" ></el-input>
           </el-form-item>
           <el-form-item label="备注" prop="note">
-            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}"   placeholder="请输入备注"  v-model="form.note"></el-input>
+            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}"   placeholder="请输入备注"  v-model="form.note" style="width:80%"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -139,8 +150,7 @@
         listQuery: {
           page: 1,
           pageSize: 10,
-          username: '',
-          email: ''
+          username: ''
         },
         dialogStatus: '',
         dialogFormVisible: false,
@@ -172,7 +182,8 @@
           username: undefined,
           password: undefined,
           email: undefined,
-          note: ''
+          note: '',
+          fullName: ''
         }
       },
       resetTemp() {

@@ -1,128 +1,108 @@
 <template>
-    <div id="role">
-            <el-card>
-                <div id="query">
-                    <el-row>
-                        <el-col :span="8">
-                            <el-input v-model="query" style="width:96%" placeholder="请输入角色名称"></el-input>
-                        </el-col>
-                        <el-col :span="16">
-                            <el-button-group>
-                                <el-button type="primary" @click="queryList()">查询</el-button>
-                                <el-button type="primary" @click="toCreate()">新增</el-button>
-                            </el-button-group>
-                        </el-col>
-                    </el-row>
-                </div>
-                <el-table
-                :data="list"
-                style="width: 100%"
-                :highlight-current-row="true"
-                class="system-table"
-                >
-                    <el-table-column align="center" label="序号" type="index" width="90"></el-table-column>
-                    <el-table-column
-                    label="角色名称"
-                    sortable>
-                        <template scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.roleName }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                    label="编码">
-                        <template scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.code }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                    label="是否启用" >
-                        <template scope="scope">
-                            <span style="margin-left: 10px">
-                              <el-tag v-if="scope.row.enabled == '1'" type="success">启用</el-tag>
-                              <el-tag v-else type="danger">禁用</el-tag>
-                              </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                    label="备注" >
-                        <template scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.note }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" width="300px">
-                        <template scope="scope">
-                            <el-button
-                                size="mini"
-                                type="success"
-                                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            <el-button
-                                size="mini"
-                                type="info"
-                                @click="handleResouce(scope.$index, scope.row)">资源分配</el-button>
-                            <el-button
-                                size="mini"
-                                type="danger"
-                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="pagination-container">
-                    <el-pagination @size-change="handleSizeChange" 
-                                    @current-change="handleCurrentChange"
-                                    :current-page.sync="listQuery.page"
-                                    :page-sizes="[10.,20,30,50]" 
-                                    :page-size="listQuery.pageSize"
-                                    layout="total, sizes, prev, pager, next, jumper" 
-                                    :total="total">
-                    </el-pagination>
-                </div>
-                 <!--编辑框-->
-                <el-dialog  :visible.sync="dialogFormVisible" :before-close="handleClose"  width="40%" :title="title">
-                <el-form :model="form" :inline="true" :rules="rules" ref="form" label-width="90px">
-                    <el-row>
-                    <el-col :span="12">
-                        <el-form-item label="角色名称" prop="roleName" >
-                        <el-input v-model="form.roleName" placeholder="请输入姓名" ></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="角色编码" prop="code">
-                        <el-input  v-model="form.code" placeholder="请输入账户"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="12">
-                          <el-form-item label="是否可用" prop="enabled">
-                            <el-switch  active-value='1'  inactive-value='0' v-model="form.enabled"></el-switch>
-                          </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item label="备注" prop="note">
-                        <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}" placeholder="请输入备注"
-                                    v-model="form.note"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    </el-row>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="cancel('form')">取 消</el-button>
-                    <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
-                    <el-button v-else type="primary" @click="update('form')">确 定</el-button>
-                </div>
-                </el-dialog>
-
-                <el-dialog  
-                :visible.sync="dialogMenuVisible" 
-                width='50%'
-                title="选择资源"
-                @open="menuDialogOpen"
-                >
-                    <role-menu ref="roleMenuCom" :roleId="roleToMenuId" @roleMenuCancle="roleMenuCancle" ></role-menu>
-                </el-dialog>
-
-            </el-card>                
-    </div>
+  <div id="role">
+    <el-card>
+      <div id="query">
+        <el-row>
+          <el-col :span="8">
+            <el-input v-model="query" style="width:96%" placeholder="请输入角色名称"></el-input>
+          </el-col>
+          <el-col :span="16">
+            <el-button-group>
+              <el-button type="primary" @click="queryList()">查询</el-button>
+              <el-button type="primary" @click="toCreate()">新增</el-button>
+            </el-button-group>
+          </el-col>
+        </el-row>
+      </div>
+      <el-table
+      :data="list"
+      style="width: 100%"
+      :highlight-current-row="true"
+      class="system-table"
+      >
+        <el-table-column align="center" label="序号" type="index" width="90"></el-table-column>
+        <el-table-column label="角色名称" sortable>
+          <template scope="scope">
+              <span style="margin-left: 10px">{{ scope.row.roleName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="编码">
+            <template scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.code }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="是否启用" >
+            <template scope="scope">
+                <span style="margin-left: 10px">
+                  <el-tag v-if="scope.row.enabled == '1'" type="success">启用</el-tag>
+                  <el-tag v-else type="danger">禁用</el-tag>
+                  </span>
+            </template>
+        </el-table-column>
+        <el-table-column label="备注" >
+            <template scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.note }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="操作" width="300px">
+          <template scope="scope">
+            <el-button
+                size="mini"
+                type="success"
+                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button
+                size="mini"
+                type="info"
+                @click="handleResouce(scope.$index, scope.row)">资源分配</el-button>
+            <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-container">
+          <el-pagination @size-change="handleSizeChange" 
+                          @current-change="handleCurrentChange"
+                          :current-page.sync="listQuery.page"
+                          :page-sizes="[10.,20,30,50]" 
+                          :page-size="listQuery.pageSize"
+                          layout="total, sizes, prev, pager, next, jumper" 
+                          :total="total">
+          </el-pagination>
+      </div>
+        <!--编辑框-->
+        <el-dialog  :visible.sync="dialogFormVisible" :before-close="handleClose"  width="25%" :title="title">
+          <el-form :model="form" :inline="false" :rules="rules" ref="form" label-width="90px">
+            <el-form-item label="角色名称" prop="roleName" >
+              <el-input v-model="form.roleName" placeholder="请输入姓名" style="width:80%" ></el-input>
+            </el-form-item>
+            <el-form-item label="角色编码" prop="code">
+              <el-input  v-model="form.code" placeholder="请输入账户" style="width:80%"></el-input>
+            </el-form-item>
+              <el-form-item label="是否可用" prop="enabled">
+                <el-switch  active-value='1'  inactive-value='0' v-model="form.enabled"></el-switch>
+              </el-form-item>
+            <el-form-item label="备注" prop="note">
+              <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 5}" placeholder="请输入备注" v-model="form.note" style="width:80%"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="cancel('form')">取 消</el-button>
+            <el-button v-if="dialogStatus=='create'" type="primary" @click="create('form')">确 定</el-button>
+            <el-button v-else type="primary" @click="update('form')">确 定</el-button>
+          </div>
+        </el-dialog>
+        <el-dialog  
+        :visible.sync="dialogMenuVisible" 
+        width='50%'
+        title="选择资源"
+        @open="menuDialogOpen"
+        >
+        <role-menu ref="roleMenuCom" :roleId="roleToMenuId" @roleMenuCancle="roleMenuCancle" ></role-menu>
+      </el-dialog>
+    </el-card>                
+  </div>
 </template>
 
 <script>
@@ -277,7 +257,9 @@
         this.roleToMenuId = row.id
       },
       menuDialogOpen() {
-        this.$refs.roleMenuCom.getTree()
+        if (this.$refs.roleMenuCom != undefined) {
+          this.$refs.roleMenuCom.getTree()
+        }
       },
       roleMenuCancle() {
         this.dialogMenuVisible = false

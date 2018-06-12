@@ -10,6 +10,7 @@
                 node-key="id"
                 :default-expand-all="true"
                 @node-click="clickTree"
+                @check-change="checkChange"
                 :props="defaultProps">
                 </el-tree>
           </el-card>
@@ -76,12 +77,14 @@ export default {
       list: null,
       roleMenusId: null,
       roleButtonsId: null,
-      menuTreeLoading: false
+      menuTreeLoading: false,
+      tempButtonId: []
     }
   },
   methods: {
     getTree() {
       tree('-1').then(response => {
+        this.list = null
         this.menuTree = response.data
         this.getMenuIdByRoleId()
       })
@@ -100,11 +103,15 @@ export default {
       })
     },
     checkButtonByRoleIdAndMenuId() {
-      this.list.forEach(element => {
-        if (this.roleButtonsId.indexOf(element.id) !== -1) {
-          this.$refs.buttonsTable.toggleRowSelection(element)
-        }
-      })
+      this.tempButtonId = []
+      if (this.list != null) {
+        this.list.forEach(element => {
+          if (this.roleButtonsId.indexOf(element.id) !== -1) {
+            this.$refs.buttonsTable.toggleRowSelection(element)
+            this.tempButtonId.push(element.id) // 暂存当前页面的选中按钮id
+          }
+        })
+      }
       // this.list.forEach(row => {
       //     this.$refs.buttonsTable.toggleRowSelection(row)
       // })
@@ -124,8 +131,9 @@ export default {
       var menuId = menus.map(menu => menu.id).join()
       this.checkRes.menuId = menuId
       this.checkRes.roleId = roleId
-      // var buttons = this.$refs.buttonsTable.selection.map(button => button.id).join()
-      this.checkRes.buttons = this.roleButtonsId.join()
+      if (this.roleButtonsId != null) {
+        this.checkRes.buttons = this.roleButtonsId.join()
+      }
       addRoleRes(roleId, this.checkRes).then(() => {
         this.$notify({
           title: '成功',
@@ -139,10 +147,12 @@ export default {
     getMenuIdByRoleId() {
       getResIdByRoleId(this.roleId).then(response => {
         this.resetChecked()
-        this.$refs.roleMenuTree.setCheckedKeys(response.data.menuIds)
         this.menuTreeLoading = false
-        this.roleMenusId = response.data.menuIds
-        this.roleButtonsId = response.data.buttonIds
+        if (response.data != null) {
+          this.$refs.roleMenuTree.setCheckedKeys(response.data.menuIds)
+          this.roleMenusId = response.data.menuIds
+          this.roleButtonsId = response.data.buttonIds
+        }
       })
     },
     resetChecked() {
@@ -156,10 +166,22 @@ export default {
     changeTableCBox(selection, row) {
       var buttons = selection.map(button => button.id).join()
       if (buttons.indexOf(row.id) !== -1) { // 表示选中状态
+        var menus = this.$refs.roleMenuTree.getCheckedKeys()
+        menus.push(row.menuId)
+        this.$refs.roleMenuTree.setCheckedKeys(menus)
         this.roleButtonsId.push(row.id)
       } else { // 取消状态
         var buIndex = this.roleButtonsId.indexOf(row.id)
         this.roleButtonsId.splice(buIndex, 1)
+      }
+    },
+    checkChange(data,change,childrenChange) {
+      if(!change) { //节点没有被选中，就取消对应的按钮
+        this.tempButtonId.forEach(buttonId => {
+          var index = this.roleButtonsId.indexOf(buttonId)
+          this.roleButtonsId.splice(index, 1)
+        })
+        this.$refs.buttonsTable.clearSelection()
       }
     }
   }

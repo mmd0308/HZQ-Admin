@@ -10,7 +10,7 @@ export function page(query) {
 
 export function addObj(obj) {
   return request({
-    url: '/api/button/add',
+    url: '/api/button/add/auth',
     method: 'post',
     data: obj
   })
@@ -40,14 +40,14 @@ export function getObj(id) {
 
 export function delObj(id) {
   return request({
-    url: '/api/button/delete/' + id,
+    url: '/api/button/delete/' + id + '/auth',
     method: 'delete'
   })
 }
 
 export function putObj(id, obj) {
   return request({
-    url: '/api/button/put/' + id,
+    url: '/api/button/put/' + id + '/auth',
     method: 'put',
     data: obj
   })
