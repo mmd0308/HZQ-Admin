@@ -1,7 +1,7 @@
 package hzqing.com.admin.utils;
 
 
-import hzqing.com.admin.constant.Constant;
+import hzqing.com.common.constant.Constant;
 import hzqing.com.common.jwt.JwtTokenUtil;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
