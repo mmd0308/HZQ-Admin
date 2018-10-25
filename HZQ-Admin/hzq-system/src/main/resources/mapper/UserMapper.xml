@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.UserMapper">
+    <resultMap id="baseResult" type="user">
+        <result column="user_id" property="userId"/>
+        <result column="login_name" property="loginName" />
+        <result column="user_name" property="userName" />
+        <result column="avatar" property="avatar" />
+        <result column="password" property="password" />
+        <result column="phone" property="phone" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="selectUser">
+        SELECT
+            user_id, login_name, user_name, avatar, password, phone
+        FROM
+            sys_user
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult">
+        <include refid="selectUser"/>
+        WHERE
+          del_flag = 'N'
+    </select>
+
+    <insert id="insertUser" parameterType="user" >
+        INSERT INTO sys_user (
+          user_id,
+          login_name,
+          user_name,
+          avatar,
+          password,
+          phone
+        ) VALUE (
+          #{userId},
+          #{loginName},
+          #{userName},
+          #{avatar},
+          #{password},
+          #{phone}
+        )
+    </insert>
+
+    <select id="selectUserById" parameterType="string" resultMap="baseResult">
+      <include refid="selectUser" />
+      WHERE
+        user_id = #{userId}
+    </select>
+
+    <delete id="deleteUserByIds" parameterType="string">
+        UPDATE sys_user SET del_flag = 'Y' WHERE  user_id IN
+        <foreach collection="array" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <update id="updateUser" parameterType="user">
+        UPDATE sys_user
+        <set>
+            <if test="loginName != null and loginName != ''">login_name = #{loginName},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="password != null and password != '' ">password = #{password},</if>
+            <if test="phone != null and phone != ''">phone = #{phone}</if>
+        </set>
+        WHERE
+          user_id = #{userId}
+    </update>
+</mapper>

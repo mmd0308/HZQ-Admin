@@ -1,14 +1,9 @@
 const getters = {
   sidebar: state => state.app.sidebar,
+  device: state => state.app.device,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
-  // 这里采用的ES6的写法，你可以替换成
-  // name : function(state){return state.user.name}
   name: state => state.user.name,
-  userId:state => state.user.userId,
-  roles: state => state.user.roles,
-  resCode: state => state.user.resCode,
-  permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters
+  roles: state => state.user.roles
 }
 export default getters

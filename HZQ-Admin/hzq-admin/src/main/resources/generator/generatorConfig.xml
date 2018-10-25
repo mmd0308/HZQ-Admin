@@ -8,7 +8,7 @@
         <property name="endingDelimiter" value="`" />
         <property name="mergeable" value="false"></property>
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="hzqing.com.common.base.mapper.BaseMapper"/>
+            <property name="mappers" value="com.hzqing.common.base.mapper.BaseMapper"/>
         </plugin>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -28,7 +28,7 @@
         <javaClientGenerator type="XMLMAPPER"  targetPackage="hzqing.com.admin.mapper.system"  targetProject="src/main/java">
         </javaClientGenerator>
 
-        <table tableName="sys_button" domainObjectName="Button">
+        <table tableName="sys_log" domainObjectName="Log">
             <!--<generatedKey column="id" identity="true" sqlStatement="MySql"/>-->
         </table>
 

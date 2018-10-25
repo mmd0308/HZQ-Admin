@@ -1,50 +1,42 @@
 import router from './router'
-import store from './store'
+// import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 // import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth' // 验权
 
-const whiteList = ['/login', '/'] // 不重定向白名单
+const whiteList = ['/login', '/tools/generator', '/system/user'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  if (getToken()) { // 如果token存在
-    console.log('token 存在 ' + getToken())
-    console.log('路径 ：  ' + to.path)
+  if (getToken()) {
     if (to.path === '/login') {
-      next({ path: '/index' })
+      next({ path: '/' })
+      NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (store.getters.userId === '' || store.getters.userId === null) { // 如果没有角色，获取用户信息
-        store.dispatch('GetUserInfo').then(res => { // 拉取用户信息
-          if (res.data.menus != null) {
-            store.dispatch('GenerateRoutes', res.data.menus).then(() => { // 生成可访问的路由表
-              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-              next({ ...to }) // hack方法 确保addRoutes已完成
-            })
-          } else {
-            next()
-          }
-        }).catch(() => {
-          store.dispatch('FedLogOut').then(() => {
-            // Message.error('验证失败,请重新登录')
-            console.log('验证失败,请重新登录')
-            next({ path: '/login' })
-          })
-        })
-      } else {
-        next()
-      }
+      next()
+      // if (store.getters.roles.length === 0) {
+      //   store.dispatch('GetInfo').then(res => { // 拉取用户信息
+      //     next()
+      //   }).catch((err) => {
+      //     store.dispatch('FedLogOut').then(() => {
+      //       Message.error(err || 'Verification failed, please login again')
+      //       next({ path: '/' })
+      //     })
+      //   })
+      // } else {
+      //   next()
+      // }
     }
-  } else { // 如果token不存在
-    if (whiteList.indexOf(to.path) !== -1) { // 白名单中是否存在
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
-      console.log('-----permission token 不存在 不再白名单')
-      next('/login') // 如果没有权限，直接返回首页面
-      // NProgress.done(); // 在hash模式下 改变手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
+      next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+      NProgress.done()
     }
   }
 })
+
 router.afterEach(() => {
   NProgress.done() // 结束Progress
 })

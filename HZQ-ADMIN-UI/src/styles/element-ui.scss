@@ -9,19 +9,12 @@
   display: none;
 }
 
-.el-aside, .el-main {
-  overflow: visible !important;
-}
-
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
   position: relative;
   margin: 0 auto;
-}
-.el-dialog__body {
-  padding: 15px 20px 20px 20px;
 }
 
 //element ui upload
@@ -35,49 +28,14 @@
   }
 }
 
-.el-header-right-button {
-  padding: 0px;
-  color: #ff7d44;
-  margin: 0px 2px !important;
+.el-button+.el-button {
+  margin-left: 0px;
 }
 
-.el-header-right-button:hover {
-  color: #ff7d44;
-}
-.el-header-right-button:focus {
-  color: #ff7d44 ;
+.el-card__body {
+  padding: 15px;
 }
 
-.el-header-right-button-deleted {
-  padding: 0px;
-  color:#f56c6c;
-}
-
-.el-header-right-button-deleted:hover {
-  color: #f56c6c;
-}
-.el-header-right-button-deleted:focus {
-  color: #f56c6c;
-}
-
-
-
-// 图片上传样式
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
+.el-dialog__body {
+  padding: 30px 40px 30px 20px;
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.generator.mapper.GeneratorMapper">
+
+    <resultMap id="tableInfoResult" type="tableinfo">
+        <result column="table_name" property="tableName"/>
+        <result column="table_comment" property="tableComment"/>
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="selectTableInfo" >
+        SELECT
+            table_name table_comment, create_time, update_time
+        FROM
+            information_schema.tables
+
+    </sql>
+
+    <select id="selectTableList" resultMap="tableInfoResult" parameterType="tableinfo">
+        <include refid="selectTableInfo"/>
+        WHERE
+            table_schema = (SELECT DATABASE())
+    </select>
+</mapper>

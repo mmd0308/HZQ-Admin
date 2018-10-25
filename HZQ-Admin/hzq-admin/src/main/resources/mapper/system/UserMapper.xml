@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="hzqing.com.admin.mapper.system.UserMapper" >
-  <resultMap id="BaseResultMap" type="hzqing.com.admin.entity.system.User" >
+  <resultMap id="BaseResultMap" type="com.hzqing.system.domain.User" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="note" property="note" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
-    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="attr1" property="attr1" jdbcType="VARCHAR" />
-    <result column="attr2" property="attr2" jdbcType="VARCHAR" />
-    <result column="attr3" property="attr3" jdbcType="VARCHAR" />
-    <result column="attr4" property="attr4" jdbcType="VARCHAR" />
-    <result column="attr5" property="attr5" jdbcType="VARCHAR" />
+
   </resultMap>
   <!--根据用户id删除用户权限-->
   <delete id="deleteUserRoleByUserId" parameterType="String">
@@ -34,4 +25,5 @@
       )
     </foreach>
   </insert>
+
 </mapper>
