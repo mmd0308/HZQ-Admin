@@ -1,11 +1,13 @@
 package com.hzqing.generator.domain;
 
-import com.hzqing.common.base.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.apache.ibatis.type.Alias;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
-public class TableInfo extends BaseEntity {
+public class TableInfo {
     /**
      * 表名称
      */
@@ -14,5 +16,31 @@ public class TableInfo extends BaseEntity {
      * 表描述
      */
     private String tableComment;
+    /**
+     * 表创建时间
+     */
+    @JsonFormat(pattern = "")
+    private Date createTime;
+    /**
+     * 表更新时间
+     */
+    private Date updateTime;
+    /**
+     * 表名转成类名 采用驼峰法 第一个字母大写
+     */
+    private String className;
+
+    /**
+     * 实体类名称全部小写
+     */
+    private String classNameLower;
+    /**
+     * 表中的所有列
+     */
+    private List<ColumnInfo> columns;
+    /**
+     * 根据包路径生成模块名称
+     */
+    private String moudleName;
 
 }

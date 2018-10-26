@@ -6,7 +6,19 @@
 	<groupId>hzqing.com</groupId>
 	<artifactId>hzq-common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <packaging>jar</packaging>
 	<name>hzq-common</name>
 
     <parent>
@@ -14,6 +26,9 @@
         <artifactId>HZQ-Admin</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+	<properties>
+		<commons.io.version>2.5</commons.io.version>
+	</properties>
 
 	<dependencies>
 
@@ -23,6 +38,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.8.1</version>
+		</dependency>
+		<!--io常用工具类 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
 		</dependency>
 
 		<dependency>
