@@ -5,8 +5,10 @@ import com.hzqing.system.domain.User;
 import com.hzqing.system.mapper.UserMapper;
 import com.hzqing.system.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -25,7 +27,10 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     public int insertUser(User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setUserId(UUIDUtils.get32UUID());
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
         return userMapper.insertUser(user);
     }
 

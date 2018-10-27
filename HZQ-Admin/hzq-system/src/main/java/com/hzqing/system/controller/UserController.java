@@ -87,4 +87,15 @@ public class UserController extends BaseController{
         return new ResponseMessage().success();
     }
 
+    /**
+     * 给用户设置角色
+     * @param userId 用户id
+     * @param roleIds 角色id 使用，分割
+     * @return
+     */
+    @PostMapping("/setRole")
+    public ResponseMessage setRole(String userId, String roleIds) {
+        return null;
+    }
+
 }

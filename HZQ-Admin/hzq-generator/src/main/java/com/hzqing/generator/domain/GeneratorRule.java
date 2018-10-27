@@ -1,7 +1,5 @@
 package com.hzqing.generator.domain;
 
-import com.hzqing.generator.constant.GeneratorConstants;
-import com.hzqing.generator.util.GeneratorUtils;
 import lombok.Data;
 
 import java.util.List;
@@ -30,16 +28,8 @@ public class GeneratorRule {
      * 模块名称
      */
     private String moudleName;
-
-    public String getEntityRule() {
-        return entityRule == null? GeneratorConstants.DEFAULT_ENTITY_RULE:entityRule;
-    }
-
-    public String getPackageName() {
-        return packageName == null? GeneratorConstants.DEFAULT_PACKAGE_NAME:packageName;
-    }
-
-    public String getMoudleName() {
-        return moudleName == null? GeneratorUtils.getMoudleName(this.packageName): moudleName;
-    }
+    /**
+     * 生成作者
+     */
+    private String author;
 }

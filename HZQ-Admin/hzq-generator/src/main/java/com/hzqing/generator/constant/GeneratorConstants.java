@@ -15,4 +15,9 @@ public class GeneratorConstants {
      * 实体类生成默认采用lombok方式
      */
     public static String DEFAULT_ENTITY_RULE = "L";
+
+    /**
+     * 代码生成默认作者
+     */
+    public static String DEFAULT_AUTHOR = "hzqing.com";
 }

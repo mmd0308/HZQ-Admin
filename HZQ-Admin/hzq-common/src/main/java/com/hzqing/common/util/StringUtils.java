@@ -1,6 +1,6 @@
 package com.hzqing.common.util;
 
-public class StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils{
 
     /**
      * 将下划线命名方式改为驼峰方式

@@ -52,7 +52,7 @@ export const constantRouterMap = [
       {
         path: 'tree',
         name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/table/index'),
         meta: { title: 'Tree', icon: 'tree' }
       }
     ]
@@ -73,8 +73,14 @@ export const constantRouterMap = [
       {
         path: 'role',
         name: '角色管理',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/system/role/index'),
         meta: { title: '角色管理', icon: 'peoples' }
+      },
+      {
+        path: 'menu',
+        name: '菜单管理',
+        component: () => import('@/views/system/menu/index'),
+        meta: { title: '菜单管理', icon: 'peoples' }
       }
     ]
   },
@@ -96,6 +102,12 @@ export const constantRouterMap = [
         name: '系统接口',
         component: () => import('@/views/tools/swagger/index'),
         meta: { title: '系统接口', icon: 'hzq_interface' }
+      },
+      {
+        path: 'druid',
+        name: 'druid',
+        component: () => import('@/views/tools/druid/index'),
+        meta: { title: '数据监控', icon: 'hzq_interface' }
       },
       {
         path: 'icon',

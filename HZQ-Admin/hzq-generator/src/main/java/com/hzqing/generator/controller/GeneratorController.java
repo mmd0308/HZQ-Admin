@@ -5,6 +5,7 @@ import com.hzqing.common.response.ResponseMessage;
 import com.hzqing.generator.domain.GeneratorRule;
 import com.hzqing.generator.domain.TableInfo;
 import com.hzqing.generator.service.IGeneratorService;
+import com.hzqing.generator.util.GeneratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,16 @@ public class GeneratorController extends BaseController{
         return successPage(list);
     }
 
+    /**
+     * 根据生成规则生成代码
+     * @param response
+     * @param generatorRule
+     * @throws IOException
+     */
     @GetMapping("/generatorCode")
     public void generatorCode(HttpServletResponse response,  GeneratorRule generatorRule) throws IOException {
+        // 如果用户没有设置规则，设置默认规则
+        generatorRule = GeneratorUtils.setGeneratorDefault(generatorRule);
         byte[] data = generatorService.generatorCode(generatorRule);
         response.setHeader("Content-Disposition", "attachment; filename=\"hzqing.zip\"");
         response.addHeader("Content-Length", "" + data.length);

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.ButtonMapper">
+
+    <resultMap id="baseResult" type="button">
+        <result column="but_id" property="butId"/>
+        <result column="menu_id" property="menuId"/>
+        <result column="but_name" property="butName"/>
+        <result column="permission" property="permission"/>
+        <result column="enabled" property="enabled"/>
+        <result column="create_id" property="createId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectButton">
+        SELECT
+            but_id,
+            menu_id,
+            but_name,
+            permission,
+            enabled,
+            create_id,
+            create_time,
+            update_id,
+            update_time
+        FROM
+            sys_button
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult">
+        <include refid="selectButton"/>
+    </select>
+
+    <insert id="insertButton" parameterType="button" >
+        INSERT INTO sys_button (
+            but_id,
+            menu_id,
+            but_name,
+            permission,
+            enabled,
+            create_id,
+            create_time,
+            update_id,
+            update_time
+        ) VALUE (
+            #{butId},
+            #{menuId},
+            #{butName},
+            #{permission},
+            #{enabled},
+            #{createId},
+            #{createTime},
+            #{updateId},
+            #{updateTime}
+        )
+    </insert>
+
+    <select id="selectButtonById" parameterType="string" resultMap="baseResult">
+        <include refid="selectButton" />
+        WHERE
+
+    </select>
+
+    <delete id="deleteButtonByIds" parameterType="string">
+        UPDATE sys_button SET del_flag = 'Y' WHERE  button_id IN
+
+    </delete>
+
+    <update id="updateButton" parameterType="button">
+        UPDATE sys_button
+    </update>
+</mapper>

@@ -10,19 +10,22 @@ import com.hzqing.generator.util.GeneratorUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Service
 public class GeneratorServiceImpl implements IGeneratorService {
+
+    private final static Logger logger = LoggerFactory.getLogger(GeneratorServiceImpl.class);
+
     @Autowired
     private GeneratorMapper generatorMapper;
     @Autowired
@@ -41,8 +44,7 @@ public class GeneratorServiceImpl implements IGeneratorService {
     public byte[] generatorCode(GeneratorRule generatorRule) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        for (String tableName : generatorRule.getTables())
-        {
+        for (String tableName : generatorRule.getTables()) {
             // 查询表信息
             TableInfo table = generatorMapper.selectTableByName(tableName);
             // 查询列信息
@@ -68,9 +70,11 @@ public class GeneratorServiceImpl implements IGeneratorService {
         tableInfo.setClassNameLower(entityName.toLowerCase());
         // 获取模块名
         tableInfo.setMoudleName(generatorRule.getMoudleName());
-
         // 将表的列名，类型，装成Java实体类的属性和Java类型
         tableInfo.setColumns(GeneratorUtils.transColumns(columnInfos));
+
+        tableInfo.setAuthor(generatorRule.getAuthor());
+
         // 获取所有的模版 如：controller，domian service
         List<String> templates = GeneratorUtils.getTemplates();
         for (String temp : templates) {
@@ -82,7 +86,7 @@ public class GeneratorServiceImpl implements IGeneratorService {
                 IOUtils.write(string, zipOutputStream, Constants.UTF8);
                 zipOutputStream.closeEntry();
             } catch (Exception e) {
-               e.printStackTrace();
+               logger.error("模块渲染失败，表名：" + tableInfo.getTableName(),e);
             }
         }
     }

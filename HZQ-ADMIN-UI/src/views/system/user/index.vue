@@ -11,6 +11,8 @@
         <el-button size="small" type="success" icon="el-icon-edit" @click="editUser(null)" disabled v-else>修改</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null)" v-if="selectSize != 0">删除</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null)" disabled v-else>删除</el-button>
+        <el-button size="small" type="primary" @click="checkRole"  v-if="selectSize === 1" ><svg-icon icon-class="role"/> 角色分配</el-button>
+        <el-button size="small" type="primary" @click="checkRole" v-else disabled><svg-icon icon-class="role"/> 角色分配</el-button>
         <el-button size="small" type="warning" icon="el-icon-download" @click="deleteUser">导出</el-button>
         <el-table
           :data="tableData"
@@ -23,7 +25,8 @@
           <el-table-column prop="userName" label="姓名" width="180" />
           <el-table-column prop="loginName" label="登陆账号" />
           <el-table-column prop="phone" label="手机号码" />
-          <el-table-column prop="password" label="密码（暂时）" />
+          <el-table-column prop="createTime" label="创建时间" />
+          <el-table-column prop="updateTime" label="更新时间" />
           <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button size="mini" type="success" icon="el-icon-edit" @click="editUser(scope.row.userId)"/>
@@ -43,15 +46,18 @@
         @size-change="handleSizeChange"/>
     </el-card>
     <form-dialog ref="form" @refreshList="refreshList"/>
+    <check-role-list ref="roleList" />
   </div>
 </template>
 <script>
 import { selectUserList, deleteUserByIds } from '@/api/system/user/index'
 import FormDialog from './components/form'
+import CheckRoleList from './components/checkRole'
 
 export default {
   components: {
-    FormDialog
+    FormDialog,
+    CheckRoleList
   },
   data() {
     return {
@@ -73,6 +79,11 @@ export default {
         this.tableData = reponse.data
         this.total = reponse.total
       })
+    },
+    checkRole() {
+      // 传递用户的id到list中
+      const userId = this.$refs.userTable.selection.map(item => item.userId)[0]
+      this.$refs.roleList.toCheckRoleList(userId)
     },
     addUser() {
       this.$refs.form.addUser()

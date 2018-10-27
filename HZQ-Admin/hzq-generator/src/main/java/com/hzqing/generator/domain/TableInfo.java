@@ -19,7 +19,6 @@ public class TableInfo {
     /**
      * 表创建时间
      */
-    @JsonFormat(pattern = "")
     private Date createTime;
     /**
      * 表更新时间
@@ -42,5 +41,10 @@ public class TableInfo {
      * 根据包路径生成模块名称
      */
     private String moudleName;
+
+    /**
+     * 代码生成作者，生成代码时候用
+     */
+    private String author;
 
 }

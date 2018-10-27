@@ -11,7 +11,7 @@
       <el-form-item label="登陆名称" prop="loginName">
         <el-input v-model="userForm.loginName" />
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item  v-if="status === 'add'"  label="密码" prop="password">
         <el-input  v-model="userForm.password" />
       </el-form-item>
       <el-form-item label="手机号码" prop="phone">

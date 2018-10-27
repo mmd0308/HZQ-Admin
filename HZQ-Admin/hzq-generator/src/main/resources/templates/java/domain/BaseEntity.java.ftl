@@ -1,10 +1,11 @@
-package com.hzqing;
+package com.hzqing.${moudleName};
 
 import lombok.Data;
+import java.util.*;
 /**
  *
- *
- *
+ * @description ${tableComment}
+ * @author ${author}
  */
 @Data
 public class ${className} {
@@ -13,7 +14,7 @@ public class ${className} {
     /**
      * ${col.columnComment}
      */
-    private ${col.attrType} ${col.attrName}
+    private ${col.attrType} ${col.attrName};
 
 </#list>
 }

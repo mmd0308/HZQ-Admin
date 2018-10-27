@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.RoleMapper">
+
+    <resultMap id="baseResult" type="role">
+        <result column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_sort" property="roleSort"/>
+        <result column="enabled" property="enabled"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="perm_code" property="permCode"/>
+        <result column="remark" property="remark"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectRole">
+        SELECT
+            role_id,
+            role_name,
+            role_sort,
+            enabled,
+            del_flag,
+            perm_code,
+            remark,
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        FROM
+            sys_role
+    </sql>
+
+    <sql id="selectRoleVO">
+        SELECT
+            r.role_id,
+            r.role_name,
+            r.role_sort,
+            r.enabled,
+            r.del_flag,
+            r.perm_code,
+            r.remark,
+            r.create_by,
+            r.create_time,
+            r.update_by,
+            r.update_time
+        FROM
+          sys_role r
+        LEFT JOIN sys_user_role ur ON r.role_id = ur.role_id
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult">
+        <include refid="selectRole"/>
+        WHERE
+            del_flag = 'N'
+        ORDER BY role_sort ASC
+    </select>
+
+    <insert id="insertRole" parameterType="role" >
+        INSERT INTO sys_role (
+            role_id,
+            role_name,
+            role_sort,
+            enabled,
+            del_flag,
+            perm_code,
+            remark,
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        ) VALUE (
+            #{roleId},
+            #{roleName},
+            #{roleSort},
+            #{enabled},
+            #{delFlag},
+            #{permCode}
+            #{remark},
+            #{createBy},
+            #{createTime},
+            #{updateBy},
+            #{updateTime}
+        )
+    </insert>
+
+    <select id="selectRoleById" parameterType="string" resultMap="baseResult">
+        <include refid="selectRole" />
+        WHERE
+
+    </select>
+
+    <delete id="deleteRoleByIds" parameterType="string">
+        UPDATE sys_role SET del_flag = 'Y' WHERE  role_id IN
+
+    </delete>
+
+    <update id="updateRole" parameterType="role">
+        UPDATE sys_role
+    </update>
+    
+    <select id="selectRolesByUserId" parameterType="string" resultMap="baseResult">
+        <include refid="selectRoleVO"/>
+        WHERE
+          r.del_flag = 'N'
+          AND ur.user_id = #{userId}
+    </select>
+</mapper>

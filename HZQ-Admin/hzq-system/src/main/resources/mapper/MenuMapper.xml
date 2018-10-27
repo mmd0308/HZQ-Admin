@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.MenuMapper">
+
+    <resultMap id="baseResult" type="menu">
+        <result column="menu_id" property="menuId"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="menu_sort" property="menuSort"/>
+        <result column="menu_type" property="menuType"/>
+        <result column="enabled" property="enabled"/>
+        <result column="icon" property="icon"/>
+        <result column="remark" property="remark"/>
+        <result column="permission" property="permission"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="selectMenu">
+        SELECT
+            menu_id,
+            menu_name,
+            parent_id,
+            menu_sort,
+            menu_type,
+            enabled,
+            icon,
+            remark,
+            permission,
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        FROM
+            sys_menu
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult">
+        <include refid="selectMenu"/>
+    </select>
+
+    <insert id="insertMenu" parameterType="menu" >
+        INSERT INTO sys_menu (
+            menu_id,
+            menu_name,
+            parent_id,
+            menu_sort,
+            menu_type,
+            enabled,
+            icon,
+            remark,
+            permission,
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        ) VALUE (
+            #{menuId},
+            #{menuName},
+            #{parentId},
+            #{menuSort},
+            #{menuType},
+            #{enabled},
+            #{icon},
+            #{remark},
+            #{permission},
+            #{createBy},
+            #{createTime},
+            #{updateBy},
+            #{updateTime}
+        )
+    </insert>
+
+    <select id="selectMenuById" parameterType="string" resultMap="baseResult">
+        <include refid="selectMenu" />
+        WHERE
+
+    </select>
+
+    <delete id="deleteMenuByIds" parameterType="string">
+        UPDATE sys_menu SET del_flag = 'Y' WHERE  menu_id IN
+
+    </delete>
+
+    <update id="updateMenu" parameterType="menu">
+        UPDATE sys_menu
+    </update>
+</mapper>

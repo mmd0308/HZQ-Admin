@@ -14,8 +14,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="包路径">
-              <el-input />
+            <el-form-item label="代码生成者:">
+              <el-input v-model="genRuleForm.author" placeholder="hzqing.com" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -118,7 +118,8 @@ export default {
       genRuleForm: {
         entityRule: 'L',
         packageName: '',
-        moudleName: ''
+        moudleName: '',
+        author: ''
       }
     }
   },
@@ -136,7 +137,7 @@ export default {
         tableName = this.$refs.generatorTable.selection.map(item => item.tableName);
       }
       window.location.href = process.env.BASE_API + '/hzq/tools/generator/generatorCode?tables=' + tableName + '&entityRule=' + this.genRuleForm.entityRule +
-                            '&packageName=' + this.genRuleForm.packageName + '&moudleName=' + this.genRuleForm.moudleName;
+                            '&packageName=' + this.genRuleForm.packageName + '&moudleName=' + this.genRuleForm.moudleName + '&author=' + this.genRuleForm.author;
     },
     changPackageName(){
       this.genRuleForm.moudleName = this.genRuleForm.packageName.substring(this.genRuleForm.packageName.lastIndexOf(".")+1)

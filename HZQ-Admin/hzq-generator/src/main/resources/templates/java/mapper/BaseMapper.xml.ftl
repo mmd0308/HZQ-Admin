@@ -13,25 +13,34 @@
     <sql id="select${className}">
         SELECT
 <#list columns as col>
-        ${col.columnName}
+            ${col.columnName}<#if  col_index != columns?size-1>,</#if>
 </#list>
         FROM
-        ${tableName}
+            ${tableName}
     </sql>
 
     <select id="selectTableList" resultMap="baseResult">
         <include refid="select${className}"/>
         WHERE
-        del_flag = 'N'
+            del_flag = 'N'
     </select>
 
     <insert id="insert${className}" parameterType="${classNameLower}" >
-
+        INSERT INTO ${tableName} (
+<#list columns as col>
+        ${col.columnName}<#if  col_index != columns?size-1>,</#if>
+</#list>
+        ) VALUE (
+<#list columns as col>
+        #\/{${col.attrName}}<#if  col_index != columns?size-1>,</#if>
+</#list>
+        )
     </insert>
 
     <select id="select${className}ById" parameterType="string" resultMap="baseResult">
         <include refid="select${className}" />
         WHERE
+
     </select>
 
     <delete id="delete${className}ByIds" parameterType="string">

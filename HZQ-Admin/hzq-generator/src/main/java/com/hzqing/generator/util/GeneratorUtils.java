@@ -1,6 +1,9 @@
 package com.hzqing.generator.util;
 
+import com.hzqing.common.util.StringUtils;
+import com.hzqing.generator.constant.GeneratorConstants;
 import com.hzqing.generator.domain.ColumnInfo;
+import com.hzqing.generator.domain.GeneratorRule;
 import com.hzqing.generator.domain.TableInfo;
 
 import java.util.ArrayList;
@@ -25,7 +28,10 @@ public class GeneratorUtils {
      * MyBatis xml文件基础路径
      */
     public static String BASE_MAPPER_XML_PATH = "resources/mapper/";
-
+    /**
+     * vue 前段页面生成路径
+     */
+    public static String BASE_VUE_PATH = "resources/vue/";
     /**
      * 将表名转成实体类名称
      * @param tableName
@@ -44,7 +50,8 @@ public class GeneratorUtils {
      */
     public static List<ColumnInfo> transColumns(List<ColumnInfo> columnInfos) {
         for (ColumnInfo col : columnInfos) {
-            col.setAttrName(convertToCamelCase(col.getColumnName()));
+            String attr = convertToCamelCase(col.getColumnName());
+            col.setAttrName(attr.substring(0,1).toLowerCase()+attr.substring(1));
             col.setAttrType(javaTypeMap.get(col.getDataType()));
         }
         return columnInfos;
@@ -95,6 +102,9 @@ public class GeneratorUtils {
         templates.add("java/mapper/BaseMapper.xml.ftl");
         templates.add("java/service/BaseServiceImpl.java.ftl");
         templates.add("java/service/IBaseService.java.ftl");
+        templates.add("vue/index.vue.ftl");
+        templates.add("vue/index.js.ftl");
+        templates.add("vue/components/form.vue.ftl");
         return templates;
     }
 
@@ -126,11 +136,38 @@ public class GeneratorUtils {
         if (temp.contains("BaseServiceImpl.java.ftl")) {
             return javaPath + "/service/impl/" + tableInfo.getClassName() + "ServiceImpl.java";
         }
-        // 生成controller
+        // 生成Mapper xml文件
         if (temp.contains("BaseMapper.xml.ftl")) {
-            return BASE_MAPPER_XML_PATH + tableInfo.getMoudleName() + tableInfo.getClassName() + "Mapper.xml";
+            return BASE_MAPPER_XML_PATH + tableInfo.getMoudleName() + "/" + tableInfo.getClassName() + "Mapper.xml";
+        }
+        // 生成vue列表页面
+        if (temp.contains("index.vue.ftl")) {
+            return BASE_VUE_PATH + tableInfo.getClassName().toLowerCase() + "/index.vue";
+        }
+        // 生成请求链接api
+        if (temp.contains("index.js.ftl")) {
+            return BASE_VUE_PATH + tableInfo.getClassName().toLowerCase() + "/index.js";
+        }
+        // 生成Form表单
+        if (temp.contains("form.vue.ftl")) {
+            return BASE_VUE_PATH + tableInfo.getClassName().toLowerCase() +  "/components/form.vue";
         }
 
         return null;
+    }
+
+    /**
+     * 如果没有设置生成属性，设置默认属性
+     * @param generatorRule
+     * @return
+     */
+    public static GeneratorRule setGeneratorDefault(GeneratorRule generatorRule) {
+        if (StringUtils.isEmpty(generatorRule.getPackageName()))
+            generatorRule.setPackageName(GeneratorConstants.DEFAULT_PACKAGE_NAME);
+        if (StringUtils.isEmpty(generatorRule.getMoudleName()))
+            generatorRule.setMoudleName(getMoudleName(generatorRule.getPackageName()));
+        if (StringUtils.isEmpty(generatorRule.getAuthor()))
+            generatorRule.setAuthor(GeneratorConstants.DEFAULT_AUTHOR);
+        return generatorRule;
     }
 }

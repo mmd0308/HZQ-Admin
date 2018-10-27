@@ -1,9 +1,10 @@
 package com.hzqing.system.domain;
 
+import com.hzqing.common.base.domain.BaseEntity;
 import lombok.Data;
 
 @Data
-public class User {
+public class User extends BaseEntity{
 
     private String userId;
     private String userName;
