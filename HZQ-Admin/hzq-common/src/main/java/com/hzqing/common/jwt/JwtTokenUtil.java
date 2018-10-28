@@ -25,6 +25,12 @@ public class JwtTokenUtil {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
+    /**
+     * 根据token获取登陆用户名
+     * @param token token
+     * @param secret 密钥
+     * @return
+     */
     public static String getUsernameFromToken(String token, String secret) {
         String username;
         try {

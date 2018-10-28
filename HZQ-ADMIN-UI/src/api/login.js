@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/hzq/system/login/login',
+    url: '/login',
     method: 'post',
     data: {
       username,

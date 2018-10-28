@@ -1,4 +1,4 @@
-package com.hzqing.admin.secutiry.controller;
+package com.hzqing.admin.secutiry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package com.hzqing.admin.secutiry.controller;
+package com.hzqing.admin.secutiry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.AuthenticationException;
@@ -22,6 +22,7 @@ public class MyAuthenticationFail implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        exception.printStackTrace();
         Map res = new HashMap();
         res.put("error","hzqingerror");
         String json = objectMapper.writeValueAsString(res);

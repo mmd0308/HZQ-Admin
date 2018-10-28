@@ -21,7 +21,7 @@
 		<mapper.version>3.4.0</mapper.version>
 		<docker.image.prefix>localhost:5000</docker.image.prefix>
 		<docker.plugin.version>1.0.0</docker.plugin.version>
-		<jackson.version>2.9.5</jackson.version>
+		<jackson.version>2.9.7</jackson.version>
 
         <java.project>${basedir}/src/main/java</java.project>
 	</properties>
