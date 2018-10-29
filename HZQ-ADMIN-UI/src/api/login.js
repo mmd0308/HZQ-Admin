@@ -2,9 +2,9 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/login',
+    url: '/hzq/login',
     method: 'post',
-    data: {
+    params: {
       username,
       password
     }

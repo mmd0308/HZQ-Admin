@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2018/10/27 19:30
  */
 @Component
-public class MyAuthenticationFail implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailure implements AuthenticationFailureHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

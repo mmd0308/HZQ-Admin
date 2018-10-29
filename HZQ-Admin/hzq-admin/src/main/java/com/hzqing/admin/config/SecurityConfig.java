@@ -1,23 +1,21 @@
 package com.hzqing.admin.config;
 
 import com.hzqing.admin.filter.JWTAuthenticationFilter;
-import com.hzqing.admin.filter.JWTLoginFilter;
-import com.hzqing.admin.secutiry.MyAuehenticationSuccess;
-import com.hzqing.admin.secutiry.MyAuthenticationFail;
+import com.hzqing.admin.secutiry.CustomAuthenticationFailure;
+import com.hzqing.admin.secutiry.CustomAuthenticationSuccess;
 import com.hzqing.admin.secutiry.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security 配置文件
@@ -27,16 +25,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailService;
 
     @Autowired
-    private MyAuehenticationSuccess myAuehenticationSuccess;
+    private CustomAuthenticationSuccess customAuthenticationSuccess;
 
     @Autowired
-    private MyAuthenticationFail myAuthenticationFail;
+    private CustomAuthenticationFailure customAuthenticationFailure;
 
     @Autowired
     private  PasswordEncoder passwordEncoder;
@@ -45,23 +42,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
       // auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("admin")).roles("admin");
-//        auth.inMemoryAuthentication().withUser("hzqing").password(passwordEncoder().encode("hzqing")).roles("hzqing");
+      // auth.inMemoryAuthentication().withUser("hzqing").password(passwordEncoder().encode("hzqing")).roles("hzqing");
        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder);
     }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+            .csrf().disable() //关闭跨站请求防护
+            .headers().frameOptions().disable() //允许网页iframe
+            .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.OPTIONS,"/**").permitAll() // 避免cors options请求方式全部放行
-            .antMatchers("/**").authenticated() // 拦截所有请求
+            .antMatchers(HttpMethod.OPTIONS).permitAll()
+            .antMatchers("/hzq/login_error").permitAll()
+           // .antMatchers("/druid/**").permitAll() // 放行所有druid资源
+            //.antMatchers("/swagger-**","/webjars/**","/swagger-resources/configuration/ui","/v2").permitAll()  // 放行所有的swagger-ui资源
+            .antMatchers("/**").authenticated()
             .and()
-            .headers().frameOptions().disable()
+            //前后端分离采用JWT 不需要session
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .addFilterBefore(new JWTLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-            .addFilter(new JWTAuthenticationFilter(authenticationManager(),userDetailService))
-            .formLogin()//.loginPage("/hzq/login_p").loginProcessingUrl("/hzq/login").permitAll().usernameParameter("username").passwordParameter("password")
-            .failureHandler(myAuthenticationFail)
-            .successHandler(myAuehenticationSuccess)
+            .formLogin()
+            .loginPage("/hzq/login_error")
+            .loginProcessingUrl("/hzq/login")
+            .successHandler(customAuthenticationSuccess)
+            .failureHandler(customAuthenticationFailure)
+            .and()
+            .addFilter(new JWTAuthenticationFilter(authenticationManager()))
         ;
     }
 

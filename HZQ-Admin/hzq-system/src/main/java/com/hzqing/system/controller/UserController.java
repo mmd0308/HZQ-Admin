@@ -7,7 +7,6 @@ import com.hzqing.system.domain.User;
 import com.hzqing.system.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,10 +32,6 @@ public class UserController extends BaseController{
     public ResponseMessage<PageInfo<User>> list(int pageNum,int pageSize){
         startPage(pageNum,pageSize);
         List<User> users = userService.selectTableList();
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication();
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) principal;
-        System.out.println("-----------" + user);
 
         return successPage(users);
     }

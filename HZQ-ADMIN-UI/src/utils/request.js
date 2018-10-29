@@ -8,12 +8,13 @@ const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 5000 // 请求超时时间
 })
+console.log('创建axios ------- ')
 
 // request拦截器
 service.interceptors.request.use(
   config => {
+    console.log('设置请求头信息' + getToken())
     if (store.getters.token) {
-      console.log('设置请求头信息' + getToken())
       config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     return config
