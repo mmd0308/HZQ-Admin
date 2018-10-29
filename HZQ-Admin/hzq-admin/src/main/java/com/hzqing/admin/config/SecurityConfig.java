@@ -56,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS).permitAll()
             .antMatchers("/hzq/login_error").permitAll()
-           // .antMatchers("/druid/**").permitAll() // 放行所有druid资源
-            //.antMatchers("/swagger-**","/webjars/**","/swagger-resources/configuration/ui","/v2").permitAll()  // 放行所有的swagger-ui资源
+            .antMatchers("/druid/**").permitAll() // 放行所有druid资源
+            .antMatchers("/swagger-*/**","/webjars/**","/v2/**").permitAll()  // 放行所有的swagger-ui资源
             .antMatchers("/**").authenticated()
             .and()
             //前后端分离采用JWT 不需要session
@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .successHandler(customAuthenticationSuccess)
             .failureHandler(customAuthenticationFailure)
             .and()
-            .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+            .addFilter(new JWTAuthenticationFilter(authenticationManager(),userDetailService))
         ;
     }
 

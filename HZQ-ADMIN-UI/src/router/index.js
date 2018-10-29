@@ -33,29 +33,8 @@ export const constantRouterMap = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'table' }
+      meta: { title: '首页', icon: 'hzq_welcome' }
     }]
-  },
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
   },
   {
     path: '/system',
@@ -74,13 +53,25 @@ export const constantRouterMap = [
         path: 'role',
         name: '角色管理',
         component: () => import('@/views/system/role/index'),
-        meta: { title: '角色管理', icon: 'peoples' }
+        meta: { title: '角色管理', icon: 'role' }
       },
       {
         path: 'menu',
         name: '菜单管理',
         component: () => import('@/views/system/menu/index'),
-        meta: { title: '菜单管理', icon: 'peoples' }
+        meta: { title: '菜单管理', icon: 'hzq_menu' }
+      },
+      {
+        path: 'dict',
+        name: 'Dict',
+        component: () => import('@/views/system/menu/index'),
+        meta: { title: '数据字典管理', icon: 'hzq_dict' }
+      },
+      {
+        path: 'depart',
+        name: 'Depart',
+        component: () => import('@/views/system/menu/index'),
+        meta: { title: '部门管理', icon: 'hzq_depart' }
       }
     ]
   },
@@ -88,7 +79,7 @@ export const constantRouterMap = [
     path: '/tools',
     component: Layout,
     name: '系统工具',
-    meta: { title: '系统工具', icon: 'component' },
+    meta: { title: '系统工具', icon: 'hzq_tools' },
     children: [
       {
         path: 'generator',
@@ -98,48 +89,40 @@ export const constantRouterMap = [
 
       },
       {
-        path: 'swagger',
-        name: '系统接口',
-        component: () => import('@/views/tools/swagger/index'),
-        meta: { title: '系统接口', icon: 'hzq_interface' }
-      },
-      {
-        path: 'druid',
-        name: 'druid',
-        component: () => import('@/views/tools/druid/index'),
-        meta: { title: '数据监控', icon: 'hzq_interface' }
+        path: 'task',
+        name: 'Task',
+        component: () => import('@/views/tools/generator/index'),
+        meta: { title: '任务管理', icon: 'hzq_task' }
+
       },
       {
         path: 'icon',
         name: 'Icons',
         component: () => import('@/views/tools/icons/svg/index'),
-        meta: { title: '图标管理', icon: 'example' }
+        meta: { title: '图标管理', icon: 'hzq_label' }
       }
     ]
   },
   {
-    path: '/form',
+    path: '/monitor',
     component: Layout,
+    name: 'Monitor',
+    meta: { title: '系统监控', icon: 'hzq_monitor' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
+        path: 'swagger',
+        name: '系统接口',
+        component: () => import('@/views/monitor/swagger/index'),
+        meta: { title: '系统接口', icon: 'hzq_interface' }
+      },
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'druid',
+        name: 'druid',
+        component: () => import('@/views/monitor/druid/index'),
+        meta: { title: 'SQL监控', icon: 'hzq_druid' }
       }
     ]
-  },
-
+   },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

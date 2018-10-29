@@ -31,11 +31,13 @@ import java.io.IOException;
  */
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter{
 
+    private CustomUserDetailsService customUserDetailsService;
 
     private final static Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService) {
         super(authenticationManager);
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter{
 
         if (StringUtils.isNotEmpty(userName)) {
             // 从新配置 SecurityContextHolder
-             UserDetails userDetails = new CustomUserDetails();//customUserDetailsService.loadUserByUsername(userName);
+             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
              UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword(),userDetails.getAuthorities());
              SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } else  {
