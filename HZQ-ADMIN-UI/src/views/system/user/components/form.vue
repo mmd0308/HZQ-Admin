@@ -2,8 +2,8 @@
   <el-dialog
     :visible="dialogVisible"
     :title="title"
-    @close="resetForm('userForm')"
-    width="30%">
+    width="30%"
+    @close="resetForm('userForm')">
     <el-form :model="userForm" :rules="rules" :ref="userFormRef" label-width="100px" class="demo-ruleForm">
       <el-form-item label="用户名称" prop="userName">
         <el-input v-model="userForm.userName" />
@@ -11,17 +11,17 @@
       <el-form-item label="登陆名称" prop="loginName">
         <el-input v-model="userForm.loginName" />
       </el-form-item>
-      <el-form-item  v-if="status === 'add'"  label="密码" prop="password">
-        <el-input  v-model="userForm.password" />
+      <el-form-item v-if="status === 'add'" label="密码" prop="password">
+        <el-input v-model="userForm.password" />
       </el-form-item>
       <el-form-item label="手机号码" prop="phone">
-        <el-input  v-model="userForm.phone" />
+        <el-input v-model="userForm.phone" />
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button v-if="status === 'add'" type="primary" size="mini" @click="addSave()">确定</el-button>
       <el-button v-if="status === 'edit'" type="primary" size="mini" @click="editSave()">确定</el-button>
-      <el-button @click="resetForm()" size="mini">关闭</el-button>
+      <el-button size="mini" @click="resetForm()">关闭</el-button>
     </span>
   </el-dialog>
 </template>
@@ -50,7 +50,7 @@ export default {
           { required: true, message: '请输入登陆名称', trigger: 'blur' }
         ],
         phone: [
-          {  required: true, message: '请输入手机号码', trigger: 'blur' }
+          { required: true, message: '请输入手机号码', trigger: 'blur' }
         ]
       }
     }
@@ -66,7 +66,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     addUser() {
       this.status = 'add'

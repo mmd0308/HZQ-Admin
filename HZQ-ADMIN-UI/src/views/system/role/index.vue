@@ -14,10 +14,10 @@
         <el-button size="small" type="warning" icon="el-icon-download" @click="deleteRole">导出</el-button>
         <el-table
           v-loading="tableload"
+          ref="userTable"
+          :data="tableData"
           element-loading-text="拼命加载中..."
           element-loading-spinner="el-icon-loading"
-          :data="tableData"
-          ref="userTable"
           fit
           highlight-current-row
           style="width: 100%"
@@ -25,7 +25,7 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="roleName" label="角色名称" />
           <el-table-column prop="roleSort" label="顺序" />
-          <el-table-column  label="是否启用">
+          <el-table-column label="是否启用">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enabled == 'N'" type="warning" size="mini" color="#FFA500" style="color:#FFFFFF" >
                 禁用

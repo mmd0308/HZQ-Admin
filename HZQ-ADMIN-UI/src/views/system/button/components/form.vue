@@ -2,8 +2,8 @@
   <el-dialog
     :visible="dialogVisible"
     :title="title"
-    @close="resetForm('buttonForm')"
-    width="30%">
+    width="30%"
+    @close="resetForm('buttonForm')">
     <el-form :model="buttonForm" :rules="rules" :ref="buttonFormRef" label-width="100px" class="demo-ruleForm">
       <el-form-item label="按钮名称" prop="butName">
         <el-input v-model="buttonForm.butName" />
@@ -13,19 +13,19 @@
       </el-form-item>
       <el-form-item label="是否启用" prop="enabled">
         <el-switch
-            v-model="buttonForm.enabled"
-            active-text="启用"
-            active-color="#1ab394"
-            active-value="Y"
-            inactive-value="N"
-            inactive-color="#FFA500"
-            inactive-text="禁用"/>
+          v-model="buttonForm.enabled"
+          active-text="启用"
+          active-color="#1ab394"
+          active-value="Y"
+          inactive-value="N"
+          inactive-color="#FFA500"
+          inactive-text="禁用"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button v-if="status === 'add'" type="primary" size="mini" @click="addSave()">确定</el-button>
       <el-button v-if="status === 'edit'" type="primary" size="mini" @click="editSave()">确定</el-button>
-      <el-button @click="resetForm()" size="mini">关闭</el-button>
+      <el-button size="mini" @click="resetForm()">关闭</el-button>
     </span>
   </el-dialog>
 </template>
@@ -40,11 +40,11 @@ export default {
       status: '',
       buttonFormRef: 'buttonFormRef',
       buttonForm: {
-          butId: '',
-          menuId: '',
-          butName: '',
-          permission: '',
-          enabled: ''
+        butId: '',
+        menuId: '',
+        butName: '',
+        permission: '',
+        enabled: ''
       },
       rules: {
         butName: [
@@ -67,7 +67,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     toAddButton(menuId) {
       this.status = 'add'
@@ -88,12 +88,12 @@ export default {
         if (valid) {
           editSaveButton(this.buttonForm).then(() => {
             this.resetForm()
-              this.refreshList()
-            })
-            } else {
-              return false
-            }
-        })
+            this.refreshList()
+          })
+        } else {
+          return false
+        }
+      })
     },
     refreshList() { // 更新列表
       this.$emit('refreshList')
