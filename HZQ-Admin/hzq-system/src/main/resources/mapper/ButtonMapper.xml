@@ -37,6 +37,9 @@
             <if test="menuId != '' and menuId != null">
                 menu_id = #{menuId}
             </if>
+            <if test="butName != '' and butName != null">
+                AND but_name LIKE '%${butName}%'
+            </if>
         </where>
     </select>
 
@@ -67,15 +70,20 @@
     <select id="selectButtonById" parameterType="string" resultMap="baseResult">
         <include refid="selectButton" />
         WHERE
-
+          but_id = #{butId}
     </select>
 
     <delete id="deleteButtonByIds" parameterType="string">
-        UPDATE sys_button SET del_flag = 'Y' WHERE  button_id IN
-
+        DELETE FROM sys_button  WHERE  FIND_IN_SET(but_id, #{buttonId})
     </delete>
 
     <update id="updateButton" parameterType="button">
         UPDATE sys_button
+        <set>
+            <if test="butName != null and butName != ''"> but_name = #{butName},</if>
+            <if test="enabled != null and enabled != ''">enabled = #{enabled},</if>
+            <if test="permission != null and permission != ''">permission = #{permission}</if>
+        </set>
+        WHERE but_id = #{butId}
     </update>
 </mapper>

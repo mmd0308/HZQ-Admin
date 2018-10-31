@@ -10,7 +10,11 @@
       <el-button v-if="status === 'edit'" type="primary" size="small" @click="editSave()">更新</el-button>
       <el-button v-if="status != 'init'" type="info" size="small" @click="addSave()">取消</el-button>
     </div>
-    <el-form :model="menuForm" :rules="rules" :ref="menuFormRef" label-width="100px" class="demo-ruleForm">
+    <el-form
+      v-loading="menuFormLoading"
+      element-loading-text="拼命加载中..."
+      element-loading-spinner="el-icon-loading" 
+      :model="menuForm" :rules="rules" :ref="menuFormRef" label-width="100px" class="demo-ruleForm">
       <el-row>
         <el-col :span="12">
           <el-form-item label="菜单名称:" prop="menuName">
@@ -114,12 +118,15 @@ export default {
         phone: [
           {  required: true, message: '请输入手机号码', trigger: 'blur' }
         ]
-      }
+      },
+      menuFormLoading: false
     }
   },
   methods: {
-    seeMenu(data, ) {
+    seeMenu(data) {
+      this.menuFormLoading = true
       this.menuForm = JSON.parse(JSON.stringify(data))
+      this.menuFormLoading = false
     },
     addSave() {
       this.$refs[this.menuFormRef].validate((valid) => {

@@ -46,13 +46,13 @@ export default {
       selectMenuTree().then(reponse => {
         this.treeDate = reponse.data
         // 默认展示第一菜单数据
-        this.$refs.form.seeMenu(reponse.data[0])
+        this.handleNodeClick(reponse.data[0])
         this.treeLoading = false
       })
     },
     handleNodeClick(data) {
       this.$refs.form.seeMenu(data)
-      this.$refs.butList.page(data.menuId)
+      this.$refs.butList.getMenuId(data.menuId)
     }
   }
 }

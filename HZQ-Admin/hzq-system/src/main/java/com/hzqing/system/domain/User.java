@@ -13,6 +13,10 @@ public class User extends BaseEntity{
     private String avatar;
     private String phone;
     private String delFlag;
+    /**
+     * 部门id
+     */
+    private String departId;
 
 
     public boolean isAdmin() {

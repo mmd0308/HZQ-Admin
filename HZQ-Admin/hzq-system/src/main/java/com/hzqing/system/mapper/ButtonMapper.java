@@ -30,10 +30,10 @@ public interface ButtonMapper {
 
     /**
     * 根据buttonId批量删除Button
-    * @param buttonIds 用户Id数组
+    * @param buttonId 用户Id数组
     * @return 返回影响行
     */
-    int deleteButtonByIds(String[] buttonIds);
+    int deleteButtonByIds(String buttonId);
 
     /**
     * 修改Button

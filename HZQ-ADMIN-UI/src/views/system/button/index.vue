@@ -1,8 +1,8 @@
 <template>
   <div class="but-container">
     <el-card style="margin:10px 0px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入" />
-      <el-button class="filter-item" size="small" type="success" icon="el-icon-search">查找</el-button>
+      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.butName" placeholder="请输入" />
+      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
@@ -11,8 +11,10 @@
         <el-button size="small" type="success" icon="el-icon-edit" @click="editButton(null)" disabled v-else>修改</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteButton(null)" v-if="selectSize != 0">删除</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteButton(null)" disabled v-else>删除</el-button>
-        <el-button size="small" type="warning" icon="el-icon-download" @click="deleteButton">导出</el-button>
         <el-table
+          v-loading="butListLoading"
+          element-loading-text="拼命加载中..."
+          element-loading-spinner="el-icon-loading" 
           :data="tableData"
           ref="userTable"
           fit
@@ -36,8 +38,8 @@
           <el-table-column prop="updateTime" label="更新时间" />
           <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
             <template slot-scope="scope">
-              <el-button size="mini" type="success" icon="el-icon-edit" @click="editButton(scope.row.userId)"/>
-              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteButton(scope.row.userId)"/>
+              <el-button size="mini" type="success" icon="el-icon-edit" @click="editButton(scope.row.butId)"/>
+              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteButton(scope.row.butId)"/>
             </template>
           </el-table-column>
         </el-table>
@@ -68,40 +70,52 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        menuId: ''
+        menuId: '',
+        butName: ''
       },
       total: null,
       tableData: [],
-      selectSize: 0
+      selectSize: 0,
+      menuId: '',
+      butListLoading: false
     }
   },
   methods: {
-    page(menuId) {
+    getMenuId(menuId) {
+      this.menuId = menuId
+      this.page()
+    },
+    page() {
+      this.butListLoading = true
       this.tableData = []
-      this.query.menuId = menuId
+      this.query.menuId = this.menuId
       selectButtonList(this.query).then(reponse => {
         this.tableData = reponse.data
         this.total = reponse.total
+        this.butListLoading = false
       })
     },
-    resetList() {
-      this.tableData = []
-    },
     addButton() {
-      this.$refs.form.addButton()
+      this.$refs.form.toAddButton(this.menuId)
     },
-    editButton(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId)[0]
+    editButton(butId) {
+      if (butId == null) {
+        butId = this.$refs.userTable.selection.map(item => item.butId)[0]
       }
-      this.$refs.form.editButton(userId)
+      this.$refs.form.editButton(butId)
     },
-    deleteButton(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId).join()
+    deleteButton(butId) {
+      if (butId == null) {
+        butId = this.$refs.userTable.selection.map(item => item.butId).join()
       }
-      deleteButtonByIds(userId).then(() => {
-        this.page()
+      this.$confirm('此操作将永久删除该数据吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        typr: 'warning'
+      }).then(() => {
+        deleteButtonByIds(butId).then(() => {
+          this.page()
+        })
       })
     },
     refreshList() {
@@ -109,7 +123,7 @@ export default {
     },
     changeCheckBox(val) {
       // 设置选中行数
-      this.selectSize = this.$refs.userTable.selection.map(item => item.userId).length
+      this.selectSize = this.$refs.userTable.selection.map(item => item.butId).length
     },
     handleSizeChange(val) {
       this.query.pageSize = val

@@ -53,8 +53,7 @@ public class ButtonServiceImpl implements IButtonService {
      * @return 返回影响行
      */
     public int deleteButtonByIds(String ids) {
-        String[] buttonIds = ids.split(",");
-        return buttonMapper.deleteButtonByIds(buttonIds);
+        return buttonMapper.deleteButtonByIds(ids);
     }
     /**
      * 修改Button

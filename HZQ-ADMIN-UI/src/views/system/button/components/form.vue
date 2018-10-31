@@ -5,9 +5,6 @@
     @close="resetForm('buttonForm')"
     width="30%">
     <el-form :model="buttonForm" :rules="rules" :ref="buttonFormRef" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="菜单id" prop="menuId">
-        <el-input v-model="buttonForm.menuId" />
-      </el-form-item>
       <el-form-item label="按钮名称" prop="butName">
         <el-input v-model="buttonForm.butName" />
       </el-form-item>
@@ -44,24 +41,17 @@ export default {
       buttonFormRef: 'buttonFormRef',
       buttonForm: {
           butId: '',
-          menuId: '3367c5161bee4169a67c494e7349d2ff',
+          menuId: '',
           butName: '',
           permission: '',
-          enabled: '',
-          createId: '',
-          createTime: '',
-          updateId: '',
-          updateTime: ''
+          enabled: ''
       },
       rules: {
-        buttonName: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' }
+        butName: [
+          { required: true, message: '请输入按钮名称', trigger: 'blur' }
         ],
-        loginName: [
-          { required: true, message: '请输入登陆名称', trigger: 'blur' }
-        ],
-        phone: [
-          {  required: true, message: '请输入手机号码', trigger: 'blur' }
+        permission: [
+          { required: true, message: '请输入权限编码', trigger: 'blur' }
         ]
       }
     }
@@ -79,14 +69,15 @@ export default {
         }
       });
     },
-    addButton() {
+    toAddButton(menuId) {
       this.status = 'add'
-      this.title = '新增用户'
+      this.title = '新增按钮'
+      this.buttonForm.menuId = menuId
       this.dialogVisible = true
     },
     editButton(buttonId) {
       this.status = 'edit'
-      this.title = '修改用户'
+      this.title = '修改按钮'
       this.dialogVisible = true
       editButton(buttonId).then(response => {
         this.buttonForm = response.data
