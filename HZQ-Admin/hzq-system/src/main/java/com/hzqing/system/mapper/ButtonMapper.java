@@ -13,7 +13,7 @@ public interface ButtonMapper {
      * 根据条件检索列表
      * @return
      */
-    List<Button> selectTableList();
+    List<Button> selectTableList(Button button);
     /**
      * 新增 Button
      * @param button

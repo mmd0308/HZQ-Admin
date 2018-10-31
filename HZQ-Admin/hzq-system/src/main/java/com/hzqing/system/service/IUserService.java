@@ -14,4 +14,13 @@ public interface IUserService {
     int deleteUserByIds(String ids) throws Exception;
 
     int updateUser(User user);
+
+    /**
+     * 给用户赋予角色
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    int insertUserRole(String userId, String roleIds);
+
 }

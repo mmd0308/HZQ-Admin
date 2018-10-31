@@ -31,8 +31,13 @@
             sys_button
     </sql>
 
-    <select id="selectTableList" resultMap="baseResult">
+    <select id="selectTableList" resultMap="baseResult" parameterType="button">
         <include refid="selectButton"/>
+        <where>
+            <if test="menuId != '' and menuId != null">
+                menu_id = #{menuId}
+            </if>
+        </where>
     </select>
 
     <insert id="insertButton" parameterType="button" >

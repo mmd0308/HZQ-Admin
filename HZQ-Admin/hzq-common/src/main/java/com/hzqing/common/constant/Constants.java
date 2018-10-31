@@ -19,7 +19,7 @@ public class Constants {
     /**
      * jwt的过期时间  单位秒
      */
-    public static final int JWT_EXPIRATION = 1800;
+    public static final int JWT_EXPIRATION = 18000;
 
     /**
      * jwt最后跟新时间

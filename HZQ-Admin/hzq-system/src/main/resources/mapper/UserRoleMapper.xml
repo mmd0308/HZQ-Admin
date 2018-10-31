@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.UserRoleMapper">
+
+    <resultMap id="baseResult" type="userrole">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <sql id="selectUserRole">
+        SELECT
+            id,
+            user_id,
+            role_id
+        FROM
+            sys_user_role
+    </sql>
+
+    <insert id="insertUserRole" parameterType="userrole" >
+        INSERT INTO sys_user_role (
+            id,
+            user_id,
+            role_id
+        ) VALUE (
+            #{id},
+            #{userId},
+            #{roleId}
+        )
+    </insert>
+
+    <delete id="deleteUserRoleByUserId" parameterType="string">
+        DELETE FROM sys_user_role WHERE user_id = #{0}
+    </delete>
+
+</mapper>

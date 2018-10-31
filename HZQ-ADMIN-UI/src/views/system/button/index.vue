@@ -67,22 +67,25 @@ export default {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        menuId: ''
       },
       total: null,
       tableData: [],
       selectSize: 0
     }
   },
-  created() {
-    this.page()
-  },
   methods: {
-    page() {
+    page(menuId) {
+      this.tableData = []
+      this.query.menuId = menuId
       selectButtonList(this.query).then(reponse => {
         this.tableData = reponse.data
         this.total = reponse.total
       })
+    },
+    resetList() {
+      this.tableData = []
     },
     addButton() {
       this.$refs.form.addButton()

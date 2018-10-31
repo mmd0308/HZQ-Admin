@@ -86,8 +86,10 @@ public class MenuController extends BaseController{
     */
     @DeleteMapping("/remove")
     public ResponseMessage remove(String menuIds) {
-        int res = menuService.deleteMenuByIds(menuIds);
-        return new ResponseMessage().success();
+        int res = menuService.deleteMenuById(menuIds);
+        if (res == -1)
+            return error("菜单有包含子集菜单或者角色中配置该菜单，不能删除！");
+        return success();
     }
 
 }

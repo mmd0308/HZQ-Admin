@@ -8,6 +8,14 @@ export function selectRoleList(query) {
   })
 }
 
+export function selectRoleListAll() {
+  return request({
+    url: '/hzq/system/role/listAll',
+    method: 'get'
+  })
+}
+
+
 export function addRole(role) {
   return request({
     url: '/hzq/system/role/add',

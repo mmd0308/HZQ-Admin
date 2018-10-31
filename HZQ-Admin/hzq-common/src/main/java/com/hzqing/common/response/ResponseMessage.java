@@ -13,12 +13,29 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ResponseMessage<T> {
-
+    /**
+     * 响应编码
+     */
     private int code;
+    /**
+     * 返回数据
+     */
     private T data;
+    /**
+     * token
+     */
     private String token;
-
+    /**
+     * 分页table数据总数
+     */
     private long total;
+
+    /**
+     * 返回提示信息
+     */
+    private String message;
+
+
 
     public long getTotal() {
         return total;
@@ -74,12 +91,6 @@ public class ResponseMessage<T> {
         return this;
     }
 
-    public ResponseMessage message(int status, T data){
-        this.setCode(status);
-        this.setData(data);
-        return this;
-    }
-
     /**
      * 登录失败  登录名或者密码错误
      * @param message
@@ -129,5 +140,25 @@ public class ResponseMessage<T> {
             }
         }
         return token;
+    }
+
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * 返回错误信息
+     * @param msg
+     * @return
+     */
+    public ResponseMessage error(String msg) {
+        this.setCode(Constants.WEB_RESPONSE_STATUES_ERROR);
+        this.setMessage(msg);
+        return this;
     }
 }

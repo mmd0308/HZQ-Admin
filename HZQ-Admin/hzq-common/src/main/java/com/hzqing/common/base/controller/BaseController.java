@@ -25,4 +25,31 @@ public class BaseController {
     protected ResponseMessage successPage(List<?> datas) {
         return new ResponseMessage().successPage(datas,new PageInfo(datas).getTotal());
     }
+
+    /**
+     *  返回成功数据
+     * @param datas
+     * @return
+     */
+    protected ResponseMessage success(Object datas) {
+        return new ResponseMessage().success(datas);
+    }
+
+    /**
+     * 请求成功
+     * @return
+     */
+    protected ResponseMessage success() {
+        return new ResponseMessage().success();
+    }
+
+    /**
+     * 请求失败
+     * @param msg
+     * @return
+     */
+    protected ResponseMessage error(String msg){
+        return new ResponseMessage().error(msg);
+    }
+
 }

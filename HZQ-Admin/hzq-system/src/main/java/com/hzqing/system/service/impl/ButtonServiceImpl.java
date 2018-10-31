@@ -24,7 +24,7 @@ public class ButtonServiceImpl implements IButtonService {
      * @return
      */
     public List<Button> selectTableList(Button button) {
-        return buttonMapper.selectTableList();
+        return buttonMapper.selectTableList(button);
     }
 
     /**

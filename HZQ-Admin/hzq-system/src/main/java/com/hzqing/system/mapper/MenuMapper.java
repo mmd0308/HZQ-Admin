@@ -13,7 +13,7 @@ public interface MenuMapper {
      * 根据条件检索列表
      * @return
      */
-    List<Menu> selectTableList();
+    List<Menu> selectTableList(Menu menu);
     /**
      * 新增 Menu
      * @param menu
@@ -33,7 +33,7 @@ public interface MenuMapper {
     * @param menuIds 用户Id数组
     * @return 返回影响行
     */
-    int deleteMenuByIds(String[] menuIds);
+    int deleteMenuById(String menuIds);
 
     /**
     * 修改Menu

@@ -15,6 +15,9 @@
         <el-button size="small" type="primary" @click="checkRole" v-else disabled><svg-icon icon-class="role"/> 角色分配</el-button>
         <el-button size="small" type="warning" icon="el-icon-download" @click="deleteUser">导出</el-button>
         <el-table
+          v-loading="tableload"
+          element-loading-text="拼命加载中..."
+          element-loading-spinner="el-icon-loading"
           :data="tableData"
           ref="userTable"
           fit
@@ -67,7 +70,8 @@ export default {
       },
       total: null,
       tableData: [],
-      selectSize: 0
+      selectSize: 0,
+      tableload: false
     }
   },
   created() {
@@ -75,9 +79,11 @@ export default {
   },
   methods: {
     page() {
+      this.tableload = true
       selectUserList(this.query).then(reponse => {
         this.tableData = reponse.data
         this.total = reponse.total
+        this.tableload = false
       })
     },
     checkRole() {

@@ -1,6 +1,7 @@
 package com.hzqing.generator.service.impl;
 
 import com.hzqing.common.constant.Constants;
+import com.hzqing.common.response.ResponseMessage;
 import com.hzqing.generator.domain.ColumnInfo;
 import com.hzqing.generator.domain.GeneratorRule;
 import com.hzqing.generator.domain.TableInfo;
@@ -62,7 +63,7 @@ public class GeneratorServiceImpl implements IGeneratorService {
      * @param columnInfos
      * @param zipOutputStream
      */
-    public void generatorCode(TableInfo tableInfo, List<ColumnInfo> columnInfos, ZipOutputStream zipOutputStream,GeneratorRule generatorRule){
+    public ResponseMessage generatorCode(TableInfo tableInfo, List<ColumnInfo> columnInfos, ZipOutputStream zipOutputStream, GeneratorRule generatorRule){
         // 生成实体类
         // 表名转成实体类名称
         String entityName = GeneratorUtils.tableNameToClassName(tableInfo.getTableName());
@@ -89,5 +90,6 @@ public class GeneratorServiceImpl implements IGeneratorService {
                logger.error("模块渲染失败，表名：" + tableInfo.getTableName(),e);
             }
         }
+        return new ResponseMessage().success();
     }
 }

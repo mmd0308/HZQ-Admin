@@ -35,6 +35,16 @@ public class RoleController extends BaseController{
     }
 
     /**
+     * 获取所有的角色
+     * @return
+     */
+    @GetMapping("/listAll")
+    public ResponseMessage<PageInfo<Role>> listAll(){
+        List<Role> roles = roleService.selectTableList(new Role());
+        return success(roles);
+    }
+
+    /**
     * 新增角色管理信息
     * @param role
     * @return
@@ -87,7 +97,7 @@ public class RoleController extends BaseController{
     @GetMapping("/selectRolesByUserId/{userId}")
     public ResponseMessage selectRolesByUserId(@PathVariable String userId) {
         List<Role> roles = roleService.selectRolesByUserId(userId);
-        return new ResponseMessage().success();
+        return success(roles);
     }
 
 }

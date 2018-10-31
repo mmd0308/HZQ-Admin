@@ -3,7 +3,9 @@ package com.hzqing.system.service.impl;
 import com.hzqing.common.util.StringUtils;
 import com.hzqing.common.util.UUIDUtils;
 import com.hzqing.system.domain.Menu;
+import com.hzqing.system.domain.RoleMenu;
 import com.hzqing.system.mapper.MenuMapper;
+import com.hzqing.system.mapper.RoleMenuMapper;
 import com.hzqing.system.service.IMenuService;
 import com.hzqing.system.vo.MenuVO;
 import org.apache.commons.lang3.ObjectUtils;
@@ -22,13 +24,15 @@ import java.util.*;
 public class MenuServiceImpl implements IMenuService {
     @Autowired
     private MenuMapper menuMapper;
+    @Autowired
+    private RoleMenuMapper roleMenuMapper;
     /**
      * 根据条件检索列表
      * @param menu
      * @return
      */
     public List<Menu> selectTableList(Menu menu) {
-        return menuMapper.selectTableList();
+        return menuMapper.selectTableList(menu);
     }
 
     /**
@@ -55,12 +59,25 @@ public class MenuServiceImpl implements IMenuService {
     }
     /**
      * 根据menuId批量删除Menu
-     * @param ids Menu Id数组
+     * @param id Menu Id数组
      * @return 返回影响行
      */
-    public int deleteMenuByIds(String ids) {
-        String[] menuIds = ids.split(",");
-        return menuMapper.deleteMenuByIds(menuIds);
+    public int deleteMenuById(String id) {
+        // 判断是否有子集菜单
+        Menu menu = new Menu();
+        menu.setParentId(id);
+        List<Menu> menus = this.selectTableList(menu);
+        if (menus.size() > 0 ){
+            return -1;
+        }
+        // 判断该菜单是否跟角色绑定
+        RoleMenu roleMenu = new RoleMenu();
+        roleMenu.setMenuId(id);
+        List<RoleMenu> roleMenus = roleMenuMapper.selectTableList(roleMenu);
+        if (roleMenus.size() > 0) {
+            return -1;
+        }
+        return menuMapper.deleteMenuById(id);
     }
     /**
      * 修改Menu

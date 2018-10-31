@@ -2,17 +2,25 @@
   <div class="app-container">
     <el-col :span="5" style="padding-right:20px;">
       <el-card>
-      <el-tree :data="treeDate" :props="treeProps" @node-click="handleNodeClick"/>
+      <el-tree 
+        v-loading="treeLoading"
+        element-loading-text="拼命加载中..."
+        element-loading-spinner="el-icon-loading"
+        ref="treeData"
+        node-key="menuId"
+        :data="treeDate"
+        :props="treeProps"
+        @node-click="handleNodeClick"/>
       </el-card>
     </el-col>
     <el-col :span="19">
-      <menu-form ref="form" @refreshList="refreshList"/>
+      <menu-form ref="form" />
       <button-index ref="butList" />
     </el-col>
   </div>
 </template>
 <script>
-import { selectMenuTree, deleteMenuByIds } from '@/api/system/menu/index'
+import { selectMenuTree } from '@/api/system/menu/index'
 import MenuForm from './components/form'
 import ButtonIndex from '@/views/system/button/index'
 export default {
@@ -25,13 +33,8 @@ export default {
       treeProps: {
         label: 'menuName'
       },
-      query: {
-        pageNum: 1,
-        pageSize: 10
-      },
-      total: null,
       treeDate: [],
-      selectSize: 0
+      treeLoading: false
     }
   },
   created() {
@@ -39,41 +42,17 @@ export default {
   },
   methods: {
     tree() {
+      this.treeLoading = true
       selectMenuTree().then(reponse => {
         this.treeDate = reponse.data
+        // 默认展示第一菜单数据
+        this.$refs.form.seeMenu(reponse.data[0])
+        this.treeLoading = false
       })
     },
-    addMenu() {
-      this.$refs.form.addMenu()
-    },
-    editMenu(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId)[0]
-      }
-      this.$refs.form.editMenu(userId)
-    },
-    deleteMenu(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId).join()
-      }
-      deleteMenuByIds(userId).then(() => {
-        this.page()
-      })
-    },
-    refreshList() {
-      this.page()
-    },
-    changeCheckBox(val) {
-      // 设置选中行数
-      this.selectSize = this.$refs.userTable.selection.map(item => item.userId).length
-    },
-    handleSizeChange(val) {
-      this.query.pageSize = val
-      this.page()
-    },
-    handleCurrentChange(val) {
-      this.query.pageNum = val
-      this.page()
+    handleNodeClick(data) {
+      this.$refs.form.seeMenu(data)
+      this.$refs.butList.page(data.menuId)
     }
   }
 }

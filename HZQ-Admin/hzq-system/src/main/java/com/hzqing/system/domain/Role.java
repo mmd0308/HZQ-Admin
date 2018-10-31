@@ -64,6 +64,6 @@ public class Role {
     /**
      * 权限编码，唯一校验
      */
-    private String permCode;
+    private String permission;
 
 }

@@ -2,7 +2,9 @@ package com.hzqing.system.service.impl;
 
 import com.hzqing.common.util.UUIDUtils;
 import com.hzqing.system.domain.User;
+import com.hzqing.system.domain.UserRole;
 import com.hzqing.system.mapper.UserMapper;
+import com.hzqing.system.mapper.UserRoleMapper;
 import com.hzqing.system.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +18,9 @@ import java.util.Random;
 public class UserServiceImpl implements IUserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     public List<User> selectTableList() {
         return userMapper.selectTableList();
@@ -53,7 +58,34 @@ public class UserServiceImpl implements IUserService {
         return userMapper.deleteUserByIds(userIds);
     }
 
+    /**
+     * 修改用户
+     * @param user
+     * @return
+     */
     public int updateUser(User user) {
         return userMapper.updateUser(user);
+    }
+
+    /**
+     * 给用户赋予角色
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    @Override
+    public int insertUserRole(String userId, String roleIds) {
+        // 删除该用户的所有角色，从新赋予新角色
+        userRoleMapper.deleteUserRoleByUserId(userId);
+        String[] split = roleIds.split(",");
+        int res = 0;
+        for (String roleId : split) {
+            UserRole userRole = new UserRole();
+            userRole.setId(UUIDUtils.get32UUID());
+            userRole.setRoleId(roleId);
+            userRole.setUserId(userId);
+            res = res + userRoleMapper.insertUserRole(userRole);
+        }
+        return res;
     }
 }

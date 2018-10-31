@@ -33,7 +33,7 @@ public interface IMenuService {
      * @param menuIds 用户Id数组
      * @return 返回影响行
      */
-    int deleteMenuByIds(String menuIds);
+    int deleteMenuById(String menuIds);
     /**
      * 修改Menu
      * @param menu

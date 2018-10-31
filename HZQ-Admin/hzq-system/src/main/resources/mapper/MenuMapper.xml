@@ -39,8 +39,17 @@
             sys_menu
     </sql>
 
-    <select id="selectTableList" resultMap="baseResult">
+    <select id="selectTableList" resultMap="baseResult" parameterType="menu">
         <include refid="selectMenu"/>
+        <where>
+            <if test="menuName != null and menuName != ''">
+                menu_name LIKE  '%' + ${menuName}+ '%'
+            </if>
+            <if test="parentId != null and parentId != ''">
+                AND  parent_id = #{parentId}
+            </if>
+        </where>
+
     </select>
 
     <insert id="insertMenu" parameterType="menu" >
@@ -81,12 +90,22 @@
 
     </select>
 
-    <delete id="deleteMenuByIds" parameterType="string">
-        UPDATE sys_menu SET del_flag = 'Y' WHERE  menu_id IN
-
+    <delete id="deleteMenuById" parameterType="string">
+      DELETE FROM sys_menu
+      WHERE menu_id = #{0}
     </delete>
 
     <update id="updateMenu" parameterType="menu">
         UPDATE sys_menu
+        <set>
+            <if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
+            <if test="menuSort != null">menu_sort = #{menuSort},</if>
+            <if test="menuType != null and menuType != ''">menu_type = #{menuType},</if>
+            <if test="enabled != null and enabled != ''">enabled = #{enabled},</if>
+            <if test="icon != null and icon != ''">icon = #{icon},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="permission != null and permission != ''">permission = #{permission}</if>
+        </set>
+        WHERE menu_id = #{menuId}
     </update>
 </mapper>

@@ -94,9 +94,10 @@ public class UserController extends BaseController{
      * @param roleIds 角色id 使用，分割
      * @return
      */
-    @PostMapping("/setRole")
-    public ResponseMessage setRole(String userId, String roleIds) {
-        return null;
+    @PostMapping("/addUserRole")
+    public ResponseMessage addUserRole( String userId, String roleIds) {
+        int res = userService.insertUserRole(userId,roleIds);
+        return success(res);
     }
 
 }

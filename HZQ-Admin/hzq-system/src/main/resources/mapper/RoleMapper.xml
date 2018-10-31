@@ -10,7 +10,7 @@
         <result column="role_sort" property="roleSort"/>
         <result column="enabled" property="enabled"/>
         <result column="del_flag" property="delFlag"/>
-        <result column="perm_code" property="permCode"/>
+        <result column="permission" property="permission"/>
         <result column="remark" property="remark"/>
         <result column="create_by" property="createBy"/>
         <result column="create_time" property="createTime"/>
@@ -25,7 +25,7 @@
             role_sort,
             enabled,
             del_flag,
-            perm_code,
+            permission,
             remark,
             create_by,
             create_time,
@@ -42,7 +42,7 @@
             r.role_sort,
             r.enabled,
             r.del_flag,
-            r.perm_code,
+            r.permission,
             r.remark,
             r.create_by,
             r.create_time,
@@ -67,7 +67,7 @@
             role_sort,
             enabled,
             del_flag,
-            perm_code,
+            permission,
             remark,
             create_by,
             create_time,
@@ -79,7 +79,7 @@
             #{roleSort},
             #{enabled},
             #{delFlag},
-            #{permCode}
+            #{permission},
             #{remark},
             #{createBy},
             #{createTime},
@@ -91,7 +91,7 @@
     <select id="selectRoleById" parameterType="string" resultMap="baseResult">
         <include refid="selectRole" />
         WHERE
-
+          role_id = #{0}
     </select>
 
     <delete id="deleteRoleByIds" parameterType="string">

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.RoleMenuMapper">
+
+    <resultMap id="baseResult" type="rolemenu">
+        <result column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="menu_id" property="menuId"/>
+    </resultMap>
+
+    <sql id="selectRoleMenu">
+        SELECT
+            id,
+            role_id,
+            menu_id
+        FROM
+            sys_role_menu
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult" parameterType="roleMenu">
+        <include refid="selectRoleMenu"/>
+        <where>
+            <if test="roleId != null and roleId != ''">
+                role_id = #{roleId}
+            </if>
+            <if test="menuId != null and menuId != ''">
+                AND menu_id = #{menuId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertRoleMenu" parameterType="rolemenu" >
+        INSERT INTO sys_role_menu (
+            id,
+            role_id,
+            menu_id
+        ) VALUE (
+            #{id},
+            #{roleId},
+            #{menuId}
+        )
+    </insert>
+
+    <select id="selectRoleMenuById" parameterType="string" resultMap="baseResult">
+        <include refid="selectRoleMenu" />
+    </select>
+
+    <delete id="deleteRoleMenuByIds" parameterType="string">
+        UPDATE sys_rolemenu SET del_flag = 'Y' WHERE  rolemenu_id IN
+
+    </delete>
+
+    <update id="updateRoleMenu" parameterType="rolemenu">
+        UPDATE sys_rolemenu
+    </update>
+</mapper>
