@@ -6,19 +6,7 @@
 	<groupId>com.hzqing</groupId>
 	<artifactId>hzq-generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <packaging>jar</packaging>
+
 	<name>hzq-generator</name>
 	<description>Generator代码生成器</description>
 
@@ -29,10 +17,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<properties>
-		<velocity.version>1.7</velocity.version>
-	</properties>
-
 	<dependencies>
 		<!--freemarker代码生成使用模板 -->
 		<dependency>
@@ -41,7 +25,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>hzqing.com</groupId>
+			<groupId>com.hzqing</groupId>
 			<artifactId>hzq-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

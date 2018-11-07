@@ -1,4 +1,4 @@
-package com.hzqing.generator.controller;
+package com.hzqing.admin.controller.generator;
 
 import com.hzqing.common.base.controller.BaseController;
 import com.hzqing.common.response.ResponseMessage;

@@ -1,4 +1,4 @@
-package com.hzqing.system.controller;
+package com.hzqing.admin.controller.system;
 
 import com.github.pagehelper.PageInfo;
 import com.hzqing.common.base.controller.BaseController;

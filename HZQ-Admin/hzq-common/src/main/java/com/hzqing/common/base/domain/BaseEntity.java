@@ -1,5 +1,6 @@
 package com.hzqing.common.base.domain;
 
+
 import lombok.Data;
 
 import java.util.Date;

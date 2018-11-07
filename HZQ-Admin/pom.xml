@@ -36,7 +36,6 @@
 	</properties>
 
 	<modules>
-		<!--项目启动入口， 全局配置-->
 		<module>hzq-admin</module>
 		<!--公共工具类-->
 		<module>hzq-common</module>
@@ -110,8 +109,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -128,20 +125,4 @@
 			<version>1.2.3</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>
