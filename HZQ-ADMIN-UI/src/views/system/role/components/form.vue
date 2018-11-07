@@ -4,15 +4,15 @@
     :title="title"
     width="30%"
     @close="resetForm('roleForm')">
-    <el-form :model="roleForm" :rules="rules" :ref="roleFormRef" label-width="100px" class="demo-ruleForm">
+    <el-form :model="roleForm" :rules="roleRules" :ref="roleFormRef" label-width="100px" class="demo-ruleForm">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="roleForm.roleName" />
+        <el-input v-model="roleForm.roleName" placeholder="请输入角色名称" />
       </el-form-item>
       <el-form-item label="排序" prop="roleSort">
         <el-input v-model="roleForm.roleSort" />
       </el-form-item>
-      <el-form-item label="权限编码" prop="permCode">
-        <el-input v-model="roleForm.permCode" />
+      <el-form-item label="权限编码" prop="permission">
+        <el-input v-model="roleForm.permission" placeholder="请输入权限编码" />
       </el-form-item>
       <el-form-item label="是否启用" prop="enabled">
         <el-switch
@@ -36,10 +36,23 @@
   </el-dialog>
 </template>
 <script>
-import { addRole, editRole, editSaveRole } from '@/api/system/role/index'
+import { addRole, editRole, editSaveRole, checkPermission } from '@/api/system/role/index'
 export default {
   name: 'FormDialog',
   data() {
+    const validatePermission = (role, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入权限编码'))
+      } else {
+        checkPermission(this.roleForm).then(response => {
+          if (!response.data) {
+            debugger
+            callback(new Error('权限编码重复'))
+          }
+          callback()
+        })
+      }
+    };
     return {
       dialogVisible: false,
       title: '',
@@ -49,19 +62,16 @@ export default {
         roleId: '',
         roleName: '',
         roleSort: 0,
-        permCode: '',
+        permission: '',
         enabled: 'Y',
         remark: ''
       },
-      rules: {
+      roleRules: {
         roleName: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' }
+          { required: true, message: '请输入用户名称', trigger:  ['blur', 'change'] }
         ],
-        loginName: [
-          { required: true, message: '请输入登陆名称', trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' }
+        permission: [
+          { validator: validatePermission, required: true, trigger: 'blur' }
         ]
       }
     }

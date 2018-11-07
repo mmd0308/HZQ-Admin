@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-card style="margin-bottom:10px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入" />
-      <el-button class="filter-item" size="small" type="success" icon="el-icon-search">查找</el-button>
+      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.roleName" placeholder="请输入" @keyup.enter.native="page"  />
+      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page" >查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
@@ -11,10 +11,9 @@
         <el-button size="small" type="success" icon="el-icon-edit" @click="editRole(null)" disabled v-else>修改</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null)" v-if="selectSize != 0">删除</el-button>
         <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null)" disabled v-else>删除</el-button>
-        <el-button size="small" type="warning" icon="el-icon-download" @click="deleteRole">导出</el-button>
         <el-table
           v-loading="tableload"
-          ref="userTable"
+          ref="roleTable"
           :data="tableData"
           element-loading-text="拼命加载中..."
           element-loading-spinner="el-icon-loading"
@@ -35,14 +34,14 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="permCode" label="权限编码" />
+          <el-table-column prop="permission" label="权限编码" />
           <el-table-column prop="createTime" label="创建时间" />
           <el-table-column prop="updateTime" label="更新时间" />
           <el-table-column prop="remark" label="备注" />
           <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
             <template slot-scope="scope">
-              <el-button size="mini" type="success" icon="el-icon-edit" @click="editRole(scope.row.userId)"/>
-              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRole(scope.row.userId)"/>
+              <el-button size="mini" type="success" icon="el-icon-edit" @click="editRole(scope.row.roleId)"/>
+              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRole(scope.row.roleId)"/>
             </template>
           </el-table-column>
         </el-table>
@@ -72,7 +71,8 @@ export default {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        roleName: ''
       },
       total: null,
       tableData: [],
@@ -95,17 +95,17 @@ export default {
     addRole() {
       this.$refs.form.addRole()
     },
-    editRole(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId)[0]
+    editRole(roleId) {
+      if (roleId == null) {
+        roleId = this.$refs.roleTable.selection.map(item => item.roleId)[0]
       }
-      this.$refs.form.editRole(userId)
+      this.$refs.form.editRole(roleId)
     },
-    deleteRole(userId) {
-      if (userId == null) {
-        userId = this.$refs.userTable.selection.map(item => item.userId).join()
+    deleteRole(roleId) {
+      if (roleId == null) {
+        roleId = this.$refs.roleTable.selection.map(item => item.roleId).join()
       }
-      deleteRoleByIds(userId).then(() => {
+      deleteRoleByIds(roleId).then(() => {
         this.page()
       })
     },
@@ -114,7 +114,7 @@ export default {
     },
     changeCheckBox(val) {
       // 设置选中行数
-      this.selectSize = this.$refs.userTable.selection.map(item => item.userId).length
+      this.selectSize = this.$refs.roleTable.selection.map(item => item.roleId).length
     },
     handleSizeChange(val) {
       this.query.pageSize = val

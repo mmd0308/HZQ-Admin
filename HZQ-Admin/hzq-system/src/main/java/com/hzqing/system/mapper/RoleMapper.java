@@ -9,7 +9,7 @@ public interface RoleMapper {
      * 根据条件检索列表
      * @return
      */
-    List<Role> selectTableList();
+    List<Role> selectTableList(Role role);
     /**
      * 新增 Role
      * @param role
@@ -29,7 +29,7 @@ public interface RoleMapper {
     * @param roleIds 用户Id数组
     * @return 返回影响行
     */
-    int deleteRoleByIds(String[] roleIds);
+    int deleteRoleByIds(String roleIds);
 
     /**
     * 修改Role
@@ -44,4 +44,11 @@ public interface RoleMapper {
      * @return
      */
     List<Role> selectRolesByUserId(String userId);
+
+    /**
+     * 检验编码是否重复
+     * @param role
+     * @return
+     */
+    List<Role> checkPermission(Role role);
 }

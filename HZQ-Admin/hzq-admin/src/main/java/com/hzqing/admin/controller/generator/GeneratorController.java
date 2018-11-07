@@ -23,6 +23,13 @@ public class GeneratorController extends BaseController{
     @Autowired
     private IGeneratorService generatorService;
 
+    /**
+     * 获取所有的表信息
+     * @param tableInfo
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/list")
     @ResponseBody
     public ResponseMessage<List<TableInfo>> list(TableInfo tableInfo,int pageNum,int pageSize){

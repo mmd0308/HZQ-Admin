@@ -90,6 +90,16 @@ public class RoleController extends BaseController{
     }
 
     /**
+     * 检验编码是否唯一
+     * @param role
+     * @return true 表示唯一 false 表示重复
+     */
+    @PostMapping("/checkPermission")
+    public ResponseMessage checkPermission(@RequestBody Role role) {
+        return success(roleService.checkPermission(role));
+    }
+
+    /**
      * 根据用户id获取用户的角色
      * @param userId
      * @return

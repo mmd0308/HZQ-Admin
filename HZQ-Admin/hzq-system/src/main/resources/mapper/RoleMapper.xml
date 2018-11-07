@@ -53,10 +53,14 @@
         LEFT JOIN sys_user_role ur ON r.role_id = ur.role_id
     </sql>
 
-    <select id="selectTableList" resultMap="baseResult">
+    <select id="selectTableList" parameterType="role" resultMap="baseResult">
         <include refid="selectRole"/>
-        WHERE
+        <where>
             del_flag = 'N'
+          <if test="roleName != null and roleName != ''">
+              AND role_name LIKE  '%${roleName}%'
+          </if>
+        </where>
         ORDER BY role_sort ASC
     </select>
 
@@ -95,12 +99,19 @@
     </select>
 
     <delete id="deleteRoleByIds" parameterType="string">
-        UPDATE sys_role SET del_flag = 'Y' WHERE  role_id IN
-
+        UPDATE sys_role SET del_flag = 'Y' WHERE  FIND_IN_SET(role_id, #{roleIds})
     </delete>
 
     <update id="updateRole" parameterType="role">
         UPDATE sys_role
+        <set>
+            <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            <if test="roleSort != null">role_sort = #{roleSort},</if>
+            <if test="enabled != null and enabled != ''">enabled = #{enabled},</if>
+            <if test="permission != null and permission != ''">permission = #{permission},</if>
+            <if test="remark != null and remark != ''">remark = #{remark}</if>
+        </set>
+        WHERE role_id = #{roleId}
     </update>
     
     <select id="selectRolesByUserId" parameterType="string" resultMap="baseResult">
@@ -108,5 +119,14 @@
         WHERE
           r.del_flag = 'N'
           AND ur.user_id = #{userId}
+    </select>
+
+    <select id="checkPermission" parameterType="role" resultMap="baseResult">
+        <include refid="selectRole" />
+        WHERE
+          permission = #{permission}
+          <if test="roleId != null and roleId != ''">
+             AND role_id != #{roleId}
+          </if>
     </select>
 </mapper>

@@ -47,4 +47,10 @@ public interface IRoleService {
      */
     List<Role> selectRolesByUserId(String userId);
 
+    /**
+     * 检查编码是否唯一
+     * @param role
+     * @return
+     */
+    boolean checkPermission(Role role);
 }

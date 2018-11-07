@@ -22,13 +22,15 @@
             table_name, table_comment, create_time, update_time
         FROM
             information_schema.tables
-
     </sql>
 
     <select id="selectTableList" resultMap="tableInfoResult" parameterType="tableinfo">
         <include refid="selectTableInfo"/>
         WHERE
             table_schema = (SELECT DATABASE())
+        <if test="tableName != null and tableName != ''">
+            AND table_name LIKE '%${tableName}%'
+        </if>
     </select>
 
     <select id="selectTableByName" parameterType="string" resultMap="tableInfoResult">

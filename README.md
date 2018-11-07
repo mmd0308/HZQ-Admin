@@ -7,58 +7,57 @@
 ## 使用环境
 - Jdk 1.8
 
-- Mysql 5.6
+- Mysql 5.7
 
 - Docker (可选)
 
 ## 使用技术
-- Spring boot 2.0.0
+- Spring boot 2.0.6.RELEASE
 
-- mybatis 3.4.5 
+- mybatis 3.4.6
 
-- Spring 4.3.12
+- Spring 5.0.10
 
-- Spring MVC 4.3.12
+- Spring MVC 5.0.10
+
+- Spring Security 5.0.9.RELEASE
 
 - Maven
 
-- Vue
+- Vue 2
 
 - Element ui
 
 ## 功能
 
-- 用户管理 （完成）
+- 用户管理 
 
-- 角色管理 （完成）
+- 角色管理 (完成)
 
-- 字典管理 （完成）
+- 字典管理 
 
-- 菜单管理 （完成）
+- 菜单管理 
 
-- 按钮管理 （完成）
+- 按钮管理 
 
 - 图标管理 （完成）
 
-- 权限管理  (完成)
+- 权限管理  
 
-- 登录拦截 （完成)
+- 登录拦截 
 
-[点击查看](http://www.hzqing.com)
+- 代码生成
+
+- 系统接口 - 整合`Swagger`  (完成)
+
+- SQL监控 (完成)
+
 
 # 更新日志
 
-- 2018-06-12 完善图标管理，菜单管理，按钮管理,登录拦截
-- 2018-05-26 重构完用户管理，角色管理
-- 2018-05-23 项目基础构建完成
-
 
 # 功能截图
-![img/1.png](img/1.png)
-![img/2.png](img/2.png)
-![img/3.png](img/3.png)
-![img/4.png](img/4.png)
-![img/5.png](img/5.png)
+
 
 # MIT License
 

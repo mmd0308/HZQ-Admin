@@ -1,7 +1,7 @@
 <template>
   <div class="but-container">
     <el-card style="margin:10px 0px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.butName" placeholder="请输入" />
+      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.butName" placeholder="请输入" @keyup.enter.native="page" />
       <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>

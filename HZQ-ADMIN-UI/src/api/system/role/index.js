@@ -53,3 +53,11 @@ export function selectRolesByUserId(userId) {
     method: 'get'
   })
 }
+
+export function checkPermission(role) {
+  return request({
+    url: '/hzq/system/role/checkPermission',
+    method: 'post',
+    data: role
+  })
+}

@@ -27,13 +27,13 @@
 
     <insert id="insert${className}" parameterType="${classNameLower}" >
         INSERT INTO ${tableName} (
-<#list columns as col>
-        ${col.columnName}<#if  col_index != columns?size-1>,</#if>
-</#list>
+        <#list columns as col>
+            ${col.columnName}<#if  col_index != columns?size-1>,</#if>
+        </#list>
         ) VALUE (
-<#list columns as col>
-        #\/{${col.attrName}}<#if  col_index != columns?size-1>,</#if>
-</#list>
+        <#list columns as col>
+            <#noparse>#</#noparse>{${col.attrName}}<#if  col_index != columns?size-1>,</#if>
+        </#list>
         )
     </insert>
 

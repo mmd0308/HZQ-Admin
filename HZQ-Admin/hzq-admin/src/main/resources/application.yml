@@ -41,4 +41,7 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
-
+hzq:
+  druid:
+    username: admin
+    password: admin

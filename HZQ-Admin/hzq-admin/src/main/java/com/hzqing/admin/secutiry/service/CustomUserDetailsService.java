@@ -30,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         //UserDetails 封装用户数据的接口
         User user = new User("admin", passwordEncoder.encode("admin"),
                 AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER,ROLE_ADMIN"));
-        System.out.println(user);
         return user;
     }
 

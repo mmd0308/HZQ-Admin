@@ -24,7 +24,7 @@ public class RoleServiceImpl implements IRoleService {
      * @return
      */
     public List<Role> selectTableList(Role role) {
-        return roleMapper.selectTableList();
+        return roleMapper.selectTableList(role);
     }
 
     /**
@@ -54,8 +54,7 @@ public class RoleServiceImpl implements IRoleService {
      * @return 返回影响行
      */
     public int deleteRoleByIds(String ids) {
-        String[] roleIds = ids.split(",");
-        return roleMapper.deleteRoleByIds(roleIds);
+        return roleMapper.deleteRoleByIds(ids);
     }
     /**
      * 修改Role
@@ -63,6 +62,7 @@ public class RoleServiceImpl implements IRoleService {
      * @return 返回影响行数
      */
     public int updateRole(Role role) {
+        role.setUpdateTime(new Date());
         return roleMapper.updateRole(role);
     }
 
@@ -74,5 +74,18 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public List<Role> selectRolesByUserId(String userId) {
         return roleMapper.selectRolesByUserId(userId);
+    }
+
+    /**
+     * 检查编码是否重复
+     * @param role
+     * @return
+     */
+    @Override
+    public boolean checkPermission(Role role) {
+        List<Role> roles = roleMapper.checkPermission(role);
+        if (roles.size() == 0 )
+            return true;
+        return false;
     }
 }

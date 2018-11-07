@@ -58,24 +58,26 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="包路径">
               <el-input />
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
       </el-form>
     </el-card>
     <el-card style="margin-bottom:10px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入表名称" />
-      <el-button class="filter-item" size="small" type="success" icon="el-icon-search">查找</el-button>
-      <el-button class="filter-item" size="small" type="primary" icon="el-icon-refresh">重置</el-button>
+      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.tableName" placeholder="请输入表名称" @keyup.enter.native="page" />
+      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
         <el-button size="small" type="primary" icon="el-icon-download" @click="generatorCode(null)">批量生成</el-button>
         <el-table
           :data="tableData"
+          v-loading="tableload"
+          element-loading-text="拼命加载中..."
+          element-loading-spinner="el-icon-loading"
           fit
           ref="generatorTable"
           highlight-current-row
@@ -111,7 +113,8 @@ export default {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        tableName: ''
       },
       total: 0,
       tableData: [],
@@ -120,7 +123,8 @@ export default {
         packageName: '',
         moudleName: '',
         author: ''
-      }
+      },
+      tableload: false
     }
   },
   created() {
@@ -128,8 +132,11 @@ export default {
   },
   methods: {
     page() {
+      this.tableload = true
       selectTableList(this.query).then(reponse => {
         this.tableData = reponse.data
+        this.total = reponse.total
+        this.tableload = false
       })
     },
     generatorCode(tableName) {
