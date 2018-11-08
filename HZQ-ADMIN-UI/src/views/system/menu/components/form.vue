@@ -89,8 +89,6 @@ export default {
   name: 'FormDialog',
   data() {
     return {
-      dialogVisible: false,
-      title: '',
       status: 'init',
       menuFormRef: 'menuFormRef',
       menuForm: {
@@ -159,11 +157,11 @@ export default {
             this.status = 'init'
             this.$parent.$parent.$refs.treeData.remove(this.menuForm.menuId)
             this.$parent.$parent.$refs.treeData.append(this.menuForm,this.menuForm.parentId)
-            })
-            } else {
-              return false
-            }
-        })
+          })
+        } else {
+          return false
+        }
+      })
     },
     deleteMenu() { // 删除菜单
       this.$confirm('此操作将永久删除[' + this.menuForm.menuName + ']菜单?', '提示', {
@@ -177,9 +175,6 @@ export default {
           this.menuForm = this.$parent.$parent.$refs.treeData.getNode(this.menuForm.parentId)
         })
       })
-    },
-    refreshList() { // 更新列表
-      this.$emit('refreshList')
     },
     resetForm() {
       this.$refs[this.menuFormRef].resetFields()

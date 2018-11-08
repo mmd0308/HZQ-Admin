@@ -19,12 +19,20 @@
             ${tableName}
     </sql>
 
+    <#--按照条件查询所有-->
     <select id="selectTableList" resultMap="baseResult">
         <include refid="select${className}"/>
-        WHERE
-            del_flag = 'N'
+        <where>
+            1=1
+        <#list columns as col>
+            <#if  col.columnName == 'del_flag'>AND del_flag = 'N'</#if>
+            <if test="${col.attrName} != null and ${col.attrName} != ''">
+              AND  ${col.columnName} =  <#noparse>#</#noparse>{${col.attrName}}
+            </if>
+        </#list>
+        </where>
     </select>
-
+    <#--插入数据-->
     <insert id="insert${className}" parameterType="${classNameLower}" >
         INSERT INTO ${tableName} (
         <#list columns as col>
@@ -39,16 +47,18 @@
 
     <select id="select${className}ById" parameterType="string" resultMap="baseResult">
         <include refid="select${className}" />
-        WHERE
-
     </select>
 
     <delete id="delete${className}ByIds" parameterType="string">
-        UPDATE sys_${classNameLower} SET del_flag = 'Y' WHERE  ${classNameLower}_id IN
-
+        UPDATE sys_${classNameLower} SET del_flag = 'Y'
     </delete>
 
     <update id="update${className}" parameterType="${classNameLower}">
-        UPDATE sys_${classNameLower}
+        UPDATE ${tableName}
+        <set>
+      <#list columns as col>
+            <if test="${col.attrName} != null and ${col.attrName} != ''">${col.columnName} = <#noparse>#</#noparse>{${col.attrName}},</if>
+      </#list>
+        </set>
     </update>
 </mapper>

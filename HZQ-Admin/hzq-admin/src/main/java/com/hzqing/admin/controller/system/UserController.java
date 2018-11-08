@@ -29,12 +29,22 @@ public class UserController extends BaseController{
      * @return
      */
     @GetMapping("/list")
-    public ResponseMessage<PageInfo<User>> list(int pageNum,int pageSize){
+    public ResponseMessage<PageInfo<User>> list(int pageNum,int pageSize,User user){
         startPage(pageNum,pageSize);
-        List<User> users = userService.selectTableList();
-
+        List<User> users = userService.selectTableList(user);
         return successPage(users);
     }
+
+    /**
+     * 获取所有的用户
+     * @return
+     */
+    @GetMapping("/listAll")
+    public ResponseMessage<PageInfo<User>> listAll(){
+        List<User> users = userService.selectTableList(new User());
+        return success(users);
+    }
+
 
     /**
      * 新增用户信息
@@ -44,7 +54,7 @@ public class UserController extends BaseController{
     @PostMapping("/add")
     public ResponseMessage add(@RequestBody  User user) {
         int res = userService.insertUser(user);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**
@@ -55,7 +65,7 @@ public class UserController extends BaseController{
     @GetMapping("/edit/{userId}")
     public ResponseMessage<User> edit(@PathVariable String userId){
         User user = userService.selectUserById(userId);
-        return new ResponseMessage<User>().success(user);
+        return success(user);
     }
 
     /**
@@ -66,10 +76,10 @@ public class UserController extends BaseController{
     @PutMapping("/edit")
     public ResponseMessage editSave(@RequestBody User user) {
         if (StringUtils.isNotEmpty(user.getUserId()) && User.isAdmin(user.getUserId())) {
-            return new ResponseMessage().success("不允许修改系统管理员");
+            return error("不允许修改系统管理员");
         }
         int res = userService.updateUser(user);
-        return new ResponseMessage().success(res);
+        return success(res);
     }
 
 
@@ -80,12 +90,11 @@ public class UserController extends BaseController{
      */
     @DeleteMapping("/remove")
     public ResponseMessage remove(String userIds) {
-        try {
-            int res = userService.deleteUserByIds(userIds);
-        } catch (Exception e) {
-            return new ResponseMessage().success(e);
+        int res = userService.deleteUserByIds(userIds);
+        if (res == -1) {
+            return error("不允许删除超级管理员");
         }
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**

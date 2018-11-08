@@ -8,6 +8,13 @@ export function selectUserList(query) {
   })
 }
 
+export function selectUserListAll() {
+  return request({
+    url: '/hzq/system/user/listAll',
+    method: 'get'
+  })
+}
+
 export function addUser(user) {
   return request({
     url: '/hzq/system/user/add',

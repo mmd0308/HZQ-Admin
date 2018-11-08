@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -22,8 +21,8 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    public List<User> selectTableList() {
-        return userMapper.selectTableList();
+    public List<User> selectTableList(User user) {
+        return userMapper.selectTableList(user);
     }
 
     /**
@@ -48,11 +47,17 @@ public class UserServiceImpl implements IUserService {
         return userMapper.selectUserById(userId);
     }
 
-    public int deleteUserByIds(String ids) throws Exception {
+    /**
+     * 根据id批量删除用户
+     * @param ids
+     * @return
+     * @throws Exception
+     */
+    public int deleteUserByIds(String ids) {
         String[] userIds = ids.split(",");
         for(String userId : userIds) {
             if (User.isAdmin(userId)) {
-                throw new Exception("不允许修改管理员用户");
+                return -1;
             }
         }
         return userMapper.deleteUserByIds(userIds);

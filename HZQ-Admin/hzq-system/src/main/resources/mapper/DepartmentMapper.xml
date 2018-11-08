@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.DepartmentMapper">
+
+    <resultMap id="baseResult" type="department">
+        <result column="depart_id" property="departId"/>
+        <result column="depart_name" property="departName"/>
+        <result column="depart_sort" property="departSort"/>
+        <result column="leader" property="leader"/>
+        <result column="phone" property="phone"/>
+        <result column="enabled" property="enabled"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <sql id="selectDepartment">
+        SELECT
+            depart_id,
+            depart_name,
+            depart_sort,
+            leader,
+            phone,
+            enabled,
+            del_flag,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            parent_id,
+            remark
+        FROM
+            sys_department
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult" parameterType="department">
+        <include refid="selectDepartment"/>
+        <where>
+            1=1
+            <if test="departName != null and departName != ''">
+              AND  depart_name LIKE  '%${departName}%'
+            </if>
+            <if test="departSort != null and departSort != ''">
+              AND  depart_sort =  #{departSort}
+            </if>
+            <if test="leader != null and leader != ''">
+              AND  leader =  #{leader}
+            </if>
+            <if test="phone != null and phone != ''">
+              AND  phone =  #{phone}
+            </if>
+            <if test="enabled != null and enabled != ''">
+              AND  enabled =  #{enabled}
+            </if>
+            AND del_flag = 'N'
+            <if test="createBy != null and createBy != ''">
+              AND  create_by =  #{createBy}
+            </if>
+            <if test="createTime != null and createTime != ''">
+              AND  create_time =  #{createTime}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+              AND  update_by =  #{updateBy}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+              AND  update_time =  #{updateTime}
+            </if>
+            <if test="parentId != null and parentId != ''">
+              AND   parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+    <insert id="insertDepartment" parameterType="department" >
+        INSERT INTO sys_department (
+            depart_id,
+            depart_name,
+            depart_sort,
+            leader,
+            phone,
+            enabled,
+            del_flag,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            parent_id,
+            remark
+        ) VALUE (
+            #{departId},
+            #{departName},
+            #{departSort},
+            #{leader},
+            #{phone},
+            #{enabled},
+            #{delFlag},
+            #{createBy},
+            #{createTime},
+            #{updateBy},
+            #{updateTime},
+            #{parentId},
+            #{remark}
+        )
+    </insert>
+
+    <delete id="deleteDepartmentById" parameterType="string">
+        UPDATE sys_department SET del_flag = 'Y'
+        WHERE
+          depart_id = #{departId}
+    </delete>
+
+    <update id="updateDepartment" parameterType="department">
+        UPDATE sys_department
+        <set>
+            <if test="departName != null and departName != ''">depart_name = #{departName},</if>
+            <if test="departSort != null ">depart_sort = #{departSort},</if>
+            <if test="leader != null and leader != ''">leader = #{leader},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="enabled != null and enabled != ''">enabled = #{enabled},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark}</if>
+        </set>
+        WHERE
+          depart_id = #{departId}
+    </update>
+</mapper>

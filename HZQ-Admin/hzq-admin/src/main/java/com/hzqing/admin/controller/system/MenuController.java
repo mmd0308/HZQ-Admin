@@ -42,7 +42,7 @@ public class MenuController extends BaseController{
     @GetMapping("/tree")
     public ResponseMessage<List<MenuVO>> getTree(){
         List<MenuVO> menus = menuService.selectMenuTree();
-        return new ResponseMessage<>().success(menus);
+        return success(menus);
     }
 
     /**
@@ -53,7 +53,7 @@ public class MenuController extends BaseController{
     @PostMapping("/add")
     public ResponseMessage add(@RequestBody  Menu menu) {
         int res = menuService.insertMenu(menu);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MenuController extends BaseController{
     @GetMapping("/edit/{menuId}")
     public ResponseMessage<Menu> edit(@PathVariable String menuId){
         Menu menu = menuService.selectMenuById(menuId);
-        return new ResponseMessage<Menu>().success(menu);
+        return success(menu);
     }
 
     /**
@@ -75,7 +75,7 @@ public class MenuController extends BaseController{
     @PutMapping("/edit")
     public ResponseMessage editSave(@RequestBody Menu menu) {
         int res = menuService.updateMenu(menu);
-        return new ResponseMessage().success(res);
+        return success(res);
     }
 
 

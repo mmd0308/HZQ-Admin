@@ -52,7 +52,7 @@ public class RoleController extends BaseController{
     @PostMapping("/add")
     public ResponseMessage add(@RequestBody  Role role) {
         int res = roleService.insertRole(role);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**
@@ -63,7 +63,7 @@ public class RoleController extends BaseController{
     @GetMapping("/edit/{roleId}")
     public ResponseMessage<Role> edit(@PathVariable String roleId){
         Role role = roleService.selectRoleById(roleId);
-        return new ResponseMessage<Role>().success(role);
+        return success(role);
     }
 
     /**
@@ -74,7 +74,7 @@ public class RoleController extends BaseController{
     @PutMapping("/edit")
     public ResponseMessage editSave(@RequestBody Role role) {
         int res = roleService.updateRole(role);
-        return new ResponseMessage().success(res);
+        return success(res);
     }
 
 
@@ -86,7 +86,7 @@ public class RoleController extends BaseController{
     @DeleteMapping("/remove")
     public ResponseMessage remove(String roleIds) {
         int res = roleService.deleteRoleByIds(roleIds);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**

@@ -70,7 +70,7 @@ export const constantRouterMap = [
       {
         path: 'depart',
         name: 'Depart',
-        component: () => import('@/views/system/menu/index'),
+        component: () => import('@/views/system/department/index'),
         meta: { title: '部门管理', icon: 'hzq_depart' }
       }
     ]

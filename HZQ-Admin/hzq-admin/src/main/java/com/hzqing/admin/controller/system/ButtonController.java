@@ -42,7 +42,7 @@ public class ButtonController extends BaseController{
     @PostMapping("/add")
     public ResponseMessage add(@RequestBody  Button button) {
         int res = buttonService.insertButton(button);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ButtonController extends BaseController{
     @GetMapping("/edit/{buttonId}")
     public ResponseMessage<Button> edit(@PathVariable String buttonId){
         Button button = buttonService.selectButtonById(buttonId);
-        return new ResponseMessage<Button>().success(button);
+        return success(button);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ButtonController extends BaseController{
     @PutMapping("/edit")
     public ResponseMessage editSave(@RequestBody Button button) {
         int res = buttonService.updateButton(button);
-        return new ResponseMessage().success(res);
+        return success(res);
     }
 
 
@@ -76,7 +76,7 @@ public class ButtonController extends BaseController{
     @DeleteMapping("/remove")
     public ResponseMessage remove(String buttonIds) {
         int res = buttonService.deleteButtonByIds(buttonIds);
-        return new ResponseMessage().success();
+        return success(res);
     }
 
 }

@@ -5,7 +5,12 @@ import com.hzqing.system.domain.User;
 import java.util.List;
 
 public interface UserMapper {
-    List<User> selectTableList();
+    /**
+     * 根据条件获取用户
+     * @param user
+     * @return
+     */
+    List<User> selectTableList(User user);
 
     int insertUser(User user);
 
