@@ -23,13 +23,6 @@ export function addUser(user) {
   })
 }
 
-export function addUserRole(userRole) {
-  return request({
-    url: '/hzq/system/user/addUserRole',
-    method: 'post',
-    params: userRole
-  })
-}
 
 export function editUser(userId) {
   return request({

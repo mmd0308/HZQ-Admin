@@ -16,7 +16,7 @@
             role_id,
             menu_id
         FROM
-            sys_role_menu
+            rl_role_menu
     </sql>
 
     <select id="selectTableList" resultMap="baseResult" parameterType="roleMenu">
@@ -32,7 +32,7 @@
     </select>
 
     <insert id="insertRoleMenu" parameterType="rolemenu" >
-        INSERT INTO sys_role_menu (
+        INSERT INTO rl_role_menu (
             id,
             role_id,
             menu_id

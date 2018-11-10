@@ -21,8 +21,7 @@ public class SwaggerConfig {
      * 创建API
      */
     @Bean
-    public Docket createRestApi()
-    {
+    public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 // 详细定制
                 .apiInfo(apiInfo())
@@ -37,8 +36,7 @@ public class SwaggerConfig {
     /**
      * 添加摘要信息
      */
-    private ApiInfo apiInfo()
-    {
+    private ApiInfo apiInfo() {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 .title("标题：管理系统_接口文档")

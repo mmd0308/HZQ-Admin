@@ -50,7 +50,7 @@
             r.update_time
         FROM
           sys_role r
-        LEFT JOIN sys_user_role ur ON r.role_id = ur.role_id
+        LEFT JOIN rl_user_role ur ON r.role_id = ur.role_id
     </sql>
 
     <select id="selectTableList" parameterType="role" resultMap="baseResult">

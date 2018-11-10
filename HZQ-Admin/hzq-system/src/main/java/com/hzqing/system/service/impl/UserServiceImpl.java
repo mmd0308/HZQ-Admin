@@ -6,10 +6,13 @@ import com.hzqing.system.domain.UserRole;
 import com.hzqing.system.mapper.UserMapper;
 import com.hzqing.system.mapper.UserRoleMapper;
 import com.hzqing.system.service.IUserService;
+import com.hzqing.system.vo.UserVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,12 +33,17 @@ public class UserServiceImpl implements IUserService {
      * @param user
      * @return
      */
-    public int insertUser(User user) {
+    public int insertUser(UserVO user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setUserId(UUIDUtils.get32UUID());
+        String uuid = UUIDUtils.get32UUID();
+        user.setUserId(uuid);
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
-        return userMapper.insertUser(user);
+        // 新增用户
+        int res = userMapper.insertUser(user);
+        // 用户绑定角色
+        res = res + insertUserRole(uuid,user.getRoleIds());
+        return res;
     }
 
     /**
@@ -43,8 +51,15 @@ public class UserServiceImpl implements IUserService {
      * @param userId
      * @return
      */
-    public User selectUserById(String userId) {
-        return userMapper.selectUserById(userId);
+    public UserVO selectUserById(String userId) {
+        // 根据id获取用户信息
+        User user =  userMapper.selectUserById(userId);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+        // 根据用户id，获取用户的角色id
+        String [] roleIds = userRoleMapper.selectRoleIdsByUserId(userId);
+        userVO.setRoleIds(roleIds);
+        return userVO;
     }
 
     /**
@@ -68,8 +83,10 @@ public class UserServiceImpl implements IUserService {
      * @param user
      * @return
      */
-    public int updateUser(User user) {
-        return userMapper.updateUser(user);
+    public int updateUser(UserVO user) {
+        int res = userMapper.updateUser(user);
+        res = res + insertUserRole(user.getUserId(),user.getRoleIds());
+        return res;
     }
 
     /**
@@ -78,19 +95,18 @@ public class UserServiceImpl implements IUserService {
      * @param roleIds
      * @return
      */
-    @Override
-    public int insertUserRole(String userId, String roleIds) {
+    private int insertUserRole(String userId, String[] roleIds) {
         // 删除该用户的所有角色，从新赋予新角色
         userRoleMapper.deleteUserRoleByUserId(userId);
-        String[] split = roleIds.split(",");
-        int res = 0;
-        for (String roleId : split) {
+        List<UserRole> userRoles = new ArrayList<>();
+        for (String roleId : roleIds) {
             UserRole userRole = new UserRole();
             userRole.setId(UUIDUtils.get32UUID());
             userRole.setRoleId(roleId);
             userRole.setUserId(userId);
-            res = res + userRoleMapper.insertUserRole(userRole);
+            userRoles.add(userRole);
         }
+        int res =userRoleMapper.insertBatchUserRole(userRoles);
         return res;
     }
 }

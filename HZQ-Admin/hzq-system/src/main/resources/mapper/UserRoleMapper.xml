@@ -16,23 +16,35 @@
             user_id,
             role_id
         FROM
-            sys_user_role
+            rl_user_role
     </sql>
 
-    <insert id="insertUserRole" parameterType="userrole" >
-        INSERT INTO sys_user_role (
+    <insert id="insertBatchUserRole" parameterType="userrole" >
+        INSERT INTO rl_user_role (
             id,
             user_id,
             role_id
-        ) VALUE (
-            #{id},
-            #{userId},
-            #{roleId}
+        ) VALUE
+        <foreach collection="collection" item="item"  separator=",">
+        (
+            #{item.id},
+            #{item.userId},
+            #{item.roleId}
         )
+        </foreach>
     </insert>
 
     <delete id="deleteUserRoleByUserId" parameterType="string">
-        DELETE FROM sys_user_role WHERE user_id = #{0}
+        DELETE FROM rl_user_role WHERE user_id = #{0}
     </delete>
+
+    <select id="selectRoleIdsByUserId" resultType="string" parameterType="string">
+        SELECT
+          role_id
+        FROM
+          rl_user_role
+        WHERE
+           user_id = #{userId}
+    </select>
 
 </mapper>

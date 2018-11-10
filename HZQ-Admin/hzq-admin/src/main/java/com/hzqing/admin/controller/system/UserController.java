@@ -5,6 +5,7 @@ import com.hzqing.common.base.controller.BaseController;
 import com.hzqing.common.response.ResponseMessage;
 import com.hzqing.system.domain.User;
 import com.hzqing.system.service.IUserService;
+import com.hzqing.system.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class UserController extends BaseController{
      * @return
      */
     @PostMapping("/add")
-    public ResponseMessage add(@RequestBody  User user) {
+    public ResponseMessage add(@RequestBody UserVO user) {
         int res = userService.insertUser(user);
         return success(res);
     }
@@ -64,7 +65,7 @@ public class UserController extends BaseController{
      */
     @GetMapping("/edit/{userId}")
     public ResponseMessage<User> edit(@PathVariable String userId){
-        User user = userService.selectUserById(userId);
+        UserVO user = userService.selectUserById(userId);
         return success(user);
     }
 
@@ -74,7 +75,7 @@ public class UserController extends BaseController{
      * @return
      */
     @PutMapping("/edit")
-    public ResponseMessage editSave(@RequestBody User user) {
+    public ResponseMessage editSave(@RequestBody UserVO user) {
         if (StringUtils.isNotEmpty(user.getUserId()) && User.isAdmin(user.getUserId())) {
             return error("不允许修改系统管理员");
         }
@@ -96,17 +97,4 @@ public class UserController extends BaseController{
         }
         return success(res);
     }
-
-    /**
-     * 给用户设置角色
-     * @param userId 用户id
-     * @param roleIds 角色id 使用，分割
-     * @return
-     */
-    @PostMapping("/addUserRole")
-    public ResponseMessage addUserRole( String userId, String roleIds) {
-        int res = userService.insertUserRole(userId,roleIds);
-        return success(res);
-    }
-
 }

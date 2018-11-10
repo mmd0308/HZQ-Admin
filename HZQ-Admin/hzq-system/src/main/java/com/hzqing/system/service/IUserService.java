@@ -1,6 +1,7 @@
 package com.hzqing.system.service;
 
 import com.hzqing.system.domain.User;
+import com.hzqing.system.vo.UserVO;
 
 import java.util.List;
 
@@ -12,20 +13,17 @@ public interface IUserService {
      */
     List<User> selectTableList(User user);
 
-    int insertUser(User user);
+    int insertUser(UserVO user);
 
-    User selectUserById(String userId);
+    /**
+     * 根据用户id获取用户信息
+     * @param userId
+     * @return
+     */
+    UserVO selectUserById(String userId);
 
     int deleteUserByIds(String ids);
 
-    int updateUser(User user);
-
-    /**
-     * 给用户赋予角色
-     * @param userId
-     * @param roleIds
-     * @return
-     */
-    int insertUserRole(String userId, String roleIds);
+    int updateUser(UserVO user);
 
 }

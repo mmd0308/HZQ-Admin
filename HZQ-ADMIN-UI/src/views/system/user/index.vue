@@ -1,19 +1,17 @@
 <template>
   <div class="app-container">
     <el-card style="margin-bottom:10px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入用户名" />
-      <el-button class="filter-item" size="small" type="success" icon="el-icon-search">查找</el-button>
+      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入用户名" v-model="query.userName" @keyup.enter.native="page"  />
+      <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
         <el-button size="small" type="primary" icon="el-icon-plus" @click="addUser">新增</el-button>
         <el-button size="small" type="success" icon="el-icon-edit" @click="editUser(null)" v-if="selectSize === 1">修改</el-button>
         <el-button size="small" type="success" icon="el-icon-edit" @click="editUser(null)" disabled v-else>修改</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null)" v-if="selectSize != 0">删除</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null)" disabled v-else>删除</el-button>
-        <el-button size="small" type="primary" @click="checkRole"  v-if="selectSize === 1" ><svg-icon icon-class="role"/> 角色分配</el-button>
-        <el-button size="small" type="primary" @click="checkRole" v-else disabled><svg-icon icon-class="role"/> 角色分配</el-button>
-        <el-button size="small" type="warning" icon="el-icon-download" @click="deleteUser">导出</el-button>
+        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null, null)" v-if="selectSize != 0">删除</el-button>
+        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null, null)" disabled v-else>删除</el-button>
+        <!-- <el-button size="small" type="warning" icon="el-icon-download" @click="deleteUser">导出</el-button> -->
         <el-table
           v-loading="tableload"
           element-loading-text="拼命加载中..."
@@ -33,7 +31,7 @@
           <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button size="mini" type="success" icon="el-icon-edit" @click="editUser(scope.row.userId)"/>
-              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteUser(scope.row.userId)"/>
+              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteUser(scope.row.userId, scope.row.userName)"/>
             </template>
           </el-table-column>
         </el-table>
@@ -49,24 +47,22 @@
         @size-change="handleSizeChange"/>
     </el-card>
     <form-dialog ref="form" @refreshList="refreshList"/>
-    <check-role-list ref="roleList" />
   </div>
 </template>
 <script>
 import { selectUserList, deleteUserByIds } from '@/api/system/user/index'
 import FormDialog from './components/form'
-import CheckRoleList from './components/checkRole'
 
 export default {
   components: {
-    FormDialog,
-    CheckRoleList
+    FormDialog
   },
   data() {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        userName: ''
       },
       total: null,
       tableData: [],
@@ -86,11 +82,6 @@ export default {
         this.tableload = false
       })
     },
-    checkRole() {
-      // 传递用户的id到list中
-      const userId = this.$refs.userTable.selection.map(item => item.userId)[0]
-      this.$refs.roleList.toCheckRoleList(userId)
-    },
     addUser() {
       this.$refs.form.addUser()
     },
@@ -100,12 +91,21 @@ export default {
       }
       this.$refs.form.editUser(userId)
     },
-    deleteUser(userId) {
+    deleteUser(userId, userName) {
       if (userId == null) {
         userId = this.$refs.userTable.selection.map(item => item.userId).join()
       }
-      deleteUserByIds(userId).then(() => {
-        this.page()
+      if (userName == null) {
+        userName = this.$refs.userTable.selection.map(item => item.userName).join()
+      }
+      this.$confirm('此操作将永久删除[' + userName + ']用户?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        typr: 'warning'
+      }).then(() => {
+        deleteUserByIds(userId).then(() => {
+          this.page()
+        })
       })
     },
     refreshList() {  

@@ -15,6 +15,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_by" property="updateBy"/>
         <result column="update_time" property="updateTime"/>
+        <result column="depart_id" property="departId" />
     </resultMap>
 
     <sql id="selectUser">
@@ -28,7 +29,8 @@
             create_by,
             create_time,
             update_by,
-            update_time
+            update_time,
+            depart_id
         FROM
             sys_user
     </sql>
@@ -37,9 +39,12 @@
         <include refid="selectUser"/>
         WHERE
           del_flag = 'N'
+        <if test="userName != null and userName != ''">
+          AND user_name LIKE  '%${userName}%'
+        </if>
     </select>
 
-    <insert id="insertUser" parameterType="user" >
+    <insert id="insertUser" parameterType="uservo" >
         INSERT INTO sys_user (
           user_id,
           login_name,
@@ -50,7 +55,8 @@
           create_by,
           create_time,
           update_by,
-          update_time
+          update_time,
+          depart_id
         ) VALUE (
           #{userId},
           #{loginName},
@@ -61,7 +67,8 @@
           #{createBy},
           #{createTime},
           #{updateBy},
-          #{updateTime}
+          #{updateTime},
+          #{departId}
         )
     </insert>
 
@@ -78,13 +85,14 @@
         </foreach>
     </delete>
 
-    <update id="updateUser" parameterType="user">
+    <update id="updateUser" parameterType="uservo">
         UPDATE sys_user
         <set>
             <if test="loginName != null and loginName != ''">login_name = #{loginName},</if>
             <if test="userName != null and userName != ''">user_name = #{userName},</if>
             <if test="password != null and password != '' ">password = #{password},</if>
-            <if test="phone != null and phone != ''">phone = #{phone}</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="departId != null and departId != ''">depart_id = #{departId}</if>
         </set>
         WHERE
           user_id = #{userId}
