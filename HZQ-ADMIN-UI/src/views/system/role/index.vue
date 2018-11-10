@@ -9,8 +9,8 @@
         <el-button size="small" type="primary" icon="el-icon-plus" @click="addRole">新增</el-button>
         <el-button size="small" type="success" icon="el-icon-edit" @click="editRole(null)" v-if="selectSize === 1">修改</el-button>
         <el-button size="small" type="success" icon="el-icon-edit" @click="editRole(null)" disabled v-else>修改</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null)" v-if="selectSize != 0">删除</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null)" disabled v-else>删除</el-button>
+        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null, null)" v-if="selectSize != 0">删除</el-button>
+        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteRole(null, null)" disabled v-else>删除</el-button>
         <el-table
           v-loading="tableload"
           ref="roleTable"
@@ -23,7 +23,6 @@
           @selection-change="changeCheckBox">
           <el-table-column type="selection" width="55" />
           <el-table-column prop="roleName" label="角色名称" />
-          <el-table-column prop="roleSort" label="顺序" />
           <el-table-column label="是否启用">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enabled == 'N'" type="warning" size="mini" color="#FFA500" style="color:#FFFFFF" >
@@ -41,7 +40,7 @@
           <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button size="mini" type="success" icon="el-icon-edit" @click="editRole(scope.row.roleId)"/>
-              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRole(scope.row.roleId)"/>
+              <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteRole(scope.row.roleId, scope.row.roleName)"/>
             </template>
           </el-table-column>
         </el-table>
@@ -101,12 +100,21 @@ export default {
       }
       this.$refs.form.editRole(roleId)
     },
-    deleteRole(roleId) {
+    deleteRole(roleId, roleName) {
       if (roleId == null) {
         roleId = this.$refs.roleTable.selection.map(item => item.roleId).join()
       }
-      deleteRoleByIds(roleId).then(() => {
-        this.page()
+      if (roleName == null) {
+        roleName = this.$refs.roleTable.selection.map(item => item.roleName).join()
+      }
+      this.$confirm('此操作将永久删除[' + roleName + ']角色?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        typr: 'warning'
+      }).then(() => {
+        deleteRoleByIds(roleId).then(() => {
+          this.page()
+        })
       })
     },
     refreshList() {

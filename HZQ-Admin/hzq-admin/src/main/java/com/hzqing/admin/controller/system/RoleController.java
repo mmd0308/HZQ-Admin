@@ -35,12 +35,14 @@ public class RoleController extends BaseController{
     }
 
     /**
-     * 获取所有的角色
+     * 获取所有的启用的角色
      * @return
      */
     @GetMapping("/listAll")
     public ResponseMessage<PageInfo<Role>> listAll(){
-        List<Role> roles = roleService.selectTableList(new Role());
+        Role role = new Role();
+        role.setEnabled("Y");
+        List<Role> roles = roleService.selectTableList(role);
         return success(roles);
     }
 

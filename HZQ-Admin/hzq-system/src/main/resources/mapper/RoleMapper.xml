@@ -60,6 +60,9 @@
           <if test="roleName != null and roleName != ''">
               AND role_name LIKE  '%${roleName}%'
           </if>
+          <if test="enabled != null and enabled != ''">
+              AND enabled = #{enabled}
+          </if>
         </where>
         ORDER BY role_sort ASC
     </select>

@@ -9,10 +9,10 @@
         <el-input v-model="roleForm.roleName" placeholder="请输入角色名称" />
       </el-form-item>
       <el-form-item label="排序" prop="roleSort">
-        <el-input v-model="roleForm.roleSort" />
+        <el-input type="number" v-model="roleForm.roleSort" />
       </el-form-item>
       <el-form-item label="权限编码" prop="permission">
-        <el-input v-model="roleForm.permission" placeholder="请输入权限编码" />
+        <el-input v-model="roleForm.permission" placeholder="请输入权限编码,建议: 'ROLE_'开头" />
       </el-form-item>
       <el-form-item label="是否启用" prop="enabled">
         <el-switch
@@ -25,7 +25,7 @@
           inactive-text="禁用"/>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="roleForm.remark" />
+        <el-input type="textarea" v-model="roleForm.remark" />
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
