@@ -4,6 +4,7 @@ import com.hzqing.common.util.StringUtils;
 import com.hzqing.common.util.UUIDUtils;
 import com.hzqing.system.domain.Department;
 import com.hzqing.system.domain.Dict;
+import com.hzqing.system.domain.Menu;
 import com.hzqing.system.mapper.DictMapper;
 import com.hzqing.system.service.IDictService;
 import com.hzqing.system.vo.DepartmentVO;
@@ -29,7 +30,7 @@ public class DictServiceImpl implements IDictService {
      * @return
      */
     public List<Dict> selectTableList(Dict dict) {
-        return dictMapper.selectTableList();
+        return dictMapper.selectTableList(dict);
     }
 
     /**
@@ -56,6 +57,11 @@ public class DictServiceImpl implements IDictService {
      * @return 返回影响行
      */
     public int deleteDictById(String dictId) {
+        Dict dict = new Dict();
+        dict.setParentId(dictId);
+        List<Dict> dicts = this.selectTableList(dict);
+        if (dicts.size() > 0)
+            return -1;
         return dictMapper.deleteDictById(dictId);
     }
     /**
@@ -81,6 +87,19 @@ public class DictServiceImpl implements IDictService {
             dictVOS.add(dictVO);
         }
         return getTree(dictVOS);
+    }
+
+    /**
+     * 编码唯一校验
+     * @param dict
+     * @return
+     */
+    @Override
+    public boolean checkCode(Dict dict) {
+        List<Dict> menus = dictMapper.checkCode(dict);
+        if (menus.size() == 0 )
+            return true;
+        return false;
     }
 
     /**

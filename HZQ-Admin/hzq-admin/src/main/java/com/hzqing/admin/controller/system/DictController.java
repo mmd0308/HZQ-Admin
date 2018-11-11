@@ -78,6 +78,15 @@ public class DictController extends BaseController{
         return new ResponseMessage().success(res);
     }
 
+    /**
+     * 检验编码是否唯一
+     * @param dict
+     * @return true 表示唯一 false 表示重复
+     */
+    @PostMapping("/checkCode")
+    public ResponseMessage checkCode(@RequestBody Dict dict) {
+        return success(dictService.checkCode(dict));
+    }
 
     /**
     * 删除数据字典管理
@@ -87,7 +96,9 @@ public class DictController extends BaseController{
     @DeleteMapping("/remove")
     public ResponseMessage remove(String dictId) {
         int res = dictService.deleteDictById(dictId);
-        return new ResponseMessage().success();
+        if (res == -1)
+            return error("不能删除包含子集的数据字典");
+        return success(res);
     }
 
 }

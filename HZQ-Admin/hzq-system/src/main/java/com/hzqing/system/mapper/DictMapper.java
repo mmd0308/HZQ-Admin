@@ -13,7 +13,7 @@ public interface DictMapper {
      * 根据条件检索列表
      * @return
      */
-    List<Dict> selectTableList();
+    List<Dict> selectTableList(Dict dict);
     /**
      * 新增 Dict
      * @param dict
@@ -41,4 +41,11 @@ public interface DictMapper {
     * @return 返回影响行数
     */
     int updateDict(Dict dict);
+
+    /**
+     * 唯一编码校验
+     * @param dict
+     * @return
+     */
+    List<Dict> checkCode(Dict dict);
 }

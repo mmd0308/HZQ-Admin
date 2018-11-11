@@ -47,4 +47,10 @@ public interface IDictService {
      */
     List<DictVO> selectDictTree();
 
+    /**
+     * 编码唯一校验
+     * @param dict
+     * @return
+     */
+    boolean checkCode(Dict dict);
 }

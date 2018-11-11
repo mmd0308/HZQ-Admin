@@ -45,3 +45,11 @@ export function editSaveDict(dict) {
     data: dict
   })
 }
+
+export function checkCode(dict) {
+  return request({
+    url: '/hzq/system/dict/checkCode',
+    method: 'post',
+    data: dict
+  })
+}

@@ -135,6 +135,7 @@ export default {
       })
     },
     seeDepartment(data) {
+      this.status = 'init'
       this.departmentFormLoading = true
       this.departmentForm = JSON.parse(JSON.stringify(data))
       this.departmentFormLoading = false

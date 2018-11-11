@@ -66,10 +66,23 @@
   </el-card>
 </template>
 <script>
-import { addDict, editSaveDict, deleteDictByIds } from '@/api/system/dict/index'
+import { addDict, editSaveDict, deleteDictByIds, checkCode } from '@/api/system/dict/index'
+import { Message } from 'element-ui'
 export default {
   name: 'FormDialog',
   data() {
+    const validateCode = (dict, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入数据字典编码'))
+      } else {
+        checkCode(this.dictForm).then(response => {
+          if (!response.data) {
+            callback(new Error('数据字典编码重复'))
+          }
+          callback()
+        })
+      }
+    }
     return {
       status: 'init',
       dictFormRef: 'dictFormRef',
@@ -88,6 +101,9 @@ export default {
       rules: {
         dictName: [
           { required: true, message: '请输入部门名称', trigger: 'blur' }
+        ],
+        dictCode: [
+          { validator: validateCode, required: true, trigger: 'blur' }
         ]
       },
       dictFormLoading: false
@@ -95,6 +111,7 @@ export default {
   },
   methods: {
     seeDict(data) {
+      this.status = 'init'
       this.dictFormLoading = true
       this.dictForm = JSON.parse(JSON.stringify(data))
       this.dictFormLoading = false
@@ -138,6 +155,14 @@ export default {
       })
     },
     deleteDict() { // 删除菜单
+      if (this.dictForm.parentId == '0') {
+        Message({
+          message: '不能删除最高级字典',
+          type: 'error',
+          duration: 5 * 1000
+        })
+        return
+      }
       this.$confirm('此操作将永久删除[' + this.dictForm.dictName + ']字典?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

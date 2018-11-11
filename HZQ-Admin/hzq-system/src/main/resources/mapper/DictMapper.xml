@@ -39,12 +39,22 @@
         <include refid="selectDict"/>
         <where>
             1=1
-            <if test="dictName != null and dictName != ''">
-              AND  dict_name LIKE  '%{dictName}%'
+            <if test="parentId != null and parentId != ''">
+                AND parent_id = #{parentId}
             </if>
         </where>
         ORDER BY dict_sort ASC
     </select>
+
+    <select id="checkCode" parameterType="dict" resultMap="baseResult">
+        <include refid="selectDict" />
+        WHERE
+            dict_code = #{dictCode}
+        <if test="dictId != null and dictId != ''">
+            AND dict_id != #{dictId}
+        </if>
+    </select>
+
     <insert id="insertDict" parameterType="dict" >
         INSERT INTO sys_dict (
             dict_id,

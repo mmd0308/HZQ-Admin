@@ -77,6 +77,7 @@ public class MenuController extends BaseController{
         int res = menuService.updateMenu(menu);
         return success(res);
     }
+
     /**
      * 检验编码是否唯一
      * @param menu
@@ -86,7 +87,6 @@ public class MenuController extends BaseController{
     public ResponseMessage checkPermission(@RequestBody Menu menu) {
         return success(menuService.checkPermission(menu));
     }
-
 
     /**
     * 删除菜单表
