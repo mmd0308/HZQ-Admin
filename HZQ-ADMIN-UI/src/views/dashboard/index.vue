@@ -1,21 +1,36 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <el-row>
+      <el-col :span="7">
+        <!-- 联系方式 -->
+        <contact-info />
+      </el-col>
+      <el-col :span="9">
+        <!-- 捐赠信息 -->
+        <donation />
+      </el-col>
+      <el-col :span="8">
+        <!-- 获取系统信息 -->
+        <system />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
+// 联系信息
+import ContactInfo from './components/contactInfo'
+// 捐赠
+import Donation from './components/donation'
+// 获取系统信息
+import System from './components/system'
 export default {
+  components: {
+    ContactInfo,
+    Donation,
+    System
+  },
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
-  }
 }
 </script>
 
