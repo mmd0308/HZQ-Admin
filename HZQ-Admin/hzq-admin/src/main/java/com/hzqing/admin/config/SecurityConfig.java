@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS).permitAll()
             .antMatchers("/hzq/login_error").permitAll()
-                .antMatchers("/hzq/tools/generator/generatorCode").permitAll()
+            .antMatchers("/hzq/tools/generator/generatorCode").permitAll()
             .antMatchers("/druid/**").permitAll() // 放行所有druid资源
             .antMatchers("/swagger-*/**","/webjars/**","/v2/**").permitAll()  // 放行所有的swagger-ui资源
             .antMatchers("/**").authenticated()

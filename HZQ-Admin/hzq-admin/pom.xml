@@ -18,8 +18,6 @@
 	<properties>
 		<mybatis-spring-boot-starter.version>1.3.1</mybatis-spring-boot-starter.version>
 		<mapper.version>3.4.0</mapper.version>
-		<docker.image.prefix>localhost:5000</docker.image.prefix>
-		<docker.plugin.version>1.0.0</docker.plugin.version>
 		<jackson.version>2.9.7</jackson.version>
 		<druid.version>1.1.10</druid.version>
         <java.project>${basedir}/src/main/java</java.project>
@@ -86,23 +84,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<!-- docker 插件 -->
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>${docker.plugin.version}</version>
-				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<dockerDirectory>${project.basedir}</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
