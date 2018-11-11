@@ -8,16 +8,15 @@ import com.hzqing.generator.service.IGeneratorService;
 import com.hzqing.generator.util.GeneratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/hzq/tools/generator")
 public class GeneratorController extends BaseController{
     @Autowired
@@ -31,7 +30,6 @@ public class GeneratorController extends BaseController{
      * @return
      */
     @GetMapping("/list")
-    @ResponseBody
     public ResponseMessage<List<TableInfo>> list(TableInfo tableInfo,int pageNum,int pageSize){
         startPage(pageNum,pageSize);
         List<TableInfo> list = generatorService.selectTableList(tableInfo);

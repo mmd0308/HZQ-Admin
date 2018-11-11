@@ -73,6 +73,15 @@
           but_id = #{butId}
     </select>
 
+    <select id="checkPermission" parameterType="button" resultMap="baseResult">
+        <include refid="selectButton" />
+        WHERE
+        permission = #{permission}
+        <if test="butId != null and butId != ''">
+            AND but_id != #{butId}
+        </if>
+    </select>
+
     <delete id="deleteButtonByIds" parameterType="string">
         DELETE FROM sys_button  WHERE  FIND_IN_SET(but_id, #{buttonId})
     </delete>

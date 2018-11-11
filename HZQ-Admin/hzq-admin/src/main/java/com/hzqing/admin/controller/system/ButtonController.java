@@ -67,6 +67,16 @@ public class ButtonController extends BaseController{
         return success(res);
     }
 
+    /**
+     * 检验编码是否唯一
+     * @param button
+     * @return true 表示唯一 false 表示重复
+     */
+    @PostMapping("/checkPermission")
+    public ResponseMessage checkPermission(@RequestBody Button button) {
+        return success(buttonService.checkPermission(button));
+    }
+
 
     /**
     * 删除按钮表

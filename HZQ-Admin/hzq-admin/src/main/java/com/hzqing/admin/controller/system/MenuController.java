@@ -77,6 +77,15 @@ public class MenuController extends BaseController{
         int res = menuService.updateMenu(menu);
         return success(res);
     }
+    /**
+     * 检验编码是否唯一
+     * @param menu
+     * @return true 表示唯一 false 表示重复
+     */
+    @PostMapping("/checkPermission")
+    public ResponseMessage checkPermission(@RequestBody Menu menu) {
+        return success(menuService.checkPermission(menu));
+    }
 
 
     /**

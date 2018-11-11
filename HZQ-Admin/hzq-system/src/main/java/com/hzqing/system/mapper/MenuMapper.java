@@ -41,4 +41,11 @@ public interface MenuMapper {
     * @return 返回影响行数
     */
     int updateMenu(Menu menu);
+
+    /**
+     * 检验编码是否唯一
+     * @param menu
+     * @return
+     */
+    List<Menu> checkPermission(Menu menu);
 }

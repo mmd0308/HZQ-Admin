@@ -8,13 +8,14 @@
           element-loading-spinner="el-icon-loading"
           ref="treeData"
           node-key="menuId"
+          default-expand-all
           :data="treeDate"
           :props="treeProps"
           @node-click="handleNodeClick"/>
       </el-card>
     </el-col>
     <el-col :span="19">
-      <menu-form ref="form" />
+      <menu-form ref="form" @refreshTree="refreshTree" />
       <button-index ref="butList" />
     </el-col>
   </div>
@@ -53,6 +54,9 @@ export default {
     handleNodeClick(data) {
       this.$refs.form.seeMenu(data)
       this.$refs.butList.getMenuId(data.menuId)
+    },
+    refreshTree() {
+      this.tree()
     }
   }
 }

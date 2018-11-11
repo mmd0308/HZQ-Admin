@@ -39,4 +39,11 @@ public interface IButtonService {
      * @return 返回影响行数
      */
     int updateButton(Button button);
+
+    /**
+     * 按钮编码校验
+     * @param button
+     * @return
+     */
+    boolean checkPermission(Button button);
 }

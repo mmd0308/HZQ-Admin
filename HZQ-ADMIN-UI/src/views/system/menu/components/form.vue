@@ -8,7 +8,7 @@
       <el-button v-if="status === 'add'" type="primary" size="small" @click="addSave()">保存</el-button>
 
       <el-button v-if="status === 'edit'" type="primary" size="small" @click="editSave()">更新</el-button>
-      <el-button v-if="status != 'init'" type="info" size="small" @click="addSave()">取消</el-button>
+      <el-button v-if="status != 'init'" type="info" size="small" @click="refreshTree">取消</el-button>
     </div>
     <el-form
       v-loading="menuFormLoading"
@@ -38,8 +38,8 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="排序" prop="menuSort">
-            <el-input v-if="status === 'init'" disabled  v-model="menuForm.menuSort" />
-            <el-input v-else v-model="menuForm.menuSort" />
+            <el-input-number v-if="status === 'init'" disabled  v-model="menuForm.menuSort" />
+            <el-input-number v-else type="number" v-model="menuForm.menuSort" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -84,10 +84,22 @@
   </el-card>
 </template>
 <script>
-import { addMenu, editMenu, editSaveMenu, deleteMenuByIds } from '@/api/system/menu/index'
+import { addMenu, editMenu, editSaveMenu, deleteMenuByIds, checkPermission } from '@/api/system/menu/index'
 export default {
   name: 'FormDialog',
   data() {
+    const validatePermission = (menu, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入权限编码'))
+      } else {
+        checkPermission(this.menuForm).then(response => {
+          if (!response.data) {
+            callback(new Error('权限编码重复'))
+          }
+          callback()
+        })
+      }
+    }
     return {
       status: 'init',
       menuFormRef: 'menuFormRef',
@@ -108,13 +120,13 @@ export default {
       },
       rules: {
         menuName: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' }
+          { required: true, message: '请输入菜单名称', trigger: 'blur' }
         ],
-        loginName: [
-          { required: true, message: '请输入登陆名称', trigger: 'blur' }
+        menuType: [
+          {  required: true, message: '请输选择菜单类型' }
         ],
-        phone: [
-          {  required: true, message: '请输入手机号码', trigger: 'blur' }
+        permission: [
+          { validator: validatePermission, required: true, trigger: 'blur' }
         ]
       },
       menuFormLoading: false
@@ -122,6 +134,7 @@ export default {
   },
   methods: {
     seeMenu(data) {
+      this.status = 'init'
       this.menuFormLoading = true
       this.menuForm = JSON.parse(JSON.stringify(data))
       this.menuFormLoading = false
@@ -131,7 +144,7 @@ export default {
         if (valid) {
           addMenu(this.menuForm).then(() => {
             this.status = 'init'
-            this.$parent.$parent.$refs.treeData.append(this.menuForm,this.menuForm.parentId)
+            this.refreshTree()
           })
         } else {
           return false
@@ -146,17 +159,18 @@ export default {
     },
     editMenu(menuId) {
       this.status = 'edit'
-      // editMenu(menuId).then(response => {
-      //   this.menuForm = response.data
-      // })
     },
     editSave() {
       this.$refs[this.menuFormRef].validate((valid) => {
         if (valid) {
           editSaveMenu(this.menuForm).then(() => {
             this.status = 'init'
-            this.$parent.$parent.$refs.treeData.remove(this.menuForm.menuId)
-            this.$parent.$parent.$refs.treeData.append(this.menuForm,this.menuForm.parentId)
+            if (this.menuForm.parentId == '0') {
+              this.refreshTree()
+            } else {
+              this.$parent.$parent.$refs.treeData.remove(this.menuForm.menuId)
+              this.$parent.$parent.$refs.treeData.append(this.menuForm,this.menuForm.parentId)
+            }
           })
         } else {
           return false
@@ -171,13 +185,16 @@ export default {
       }).then(() => {
         deleteMenuByIds(this.menuForm.menuId).then(response => {
           this.status = 'init'
-          this.$parent.$parent.$refs.treeData.remove(this.menuForm.menuId)
-          this.menuForm = this.$parent.$parent.$refs.treeData.getNode(this.menuForm.parentId)
+          this.refreshTree()
         })
       })
     },
     resetForm() {
       this.$refs[this.menuFormRef].resetFields()
+    },
+    refreshTree() { // 刷新
+      this.$emit('refreshTree')
+      this.status = 'init'
     }
   }
 }

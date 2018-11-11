@@ -2,6 +2,7 @@ package com.hzqing.system.service.impl;
 
 import com.hzqing.common.util.UUIDUtils;
 import com.hzqing.system.domain.Button;
+import com.hzqing.system.domain.Menu;
 import com.hzqing.system.mapper.ButtonMapper;
 import com.hzqing.system.service.IButtonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,15 @@ import java.util.List;
 public class ButtonServiceImpl implements IButtonService {
     @Autowired
     private ButtonMapper buttonMapper;
+
+    @Override
+    public boolean checkPermission(Button button) {
+        List<Button> buttons = buttonMapper.checkPermission(button);
+        if (buttons.size() == 0 )
+            return true;
+        return false;
+    }
+
     /**
      * 根据条件检索列表
      * @param button

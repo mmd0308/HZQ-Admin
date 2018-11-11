@@ -45,3 +45,11 @@ export function editSaveMenu(menu) {
     data: menu
   })
 }
+
+export function checkPermission(menu) {
+  return request({
+    url: '/hzq/system/menu/checkPermission',
+    method: 'post',
+    data: menu
+  })
+}

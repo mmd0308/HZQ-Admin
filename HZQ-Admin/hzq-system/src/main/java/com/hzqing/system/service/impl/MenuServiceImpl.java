@@ -3,6 +3,7 @@ package com.hzqing.system.service.impl;
 import com.hzqing.common.util.StringUtils;
 import com.hzqing.common.util.UUIDUtils;
 import com.hzqing.system.domain.Menu;
+import com.hzqing.system.domain.Role;
 import com.hzqing.system.domain.RoleMenu;
 import com.hzqing.system.mapper.MenuMapper;
 import com.hzqing.system.mapper.RoleMenuMapper;
@@ -101,6 +102,19 @@ public class MenuServiceImpl implements IMenuService {
             menuVOS.add(menuVO);
         }
         return getTree(menuVOS);
+    }
+
+    /**
+     * 检验编码是否唯一
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean checkPermission(Menu menu) {
+        List<Menu> menus = menuMapper.checkPermission(menu);
+        if (menus.size() == 0 )
+            return true;
+        return false;
     }
 
     /**

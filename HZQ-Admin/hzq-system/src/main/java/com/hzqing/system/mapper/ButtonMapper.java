@@ -41,4 +41,11 @@ public interface ButtonMapper {
     * @return 返回影响行数
     */
     int updateButton(Button button);
+
+    /**
+     * 按钮唯一编码校验
+     * @param button
+     * @return
+     */
+    List<Button> checkPermission(Button button);
 }

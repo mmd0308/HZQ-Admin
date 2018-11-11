@@ -47,4 +47,10 @@ public interface IMenuService {
      */
     List<MenuVO> selectMenuTree();
 
+    /**
+     * 检验菜单权限编码是否唯一
+     * @param menu
+     * @return
+     */
+    boolean checkPermission(Menu menu);
 }

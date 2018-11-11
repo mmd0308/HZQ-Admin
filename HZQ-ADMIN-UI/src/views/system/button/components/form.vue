@@ -1,15 +1,18 @@
 <template>
   <el-dialog
+    v-loading="buttonFormLoading"
+    element-loading-text="拼命加载中..."
+    element-loading-spinner="el-icon-loading" 
     :visible="dialogVisible"
     :title="title"
     width="30%"
     @close="resetForm('buttonForm')">
     <el-form :model="buttonForm" :rules="rules" :ref="buttonFormRef" label-width="100px" class="demo-ruleForm">
       <el-form-item label="按钮名称" prop="butName">
-        <el-input v-model="buttonForm.butName" />
+        <el-input v-model="buttonForm.butName" placeholder="请输入按钮名称" />
       </el-form-item>
       <el-form-item label="权限标示" prop="permission">
-        <el-input v-model="buttonForm.permission" />
+        <el-input v-model="buttonForm.permission" placeholder="请输入权限编码" />
       </el-form-item>
       <el-form-item label="是否启用" prop="enabled">
         <el-switch
@@ -30,10 +33,22 @@
   </el-dialog>
 </template>
 <script>
-import { addButton, editButton, editSaveButton } from '@/api/system/button/index'
+import { addButton, editButton, editSaveButton, checkPermission } from '@/api/system/button/index'
 export default {
   name: 'FormDialog',
   data() {
+    const validatePermission = (button, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入权限编码'))
+      } else {
+        checkPermission(this.buttonForm).then(response => {
+          if (!response.data) {
+            callback(new Error('权限编码重复'))
+          }
+          callback()
+        })
+      }
+    }
     return {
       dialogVisible: false,
       title: '',
@@ -46,12 +61,13 @@ export default {
         permission: '',
         enabled: ''
       },
+      buttonFormLoading: false,
       rules: {
         butName: [
           { required: true, message: '请输入按钮名称', trigger: 'blur' }
         ],
         permission: [
-          { required: true, message: '请输入权限编码', trigger: 'blur' }
+          { validator: validatePermission, required: true, trigger: 'blur' }
         ]
       }
     }
@@ -79,8 +95,10 @@ export default {
       this.status = 'edit'
       this.title = '修改按钮'
       this.dialogVisible = true
+      this.buttonFormLoading = true
       editButton(buttonId).then(response => {
         this.buttonForm = response.data
+        this.buttonFormLoading = false
       })
     },
     editSave() {

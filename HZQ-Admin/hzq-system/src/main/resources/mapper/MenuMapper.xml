@@ -90,6 +90,15 @@
 
     </select>
 
+    <select id="checkPermission" parameterType="menu" resultMap="baseResult">
+        <include refid="selectMenu" />
+        WHERE
+        permission = #{permission}
+        <if test="menuId != null and menuId != ''">
+            AND menu_id != #{menuId}
+        </if>
+    </select>
+
     <delete id="deleteMenuById" parameterType="string">
       DELETE FROM sys_menu
       WHERE menu_id = #{0}

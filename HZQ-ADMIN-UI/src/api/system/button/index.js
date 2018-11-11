@@ -38,3 +38,11 @@ export function editSaveButton(button) {
     data: button
   })
 }
+
+export function checkPermission(button) {
+  return request({
+    url: '/hzq/system/button/checkPermission',
+    method: 'post',
+    data: button
+  })
+}

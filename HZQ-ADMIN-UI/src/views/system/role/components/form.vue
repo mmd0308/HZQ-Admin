@@ -52,7 +52,7 @@ export default {
           callback()
         })
       }
-    };
+    }
     return {
       dialogVisible: false,
       title: '',
