@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzqing.system.mapper.DictMapper">
+
+    <resultMap id="baseResult" type="dict">
+        <result column="dict_id" property="dictId"/>
+        <result column="dict_name" property="dictName"/>
+        <result column="dict_code" property="dictCode"/>
+        <result column="dict_sort" property="dictSort"/>
+        <result column="remark" property="remark"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="enabled" property="enabled" />
+    </resultMap>
+
+    <sql id="selectDict">
+        SELECT
+            dict_id,
+            dict_name,
+            dict_code,
+            dict_sort,
+            remark,
+            parent_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            enabled
+        FROM
+            sys_dict
+    </sql>
+
+    <select id="selectTableList" resultMap="baseResult">
+        <include refid="selectDict"/>
+        <where>
+            1=1
+            <if test="dictName != null and dictName != ''">
+              AND  dict_name LIKE  '%{dictName}%'
+            </if>
+        </where>
+        ORDER BY dict_sort ASC
+    </select>
+    <insert id="insertDict" parameterType="dict" >
+        INSERT INTO sys_dict (
+            dict_id,
+            dict_name,
+            dict_code,
+            dict_sort,
+            remark,
+            parent_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            enabled
+        ) VALUE (
+            #{dictId},
+            #{dictName},
+            #{dictCode},
+            #{dictSort},
+            #{remark},
+            #{parentId},
+            #{createBy},
+            #{createTime},
+            #{updateBy},
+            #{updateTime},
+            #{enabled}
+        )
+    </insert>
+
+    <select id="selectDictById" parameterType="string" resultMap="baseResult">
+        <include refid="selectDict" />
+    </select>
+
+    <delete id="deleteDictById" parameterType="string">
+        DELETE FROM  sys_dict WHERE dict_id = #{0}
+    </delete>
+
+    <update id="updateDict" parameterType="dict">
+        UPDATE sys_dict
+        <set>
+            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
+            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
+            <if test="dictSort != null and dictSort != ''">dict_sort = #{dictSort},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="enabled != null and enabled != ''">enabled = #{enabled},</if>
+        </set>
+        WHERE
+          dict_id = #{dictId}
+    </update>
+</mapper>

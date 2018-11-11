@@ -185,8 +185,7 @@ export default {
       }).then(() => {
         deleteDepartmentByIds(this.departmentForm.departId).then(response => {
           this.status = 'init'
-          this.$parent.$parent.$refs.treeData.remove(this.departmentForm.departId)
-          this.departmentForm = this.$parent.$parent.$refs.treeData.getNode(this.departmentForm.parentId)
+          this.refreshTree()
         })
       })
     },

@@ -49,7 +49,6 @@
                 AND  parent_id = #{parentId}
             </if>
         </where>
-
     </select>
 
     <insert id="insertMenu" parameterType="menu" >

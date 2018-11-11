@@ -64,7 +64,7 @@ export const constantRouterMap = [
       {
         path: 'dict',
         name: 'Dict',
-        component: () => import('@/views/system/menu/index'),
+        component: () => import('@/views/system/dict/index'),
         meta: { title: '数据字典管理', icon: 'hzq_dict' }
       },
       {
