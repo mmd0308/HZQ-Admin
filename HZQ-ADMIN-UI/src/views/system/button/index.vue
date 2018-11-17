@@ -1,22 +1,22 @@
 <template>
   <div class="but-container">
     <el-card style="margin:10px 0px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" v-model="query.butName" placeholder="请输入" @keyup.enter.native="page" />
+      <el-input v-model="query.butName" class="filter-item" size="small" style="width: 300px;" placeholder="请输入" @keyup.enter.native="page" />
       <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
         <el-button size="small" type="primary" icon="el-icon-plus" @click="addButton">新增</el-button>
-        <el-button size="small" type="success" icon="el-icon-edit" @click="editButton(null)" v-if="selectSize === 1">修改</el-button>
-        <el-button size="small" type="success" icon="el-icon-edit" @click="editButton(null)" disabled v-else>修改</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteButton(null)" v-if="selectSize != 0">删除</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteButton(null)" disabled v-else>删除</el-button>
+        <el-button v-if="selectSize === 1" size="small" type="success" icon="el-icon-edit" @click="editButton(null)">修改</el-button>
+        <el-button v-else size="small" type="success" icon="el-icon-edit" disabled @click="editButton(null)">修改</el-button>
+        <el-button v-if="selectSize != 0" size="small" type="danger" icon="el-icon-delete" @click="deleteButton(null)">删除</el-button>
+        <el-button v-else size="small" type="danger" icon="el-icon-delete" disabled @click="deleteButton(null)">删除</el-button>
         <el-table
           v-loading="butListLoading"
-          element-loading-text="拼命加载中..."
-          element-loading-spinner="el-icon-loading" 
-          :data="tableData"
           ref="userTable"
+          :data="tableData"
+          element-loading-text="拼命加载中..."
+          element-loading-spinner="el-icon-loading"
           fit
           highlight-current-row
           style="width: 100%"
@@ -24,7 +24,7 @@
           <el-table-column type="selection" width="55" />
           <el-table-column prop="butName" label="按钮名称" />
           <el-table-column prop="permission" label="权限标示" />
-          <el-table-column  label="是否启用">
+          <el-table-column label="是否启用">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.enabled == 'N'" type="warning" size="mini" color="#FFA500" style="color:#FFFFFF" >
                 禁用

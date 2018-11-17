@@ -12,19 +12,23 @@
     </div>
     <el-form
       v-loading="menuFormLoading"
+      :model="menuForm"
+      :rules="rules"
+      :ref="menuFormRef"
       element-loading-text="拼命加载中..."
-      element-loading-spinner="el-icon-loading" 
-      :model="menuForm" :rules="rules" :ref="menuFormRef" label-width="100px" class="demo-ruleForm">
+      element-loading-spinner="el-icon-loading"
+      label-width="100px"
+      class="demo-ruleForm">
       <el-row>
         <el-col :span="12">
           <el-form-item label="菜单名称:" prop="menuName">
-            <el-input v-if="status === 'init'" disabled  v-model="menuForm.menuName" />
+            <el-input v-if="status === 'init'" v-model="menuForm.menuName" disabled />
             <el-input v-else v-model="menuForm.menuName" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="图标" prop="icon">
-            <el-input v-if="status === 'init'" disabled  v-model="menuForm.icon" />
+            <el-input v-if="status === 'init'" v-model="menuForm.icon" disabled />
             <el-input v-else v-model="menuForm.icon" />
           </el-form-item>
         </el-col>
@@ -32,23 +36,23 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="权限标示" prop="permission">
-            <el-input v-if="status === 'init'" disabled  v-model="menuForm.permission" />
+            <el-input v-if="status === 'init'" v-model="menuForm.permission" disabled />
             <el-input v-else v-model="menuForm.permission" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="排序" prop="menuSort">
-            <el-input-number v-if="status === 'init'" disabled  v-model="menuForm.menuSort" />
-            <el-input-number v-else type="number" v-model="menuForm.menuSort" />
+            <el-input-number v-if="status === 'init'" v-model="menuForm.menuSort" disabled />
+            <el-input-number v-else v-model="menuForm.menuSort" type="number" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="菜单类型" prop="menuType">
-            <el-radio v-if="status === 'init'" disabled  v-model="menuForm.menuType" label="M">菜单</el-radio>
+            <el-radio v-if="status === 'init'" v-model="menuForm.menuType" disabled label="M">菜单</el-radio>
             <el-radio v-else v-model="menuForm.menuType" label="M">菜单</el-radio>
-            <el-radio v-if="status === 'init'" disabled  v-model="menuForm.menuType" label="C">目录</el-radio>
+            <el-radio v-if="status === 'init'" v-model="menuForm.menuType" disabled label="C">目录</el-radio>
             <el-radio v-else v-model="menuForm.menuType" label="C">目录</el-radio>
           </el-form-item>
         </el-col>
@@ -56,8 +60,8 @@
           <el-form-item label="是否启用" prop="enabled">
             <el-switch
               v-if="status === 'init'"
-              disabled 
               v-model="menuForm.enabled"
+              disabled
               active-text="启用"
               active-color="#1ab394"
               active-value="Y"
@@ -77,14 +81,14 @@
         </el-col>
       </el-row>
       <el-form-item label="备注" prop="remark">
-        <el-input v-if="status === 'init'" disabled v-model="menuForm.remark" type="textarea" />
+        <el-input v-if="status === 'init'" v-model="menuForm.remark" disabled type="textarea" />
         <el-input v-else v-model="menuForm.remark" type="textarea" />
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 <script>
-import { addMenu, editMenu, editSaveMenu, deleteMenuByIds, checkPermission } from '@/api/system/menu/index'
+import { addMenu, editSaveMenu, deleteMenuByIds, checkPermission } from '@/api/system/menu/index'
 export default {
   name: 'FormDialog',
   data() {
@@ -104,26 +108,26 @@ export default {
       status: 'init',
       menuFormRef: 'menuFormRef',
       menuForm: {
-          menuId: '',
-          menuName: '',
-          parentId: '',
-          menuSort: '',
-          menuType: '',
-          enabled: '',
-          icon: '',
-          remark: '',
-          permission: '',
-          createBy: '',
-          createTime: '',
-          updateBy: '',
-          updateTime: ''
+        menuId: '',
+        menuName: '',
+        parentId: '',
+        menuSort: '',
+        menuType: '',
+        enabled: '',
+        icon: '',
+        remark: '',
+        permission: '',
+        createBy: '',
+        createTime: '',
+        updateBy: '',
+        updateTime: ''
       },
       rules: {
         menuName: [
           { required: true, message: '请输入菜单名称', trigger: 'blur' }
         ],
         menuType: [
-          {  required: true, message: '请输选择菜单类型' }
+          { required: true, message: '请输选择菜单类型' }
         ],
         permission: [
           { validator: validatePermission, required: true, trigger: 'blur' }
@@ -149,7 +153,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     toAddMenu() {
       this.status = 'add'
@@ -165,11 +169,11 @@ export default {
         if (valid) {
           editSaveMenu(this.menuForm).then(() => {
             this.status = 'init'
-            if (this.menuForm.parentId == '0') {
+            if (this.menuForm.parentId === '0') {
               this.refreshTree()
             } else {
               this.$parent.$parent.$refs.treeData.remove(this.menuForm.menuId)
-              this.$parent.$parent.$refs.treeData.append(this.menuForm,this.menuForm.parentId)
+              this.$parent.$parent.$refs.treeData.append(this.menuForm, this.menuForm.parentId)
             }
           })
         } else {

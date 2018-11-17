@@ -19,22 +19,20 @@
       </el-form-item>
       <el-form-item label="选择角色" prop="roleIds">
         <el-select v-model="userForm.roleIds" multiple placeholder="请选择" style="width:100%">
-        <el-option
-          v-for="item in roles"
-          :key="item.roleId"
-          :label="item.roleName"
-          :value="item.roleId">
-        </el-option>
-      </el-select>
+          <el-option
+            v-for="item in roles"
+            :key="item.roleId"
+            :label="item.roleName"
+            :value="item.roleId"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="所属部门" prop="departId">
         <el-cascader
-          style="width:100%"
-          expand-trigger="hover"
           :options="departDatas"
           :props="departProps"
-          v-model="userForm.departId">
-        </el-cascader>
+          v-model="userForm.departId"
+          style="width:100%"
+          expand-trigger="hover"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -62,9 +60,9 @@ export default {
       if (!phoneReg.test(value)) {
         callback(new Error('请输入正确的手机号码'))
         return
-      } 
-        callback()
-        return
+      }
+      callback()
+      return
     }
     return {
       dialogVisible: false,
@@ -97,13 +95,13 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' }
         ],
         phone: [
-          { required: true,  validator: validatePhone, trigger: 'blur' }
+          { required: true, validator: validatePhone, trigger: 'blur' }
         ],
         departId: [
-          { required: true, message: '请选择部门', trigger: 'change'}
+          { required: true, message: '请选择部门', trigger: 'change' }
         ],
         roleIds: [
-          { required: true, message: '请选择角色', trigger: 'change'}
+          { required: true, message: '请选择角色', trigger: 'change' }
         ]
       }
     }
@@ -147,7 +145,7 @@ export default {
       this.getRoles()
       editUser(userId).then(response => {
         this.userForm = response.data
-        this.userForm.departId = response.data.departId.split(",")
+        this.userForm.departId = response.data.departId.split(',')
       })
     },
     editSave() {

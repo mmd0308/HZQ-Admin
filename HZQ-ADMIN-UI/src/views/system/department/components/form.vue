@@ -8,21 +8,25 @@
       <el-button v-if="status === 'edit'" type="primary" size="small" @click="editSave()">更新</el-button>
       <el-button v-if="status != 'init'" type="info" size="small" @click="refreshTree">取消</el-button>
     </div>
-    <el-form 
+    <el-form
       v-loading="departmentFormLoading"
+      :model="departmentForm"
+      :rules="rules"
+      :ref="departmentFormRef"
       element-loading-text="拼命加载中..."
-      element-loading-spinner="el-icon-loading" 
-      :model="departmentForm" :rules="rules" :ref="departmentFormRef" label-width="100px" class="demo-ruleForm">
+      element-loading-spinner="el-icon-loading"
+      label-width="100px"
+      class="demo-ruleForm">
       <el-row>
         <el-col :span="12">
           <el-form-item label="部门名称" prop="departName">
-            <el-input v-if="status === 'init'" disabled v-model="departmentForm.departName" />
+            <el-input v-if="status === 'init'" v-model="departmentForm.departName" disabled />
             <el-input v-else v-model="departmentForm.departName" placeholder="请输入部门名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="排序" prop="departSort">
-            <el-input v-if="status === 'init'" disabled v-model="departmentForm.departSort" />
+            <el-input v-if="status === 'init'" v-model="departmentForm.departSort" disabled />
             <el-input v-else v-model="departmentForm.departSort" placeholder="请输入排序" />
           </el-form-item>
         </el-col>
@@ -30,27 +34,25 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="部门负责人" prop="leader">
-            <el-select v-if="status === 'init'" disabled v-model="departmentForm.leader" style="width:100%">
+            <el-select v-if="status === 'init'" v-model="departmentForm.leader" disabled style="width:100%">
               <el-option
                 v-for="item in userList"
                 :key="item.userId"
                 :label="item.userName"
-                :value="item.userId">
-              </el-option>
+                :value="item.userId"/>
             </el-select>
             <el-select v-else v-model="departmentForm.leader" placeholder="请选择部门负责人" style="width:100%">
               <el-option
                 v-for="item in userList"
                 :key="item.userId"
                 :label="item.userName"
-                :value="item.userId">
-              </el-option>
+                :value="item.userId"/>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="部门电话" prop="phone">
-            <el-input v-if="status === 'init'" disabled v-model="departmentForm.phone" />
+            <el-input v-if="status === 'init'" v-model="departmentForm.phone" disabled />
             <el-input v-else v-model="departmentForm.phone" placeholder="请输入部门电话" />
           </el-form-item>
         </el-col>
@@ -58,8 +60,8 @@
       <el-form-item label="是否启用" prop="enabled">
         <el-switch
           v-if="status === 'init'"
-          disabled 
           v-model="departmentForm.enabled"
+          disabled
           active-text="启用"
           active-color="#1ab394"
           active-value="Y"
@@ -77,14 +79,14 @@
           inactive-text="禁用"/>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-if="status === 'init'" disabled type="textarea" v-model="departmentForm.remark" />
-        <el-input v-else type="textarea" v-model="departmentForm.remark" placeholder="请输入备注信息" />
+        <el-input v-if="status === 'init'" v-model="departmentForm.remark" disabled type="textarea" />
+        <el-input v-else v-model="departmentForm.remark" type="textarea" placeholder="请输入备注信息" />
       </el-form-item>
     </el-form>
   </el-card>
 </template>
 <script>
-import { addDepartment, editDepartment, editSaveDepartment, deleteDepartmentByIds } from '@/api/system/department/index'
+import { addDepartment, editSaveDepartment, deleteDepartmentByIds } from '@/api/system/department/index'
 import { selectUserListAll } from '@/api/system/user/index'
 export default {
   name: 'FormDialog',
@@ -116,16 +118,16 @@ export default {
           { required: true, message: '请输入排序', trigger: 'blur' }
         ],
         phone: [
-          {  required: true, message: '请输入部门电话', trigger: 'blur' }
+          { required: true, message: '请输入部门电话', trigger: 'blur' }
         ],
         leader: [
-          {  required: true, message: '请选择部门负责人', trigger: 'blur' }
+          { required: true, message: '请选择部门负责人', trigger: 'blur' }
         ]
       },
       departmentFormLoading: false
     }
   },
-  created(){
+  created() {
     this.getUserAll()
   },
   methods: {
@@ -150,7 +152,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     toAddDepartment() {
       this.status = 'add'
@@ -166,11 +168,11 @@ export default {
         if (valid) {
           editSaveDepartment(this.departmentForm).then(() => {
             this.status = 'init'
-            if (this.departmentForm.parentId == '0') {
+            if (this.departmentForm.parentId === '0') {
               this.refreshTree()
             } else {
               this.$parent.$parent.$refs.treeData.remove(this.departmentForm.departId)
-              this.$parent.$parent.$refs.treeData.append(this.departmentForm,this.departmentForm.parentId)
+              this.$parent.$parent.$refs.treeData.append(this.departmentForm, this.departmentForm.parentId)
             }
           })
         } else {

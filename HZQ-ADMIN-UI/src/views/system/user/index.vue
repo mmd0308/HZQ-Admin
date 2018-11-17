@@ -1,23 +1,23 @@
 <template>
   <div class="app-container">
     <el-card style="margin-bottom:10px;">
-      <el-input class="filter-item" size="small" style="width: 300px;" placeholder="请输入用户名" v-model="query.userName" @keyup.enter.native="page"  />
+      <el-input v-model="query.userName" class="filter-item" size="small" style="width: 300px;" placeholder="请输入用户名" @keyup.enter.native="page" />
       <el-button class="filter-item" size="small" type="success" icon="el-icon-search" @click="page">查找</el-button>
     </el-card>
     <el-card>
       <div style="background:#fff">
         <el-button size="small" type="primary" icon="el-icon-plus" @click="addUser">新增</el-button>
-        <el-button size="small" type="success" icon="el-icon-edit" @click="editUser(null)" v-if="selectSize === 1">修改</el-button>
-        <el-button size="small" type="success" icon="el-icon-edit" @click="editUser(null)" disabled v-else>修改</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null, null)" v-if="selectSize != 0">删除</el-button>
-        <el-button size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null, null)" disabled v-else>删除</el-button>
+        <el-button v-if="selectSize === 1" size="small" type="success" icon="el-icon-edit" @click="editUser(null)">修改</el-button>
+        <el-button v-else size="small" type="success" icon="el-icon-edit" disabled @click="editUser(null)">修改</el-button>
+        <el-button v-if="selectSize != 0" size="small" type="danger" icon="el-icon-delete" @click="deleteUser(null, null)">删除</el-button>
+        <el-button v-else size="small" type="danger" icon="el-icon-delete" disabled @click="deleteUser(null, null)">删除</el-button>
         <!-- <el-button size="small" type="warning" icon="el-icon-download" @click="deleteUser">导出</el-button> -->
         <el-table
           v-loading="tableload"
+          ref="userTable"
+          :data="tableData"
           element-loading-text="拼命加载中..."
           element-loading-spinner="el-icon-loading"
-          :data="tableData"
-          ref="userTable"
           fit
           highlight-current-row
           style="width: 100%"
@@ -108,7 +108,7 @@ export default {
         })
       })
     },
-    refreshList() {  
+    refreshList() {
       this.page()
     },
     changeCheckBox(val) {

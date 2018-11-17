@@ -8,21 +8,25 @@
       <el-button v-if="status === 'edit'" type="primary" size="small" @click="editSave()">更新</el-button>
       <el-button v-if="status != 'init'" type="info" size="small" @click="refreshTree">取消</el-button>
     </div>
-    <el-form 
+    <el-form
       v-loading="dictFormLoading"
+      :model="dictForm"
+      :rules="rules"
+      :ref="dictFormRef"
       element-loading-text="拼命加载中..."
-      element-loading-spinner="el-icon-loading" 
-      :model="dictForm" :rules="rules" :ref="dictFormRef" label-width="100px" class="demo-ruleForm">
+      element-loading-spinner="el-icon-loading"
+      label-width="100px"
+      class="demo-ruleForm">
       <el-row>
         <el-col :span="12">
           <el-form-item label="字典名称" prop="dictName">
-            <el-input v-if="status === 'init'" disabled v-model="dictForm.dictName" />
+            <el-input v-if="status === 'init'" v-model="dictForm.dictName" disabled />
             <el-input v-else v-model="dictForm.dictName" placeholder="请输入字典名称" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="排序" prop="dictSort">
-            <el-input-number v-if="status === 'init'" disabled v-model="dictForm.dictSort" />
+            <el-input-number v-if="status === 'init'" v-model="dictForm.dictSort" disabled />
             <el-input-number v-else v-model="dictForm.dictSort" placeholder="请输入排序" />
           </el-form-item>
         </el-col>
@@ -32,8 +36,8 @@
           <el-form-item label="是否启用" prop="enabled">
             <el-switch
               v-if="status === 'init'"
-              disabled 
               v-model="dictForm.enabled"
+              disabled
               active-text="启用"
               active-color="#1ab394"
               active-value="Y"
@@ -53,14 +57,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="字典编码" prop="dictCode">
-            <el-input v-if="status === 'init'" disabled v-model="dictForm.dictCode" />
+            <el-input v-if="status === 'init'" v-model="dictForm.dictCode" disabled />
             <el-input v-else v-model="dictForm.dictCode" placeholder="请输入字典编码" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="备注" prop="remark">
-        <el-input v-if="status === 'init'" disabled type="textarea" v-model="dictForm.remark" />
-        <el-input v-else type="textarea" v-model="dictForm.remark" placeholder="请输入备注信息" />
+        <el-input v-if="status === 'init'" v-model="dictForm.remark" disabled type="textarea" />
+        <el-input v-else v-model="dictForm.remark" type="textarea" placeholder="请输入备注信息" />
       </el-form-item>
     </el-form>
   </el-card>
@@ -126,7 +130,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     toAddDict() {
       this.status = 'add'
@@ -142,11 +146,11 @@ export default {
         if (valid) {
           editSaveDict(this.dictForm).then(() => {
             this.status = 'init'
-            if (this.dictForm.parentId == '0') {
+            if (this.dictForm.parentId === '0') {
               this.refreshTree()
             } else {
               this.$parent.$parent.$refs.treeData.remove(this.dictForm.dictId)
-              this.$parent.$parent.$refs.treeData.append(this.dictForm,this.dictForm.parentId)
+              this.$parent.$parent.$refs.treeData.append(this.dictForm, this.dictForm.parentId)
             }
           })
         } else {
@@ -155,7 +159,7 @@ export default {
       })
     },
     deleteDict() { // 删除菜单
-      if (this.dictForm.parentId == '0') {
+      if (this.dictForm.parentId === '0') {
         Message({
           message: '不能删除最高级字典',
           type: 'error',

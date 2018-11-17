@@ -2,15 +2,15 @@
   <div class="app-container">
     <el-col :span="5" style="padding-right:20px;">
       <el-card>
-        <el-tree 
+        <el-tree
           v-loading="treeLoading"
-          element-loading-text="拼命加载中..."
-          element-loading-spinner="el-icon-loading"
           ref="treeData"
-          node-key="menuId"
-          default-expand-all
           :data="treeDate"
           :props="treeProps"
+          element-loading-text="拼命加载中..."
+          element-loading-spinner="el-icon-loading"
+          node-key="menuId"
+          default-expand-all
           @node-click="handleNodeClick"/>
       </el-card>
     </el-col>

@@ -1,10 +1,10 @@
 <template>
   <el-dialog
     v-loading="buttonFormLoading"
-    element-loading-text="拼命加载中..."
-    element-loading-spinner="el-icon-loading" 
     :visible="dialogVisible"
     :title="title"
+    element-loading-text="拼命加载中..."
+    element-loading-spinner="el-icon-loading"
     width="30%"
     @close="resetForm('buttonForm')">
     <el-form :model="buttonForm" :rules="rules" :ref="buttonFormRef" label-width="100px" class="demo-ruleForm">
