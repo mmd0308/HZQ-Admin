@@ -1,12 +1,6 @@
 #!/bin/bash
-# 构建docker镜像
-# 将前段页面和后台程序构建成一个jar包
-
-# 进入前段项目中
-cd HZQ-Admin-UI
-
-echo "npm install 导入依赖"
 # 导入依赖
+echo '导入依赖'
 npm install --registry=https://registry.npm.taobao.org
 
 # 判断文件夹是否存在
@@ -17,14 +11,9 @@ if [ -d "./dist/" ];then
     rm -rf ./dist
 fi
 
-# npm构建
-echo "npm构建前段脚本"
+echo 'npm构建'
 npm run build
 
-# 拷贝构建结果到资源路径下面
-
-
-
-
-
-#mvn clean package
+# 构建docker镜像
+echo '构建docker镜像'
+docker build -t hzq-admin-ui:latest .

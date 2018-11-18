@@ -1,4 +1,4 @@
-FROM 10.27.213.66:5000/java:8u144
+FROM mmd0308/jre8:alpine
 VOLUME /tmp
 ADD hzq-admin/target/*.jar app.jar
 RUN sh -c 'touch /app.jar' \
