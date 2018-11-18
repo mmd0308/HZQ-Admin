@@ -34,7 +34,7 @@ export function deleteDictByIds(dictId) {
   return request({
     url: '/hzq/system/dict/remove',
     method: 'delete',
-    params: {dictId}
+    params: { dictId }
   })
 }
 

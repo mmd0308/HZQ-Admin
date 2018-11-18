@@ -23,7 +23,6 @@ export function addUser(user) {
   })
 }
 
-
 export function editUser(userId) {
   return request({
     url: '/hzq/system/user/edit/' + userId,
@@ -35,7 +34,7 @@ export function deleteUserByIds(userIds) {
   return request({
     url: '/hzq/system/user/remove',
     method: 'delete',
-    params: {userIds}
+    params: { userIds }
   })
 }
 

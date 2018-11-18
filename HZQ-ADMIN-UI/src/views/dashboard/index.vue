@@ -25,12 +25,12 @@ import Donation from './components/donation'
 // 获取系统信息
 import System from './components/system'
 export default {
+  name: 'Dashboard',
   components: {
     ContactInfo,
     Donation,
     System
-  },
-  name: 'Dashboard',
+  }
 }
 </script>
 

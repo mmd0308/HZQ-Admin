@@ -27,7 +27,7 @@ export function deleteButtonByIds(buttonIds) {
   return request({
     url: '/hzq/system/button/remove',
     method: 'delete',
-    params: {buttonIds}
+    params: { buttonIds }
   })
 }
 

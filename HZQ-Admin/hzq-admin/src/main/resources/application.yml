@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     name: testdb
-    url: jdbc:mysql://localhost:3306/hzq_admin
+    url: jdbc:mysql://192.168.0.102:3306/hzq_admin
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource

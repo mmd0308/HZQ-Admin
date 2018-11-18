@@ -34,7 +34,7 @@ export function deleteDepartmentByIds(departmentId) {
   return request({
     url: '/hzq/system/department/remove',
     method: 'delete',
-    params: {departmentId}
+    params: { departmentId }
   })
 }
 

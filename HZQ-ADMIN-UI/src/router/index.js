@@ -122,7 +122,7 @@ export const constantRouterMap = [
         meta: { title: 'SQL监控', icon: 'hzq_druid' }
       }
     ]
-   },
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

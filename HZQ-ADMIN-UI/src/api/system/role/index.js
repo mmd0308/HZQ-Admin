@@ -15,7 +15,6 @@ export function selectRoleListAll() {
   })
 }
 
-
 export function addRole(role) {
   return request({
     url: '/hzq/system/role/add',
@@ -35,7 +34,7 @@ export function deleteRoleByIds(roleIds) {
   return request({
     url: '/hzq/system/role/remove',
     method: 'delete',
-    params: {roleIds}
+    params: { roleIds }
   })
 }
 
